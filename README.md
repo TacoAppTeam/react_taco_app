@@ -68,6 +68,8 @@ I'm not going to walk you through the VirtualBox install because it's pretty sim
 ```
 sudo yum install epel-release
 sudo yum install nodejs  (this package will include npm)
+sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+sudo yum -y install python36u
 sudo yum install python-pip
 ```
 
