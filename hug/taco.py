@@ -6,7 +6,7 @@ import hug
 def taco():
     """
     Show the tacos endpoint.
-    
+
     Here are the tacos.
     """
-    return { "tacos": "are gooood" }
+    return {"tacos": "are gooood"}
