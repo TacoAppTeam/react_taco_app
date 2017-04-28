@@ -72,8 +72,9 @@ sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 sudo yum -y install python36u
 sudo yum -y install python36u-pip
 ```
-> Samba setup: 
->>https://wiki.viasat.com/display/VWSRDSWE/Set+up+SAMBA+in+your+OpenStack+dev+environments
+
+> Samba setup: https://wiki.viasat.com/display/VWSRDSWE/Set+up+SAMBA+in+your+OpenStack+dev+environments
+
 > Setup the Firewall:
 
 >> _Docker Port: 3000/tcp_
