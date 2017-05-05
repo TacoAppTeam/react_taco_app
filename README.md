@@ -147,3 +147,10 @@ sudo pip install hug -U
 #### Installation
 
 > Already Installed
+
+## Setup SQLAlchemy (Python SQL toolkit and Object Relational Mapper)
+
+#### Installation
+```
+sudo pip3.6 install sqlachemy
+```
