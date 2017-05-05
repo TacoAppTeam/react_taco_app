@@ -23,7 +23,10 @@ CREATE TABLE Taco_Shell (
 DROP TABLE IF EXISTS Taco_Ingredient;
 CREATE TABLE Taco_Ingredient (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    ingredient TEXT NOT NULL
+    order_id INTEGER NOT NULL,
+    ingredient_id INTEGER NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
+    FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
 );
 
 -- Create Ingredients table
@@ -54,7 +57,7 @@ CREATE TABLE Locations (
     city TEXT NOT NULL,
     state TEXT NOT NULL,
     zip TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
+    phone_number INTEGER NOT NULL,
     hours TEXT NOT NULL
 );
 
