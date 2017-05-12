@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import create_engine
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
+from models.taco import Taco
 
 
 def create_session():
@@ -9,28 +10,29 @@ def create_session():
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    return session
+    return engine, session
 
 
-Base = declarative_base()
+def create_tables(engine):
+    tables = ['taco']
 
+    for table in tables:
+        if not engine.dialect.has_table(engine, table):  # If table don't exist, Create.
+            metadata = MetaData(engine)
 
-class Test(Base):
-    __tablename__ = 'test'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
-    type = Column(String)
-
-    def __repr__(self):
-        return "<Test(id='%s', name='%s', type='%s')>" % (self.id, self.name, self.type)
+            # Implement the creation
+            metadata.create_all()
 
 
 def main():
-    session = create_session()
+    engine, session = create_session()
 
-    for test in session.query(Test).order_by(Test.id):
-        print(test)
+    # Base = declarative_base()
+    # Base.metadata.create_all(engine)
+    create_tables(engine)
+
+    for taco in session.query(Taco).order_by(Taco.id):
+        print(taco)
 
 
 if __name__ == "__main__":
