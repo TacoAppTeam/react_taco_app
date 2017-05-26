@@ -1,4 +1,4 @@
--- Steps to create database
+-- Steps to create database (may use 'sqlite' OR 'sqlite3' depending on installed version)
 -- sqlite taco.db
 -- sqlite > .read taco.sql
 
@@ -6,7 +6,8 @@
 DROP TABLE IF EXISTS Users;
 CREATE TABLE Users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     password TEXT NOT NULL,
     email TEXT NOT NULL
 );
