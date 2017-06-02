@@ -25,7 +25,7 @@ CREATE TABLE Taco_Ingredient (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INTEGER NOT NULL,
     ingredient_id INTEGER NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES TacoOrder(id)
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
     FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
 );
 
