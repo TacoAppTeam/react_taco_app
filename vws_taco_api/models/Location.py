@@ -1,23 +1,28 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import as_declarative, declarative_base
-
+# SCRIPTED FILE --- DO NOT MODIFY
+from sqlalchemy import Column
+from sqlalchemy.types import *
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
-# @as_declarative()
 class Location(Base):
     __tablename__ = 'Locations'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    street_address = Column(String)
-    city = Column(String)
-    state = Column(String)
-    zip = Column(String)
-    phone_number = Column(Integer)
-    hours = Column(String)
+    id = Column(INTEGER, nullable=False, default=None, primary_key=True, autoincrement=True)
+    name = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    street_address = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    city = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    state = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    zip = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    phone_number = Column(INTEGER, nullable=True, default=None, primary_key=False, autoincrement=False)
+    hours = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+
 
     def __repr__(self):
-        return "<Location(id='%s', name='%s', street_address='%s', city='%s', state='%s', zip='%s', phone_number='%s', hours='%s')>" \
-          % (self.id, self.name, self.street_address, self.city, self.state, self.zip, self.phone_number, self.hours)
+        return '<Location(id = %s,name = %s,street_address = %s,city = %s,state = %s,zip = %s,phone_number = %s,hours = %s,)>'\
+            % (self.id,self.name,self.street_address,self.city,self.state,self.zip,self.phone_number,self.hours,)
+
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

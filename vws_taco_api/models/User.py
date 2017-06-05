@@ -1,19 +1,25 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import as_declarative, declarative_base
-
+# SCRIPTED FILE --- DO NOT MODIFY
+from sqlalchemy import Column
+from sqlalchemy.types import *
+from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
 
-# @as_declarative()
 class User(Base):
     __tablename__ = 'Users'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    password = Column(String)
-    email = Column(String)
+    id = Column(INTEGER, nullable=False, default=None, primary_key=True, autoincrement=True)
+    first_name = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    last_name = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    password = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    email = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+
 
     def __repr__(self):
-        return "<Taco(id='%s', first_name='%s', last_name='%s', password='%s', email='%s')>" % (self.id, self.first_name, self.last_name, self.password, self.email)
+        return '<User(id = %s,first_name = %s,last_name = %s,password = %s,email = %s,)>'\
+            % (self.id,self.first_name,self.last_name,self.password,self.email,)
+
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
