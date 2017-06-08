@@ -1,5 +1,5 @@
+import sys
 import sqlite3
-import re
 
 from flask import Flask
 from contextlib import closing
@@ -114,8 +114,8 @@ def create_models_py(table_data):
 
 
 def create_hug_api(table_data):
-    print("Creating taco.api.py!")
-    target = open("../vws_taco_api/vws_taco_api/hug/taco_api.py", "w")
+    print("Creating scripted_endpoints.py")
+    target = open("../vws_taco_api/vws_taco_api/hug/scripted_endpoints.py", "w")
 
     target.write("### IMPORTANT!!! THIS FILE IS SCRIPTED!!! DO NOT EDIT!!! ###\n")
     target.write("import hug\n\n")
@@ -160,6 +160,7 @@ def create_hug_api(table_data):
         target.write("        param_id = body.get('id', None)\n")
         target.write("        existing_%s = session.query(%s).get(param_id) if param_id else %s()\n" % (model_name.lower(), model_name, model_name))
         target.write("\n")
+        target.write("        # Merge any existing object with the passed in object\n")
         target.write("        %s = session.merge(existing_%s)\n" % (model_name.lower(), model_name.lower()))
         for column in table_info:
             name = column.get("column_name")
@@ -176,6 +177,8 @@ def create_hug_api(table_data):
         target.write("        print('FAILURE ON TACO EVENT CREATION!!!!')\n")
         target.write("        raise Error\n")
         target.write("\n")
+
+        # TODO Create delete endpoint
     target.close()
 
 def connect_db():
@@ -183,3 +186,4 @@ def connect_db():
 
 if __name__ == '__main__':
     init_db()
+    init_models()
