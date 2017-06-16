@@ -15,8 +15,32 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <button onClick={callApiFetch}>Click Me!</button>
+        <TacoRequest></TacoRequest>
       </div>
+    );
+  }
+}
+
+class TacoRequest extends Component {
+  render() {
+    return (
+      <Request
+        url='http://192.168.56.101:8000/v1/location?id=1'
+        method='get'
+        accept='application/json'
+        verbose={true}
+        mode='no-cors'
+      >
+        {
+          ({error, result, loading}) => {
+            if (loading) {
+              return <div>loading...</div>;
+            } else {
+              return <div>{ JSON.stringify(result) }</div>;
+            }
+          }
+        }
+      </Request>
     );
   }
 }
@@ -49,18 +73,5 @@ var callApiFetch = function () {
     }).then(checkStatus)
 }
 
-
-// TODO: Not working.  Trying to call hug api using react-http-request
-var callApiRequest = function () {
-  return (
-    <Request
-      url='http://192.168.56.101:8000/v1/event?id=1'
-      method='get'
-      accept='application/json'
-      verbose={true}
-    >
-    </Request>
-  );
-}
 
 export default App;

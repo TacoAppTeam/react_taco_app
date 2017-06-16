@@ -1,8 +1,8 @@
-import sys
 import sqlite3
+import sys
 
-from flask import Flask
 from contextlib import closing
+from flask import Flask
 
 DATABASE = './taco.db'
 DEBUG = True
@@ -134,6 +134,10 @@ def create_hug_api(table_data):
     target.write("    Session = sessionmaker(bind=_engine)\n")
     target.write("    session = Session()\n")
     target.write("    return session\n")
+    target.write("\n")
+    target.write("\n")
+    target.write("def cors_support(response, *args, **kwargs):\n")
+    target.write("    response.set_header('Access-Control-Allow-Origin', '*')\n")
 
     for table in table_data:
         table_info = table_data[table]
@@ -144,7 +148,7 @@ def create_hug_api(table_data):
         # Create get endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@hug.get()\n")
+        target.write("@hug.get(requires=cors_support)\n")
         target.write("def %s(id: hug.types.number):\n" % model_name.lower())
         target.write("    session = create_session()\n")
         target.write("    result = session.query(%s).get(id)\n" % model_name)
@@ -153,7 +157,7 @@ def create_hug_api(table_data):
         # Create post endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@hug.post()\n")
+        target.write("@hug.post(requires=cors_support)\n")
         target.write("def %s(body):\n" % model_name.lower())
         target.write("    try:\n")
         target.write("        session = create_session()\n")
