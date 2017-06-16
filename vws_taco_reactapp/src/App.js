@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './Login';
 import logo from './logo.svg';
 import './App.css';
 import 'whatwg-fetch';
@@ -16,6 +17,7 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <TacoRequest></TacoRequest>
+        <Login></Login>
       </div>
     );
   }
