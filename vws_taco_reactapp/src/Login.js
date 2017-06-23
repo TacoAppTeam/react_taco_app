@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router'
 
 export default class Login extends Component {
   render() {
@@ -9,7 +10,7 @@ export default class Login extends Component {
         <br></br>
         <input name="password" placeholder="Password" type="password"/>
         <br></br>
-        <button>Login</button>
+        <Link to='/taco'>Login</Link>
       </div>
     );
   }
