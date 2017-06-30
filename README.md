@@ -12,6 +12,9 @@ Here are the basic steps to get everything installed (using VirtualBox).
 
 > _Download [CentOS7] (http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso)_
 
+On Windows 10, follow the instructions here (https://blogs.technet.microsoft.com/gmarchetti/2008/12/07/turning-hyper-v-on-and-off/) to turn hyper-v off,
+as VirtualBox errors out otherwise.
+
 I'm not going to walk you through the VirtualBox install because it's pretty simple and straight forward. I will however, go through the steps of installing CentOS in VirtualBox.
 
 #### Create the VM
