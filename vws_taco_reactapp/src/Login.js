@@ -4,7 +4,6 @@ export default class Login extends Component {
   render() {
     return (
       <div className="Login form-control">
-        <h1>Taco Title</h1>
         <form onSubmit={this.props.handleSubmit}>
             <input name="username" placeholder="Username" type="text"/>
             <br></br>

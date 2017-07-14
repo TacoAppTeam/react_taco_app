@@ -19,8 +19,10 @@ class App extends Component {
   render() {
     if(!this.state || !this.state.loginToken) {
       return (
-        <Title></Title>
-        <Login handleSubmit={this.state.handleSubmit}/>
+        <div>
+          <Title title="Taco Title"></Title>
+          <Login handleSubmit={this.state.handleSubmit}/>
+        </div>
         );
     } else {
       return (
