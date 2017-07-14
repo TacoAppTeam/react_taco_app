@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'whatwg-fetch';
 import Request from 'react-http-request';
+import Events from './Events';
 import Header from './Header';
 
 class App extends Component {
@@ -13,11 +14,8 @@ class App extends Component {
         <div className="App-header">
           <Header title="Taco Title"></Header>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Events></Events>
         <TacoRequest></TacoRequest>
-        <Login></Login>
       </div>
     );
   }
