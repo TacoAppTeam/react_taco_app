@@ -4,14 +4,14 @@ import logo from './logo.svg';
 import './App.css';
 import 'whatwg-fetch';
 import Request from 'react-http-request';
-import Title from './Title';
+import Header from './Header';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <Title></Title>
+          <Header title="Taco Title"></Header>
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
