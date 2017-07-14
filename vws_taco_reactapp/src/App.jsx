@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router'
 import Home from './Home';
 import Login from './Login';
+import Title from './Title';
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
   render() {
     if(!this.state || !this.state.loginToken) {
       return (
+        <Title></Title>
         <Login handleSubmit={this.state.handleSubmit}/>
         );
     } else {

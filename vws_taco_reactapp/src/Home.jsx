@@ -4,14 +4,14 @@ import logo from './logo.svg';
 import './App.css';
 import 'whatwg-fetch';
 import Request from 'react-http-request';
+import Title from './Title';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React, {this.props.loginToken}</h2>
+          <Title></Title>
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
