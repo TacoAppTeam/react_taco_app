@@ -1,19 +1,5 @@
 #!/bin/bash
 
-#set environ
-sudo bash -c "cat << EOF > /etc/sysconfig/tng_environ
-environ_type=local
-EOF"
-
-#append to end of hosts file: (for ref; $==last line, a==append)
-sudo sed -i "$ a 10.59.4.69 repo.vws.local" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 dbread.nnu.com dbwrite.nnu.com" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 trackam.nnu.com auth.trackosng.dev.vws.co" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 api.admin.trackos.com msg.admin.trackos.com" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 redis.trackosng.dev.vws.co msg.trackosng.dev.vws.co" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 redis.nnu.com trackbatch.nnu.com trackrabbit.nnu.com" /etc/hosts
-sudo sed -i "$ a 127.0.0.1 batch.trackosng.dev.vws.co" /etc/hosts
-
 ############
 ##Disable SELinux
 ############
@@ -96,18 +82,6 @@ EOF"
 ##Miscellaneous
 #############
 git config --global push.default simple
-
-# Samba setup
-sudo yum install samba -y
-(echo vagrant; echo vagrant) | sudo smbpasswd -a -s vagrant
-echo -e '\n[/]' | sudo tee --append /etc/samba/smb.conf
-echo -e 'path = /home/vagrant/' | sudo tee --append /etc/samba/smb.conf
-echo -e 'valid users = vagrant' | sudo tee --append /etc/samba/smb.conf
-echo -e 'read only = no' | sudo tee --append /etc/samba/smb.conf
-sudo systemctl restart smb
-sudo systemctl restart nmb
-sudo chkconfig smb on
-sudo chkconfig nmb on
 
 # Vim editor-config
 cd ~

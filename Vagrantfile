@@ -8,8 +8,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "tng-basebox"
-  config.vm.box_url = "https://artifactory.viasat.com/artifactory/api/vagrant/vagrant-local/tng-basebox"
+  config.vm.box = "bento/centos-7.3"
 
   config.ssh.username = "vagrant"
   config.ssh.password = "vagrant"
@@ -26,19 +25,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
   end
 
-  config.vm.network "forwarded_port", guest: 3306, host: 3306 #mariadb!
-  config.vm.network "forwarded_port", guest: 5000, host: 5000 #flask?
-  config.vm.network "forwarded_port", guest: 5001, host: 5001 #... forgot
-  config.vm.network "forwarded_port", guest: 5002, host: 5002 #client API
-  config.vm.network "forwarded_port", guest: 5672, host: 5672 #rabbit amqp
-  config.vm.network "forwarded_port", guest: 6379, host: 6379 #redis
-  config.vm.network "forwarded_port", guest: 8000, host: 8000 #web app
-  config.vm.network "forwarded_port", guest: 8008, host: 8008 #alternative web app
-  config.vm.network "forwarded_port", guest: 8080, host: 8080 #dispatcher
-  config.vm.network "forwarded_port", guest: 8888, host: 8888 #track auth
-  config.vm.network "forwarded_port", guest: 15672, host: 15672 #rabbit web mgmt tool
-  config.vm.network "forwarded_port", guest: 15674, host: 15674 #rabbit websocket
-  config.vm.network "forwarded_port", guest: 61613, host: 61613 #rabbit stomp (raw)
+  config.vm.network "forwarded_port", guest: 3000, host: 3000 #react app
+  config.vm.network "forwarded_port", guest: 8000, host: 8000 #react app
 
   config.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
   config.vm.synced_folder ".", "/vagrant"
