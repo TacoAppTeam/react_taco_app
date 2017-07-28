@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Router, Route, Link, IndexRoute, browserHistory } from 'react-router'
+import React, { Component } from 'react';
+import { Router, Route, Link, IndexRoute, browserHistory, Redirect } from 'react-router';
 import Home from './Home';
 import Login from './Login';
 import Title from './Title';
@@ -17,18 +17,20 @@ class App extends Component {
   }
 
   render() {
+    // TODO: Ask Josh about handling loginToken
     if(!this.state || !this.state.loginToken) {
-      return (
-        <div>
-          <Title title="Taco Title"></Title>
-          <Login handleSubmit={this.state.handleSubmit}/>
-        </div>
-        );
-    } else {
-      return (
-        <Home loginToken={this.state.loginToken} />
-      )
+      // Set path to /login
+      <Redirect to="/login"/>
     }
+
+    return (
+      <Router history={browserHistory}>
+        <Route path='/' component={Home} />
+        <Route path='/login' component={Login} />
+        <Route path='/taco' component={Taco} />
+        <Route path='*' component={NotFound} />
+      </Router>
+    )
   }
 }
 
