@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "react": "^15.6.1",
+    "react-datagrid": "^2.1.2",
     "react-dom": "^15.6.1",
     "react-http-request": "^1.0.3",
     "react-router": "^2.0.1",
+    "sorty": "^1.2.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
