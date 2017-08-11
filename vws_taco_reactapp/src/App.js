@@ -1,8 +1,6 @@
+import routes from './routes';
 import React, { Component } from 'react';
 import { Router, Route, Link, IndexRoute, browserHistory, Redirect } from 'react-router';
-import Home from './Home';
-import Login from './Login';
-import Title from './Title';
 
 class App extends Component {
   constructor(props) {
@@ -24,16 +22,10 @@ class App extends Component {
     }
 
     return (
-      <Router history={browserHistory}>
-        <Route path='/' component={Home} />
-        <Route path='/login' component={Login} />
-        <Route path='/taco' component={Taco} />
-        <Route path='*' component={NotFound} />
-      </Router>
+      <Router history={browserHistory} routes={routes}/>
     )
   }
 }
 
-const Taco = () => <h1>Welcome to the Taco App.</h1>
 const NotFound = () => (<h1>404.. This page is not found!</h1>)
 export default App

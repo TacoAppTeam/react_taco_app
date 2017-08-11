@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Login from './Login';
-import logo from './logo.svg';
 import './App.css';
 import 'whatwg-fetch';
 import Request from 'react-http-request';
@@ -10,10 +8,7 @@ import Header from './Header';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <Header title="Taco Title"></Header>
-        </div>
+      <div>
         <Events></Events>
         <TacoRequest></TacoRequest>
       </div>

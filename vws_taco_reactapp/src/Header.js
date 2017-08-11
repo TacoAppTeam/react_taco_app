@@ -1,14 +1,29 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import Title from './Title';
+import './App.css';
 
-export default class Header extends Component {
-  render() {
-    return (
-    	<div>
-	      <Title title={this.props.title}></Title>
-	      <div class="header">username</div>
-	      <div class="header">Logout</div>
-     	</div>
-    );
-  }
-}
+
+let loggedIn = false;
+
+const Header = ({ children }) => (
+  <div>
+    <div className="App App-header">
+      <Title title="Taco App"></Title>
+      <h2>username</h2>
+
+      {
+        loggedIn ? (<button onClick={() => { loggedIn=true }}>Logout</button>)
+        : (<button onClick={() => { loggedIn=false }}>Login</button>)
+      }
+    </div>
+
+    {children}
+
+  </div>
+);
+
+Header.propTypes = {
+  children: PropTypes.object.isRequired
+};
+
+export default Header;

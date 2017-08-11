@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import DataGrid from 'react-datagrid';
-import Header from './Header';
 import sorty from 'sorty';
 
 export default class Events extends Component {
@@ -21,6 +20,7 @@ export default class Events extends Component {
       return sorty(sortInfo, arr)
     }
 
+    // Not using this right now
     function onSortChange(info){
       sortInfo = info
       data = sort(data)
