@@ -38,13 +38,24 @@ def events():
     events = []
 
     session = create_session()
-    query_result = session.query(Event)\
+    query_result = session.query(Event, User, Location)\
+                          .join(User, Event.user_id == User.id)\
+                          .join(Location, Event.location_id == Location.id)\
                           .all()
 
     if not query_result:
         return []
 
     for result in query_result:
-        events.append(result.as_dict())
+        d = {}
+        event = result[0]
+        user = result[1]
+        location = result[2]
+
+        d['event'] = event.as_dict()
+        d['user'] = user.as_dict()
+        d['location'] = location.as_dict()
+
+        events.append(d)
 
     return events
