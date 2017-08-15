@@ -19,23 +19,24 @@ class App extends Component {
 class TacoRequest extends Component {
   render() {
     return (
-      <Request
-        url='http://192.168.56.101:8000/v1/location?id=1'
-        method='get'
-        accept='application/json'
-        verbose={true}
-        mode='no-cors'
-      >
-        {
-          ({error, result, loading}) => {
-            if (loading) {
-              return <div>loading...</div>;
-            } else {
-              return <div>{ JSON.stringify(result) }</div>;
-            }
-          }
-        }
-      </Request>
+      <div />
+      // <Request
+      //   url='http://localhost:8000/v1/location?id=1'
+      //   method='get'
+      //   accept='application/json'
+      //   verbose={true}
+      //   mode='no-cors'
+      // >
+      //   {
+      //     ({error, result, loading}) => {
+      //       if (loading) {
+      //         return <div>loading...</div>;
+      //       } else {
+      //         return <div>{ JSON.stringify(result) }</div>;
+      //       }
+      //     }
+      //   }
+      // </Request>
     );
   }
 }
