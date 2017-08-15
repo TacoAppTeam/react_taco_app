@@ -1,5 +1,4 @@
 import sqlite3
-import sys
 
 from contextlib import closing
 from flask import Flask
@@ -118,26 +117,14 @@ def create_hug_api(table_data):
     target = open("../vws_taco_api/vws_taco_api/hug/scripted_endpoints.py", "w")
 
     target.write("### IMPORTANT!!! THIS FILE IS SCRIPTED!!! DO NOT EDIT!!! ###\n")
+    target.write("import db\n")
     target.write("import hug\n\n")
-    target.write("from sqlalchemy import create_engine\n")
-    target.write("from sqlalchemy.orm import sessionmaker\n")
+    target.write("from cors import cors_support\n")
     target.write("from vws_taco_api.vws_taco_api.models import *\n")
     target.write("\n")
     target.write("\n")
     target.write("\"\"\"Taco API Module.\"\"\"\n")
     target.write("\"\"\"To run, execute `hug -f taco_api.py`\"\"\"\n")
-    target.write("\n")
-    target.write("_engine = create_engine('sqlite:///vws_taco_database/taco.db')\n")
-    target.write("\n")
-    target.write("\n")
-    target.write("def create_session():\n")
-    target.write("    Session = sessionmaker(bind=_engine)\n")
-    target.write("    session = Session()\n")
-    target.write("    return session\n")
-    target.write("\n")
-    target.write("\n")
-    target.write("def cors_support(response, *args, **kwargs):\n")
-    target.write("    response.set_header('Access-Control-Allow-Origin', '*')\n")
 
     for table in table_data:
         table_info = table_data[table]
@@ -150,7 +137,7 @@ def create_hug_api(table_data):
         target.write("\n")
         target.write("@hug.get(requires=cors_support)\n")
         target.write("def %s(id: hug.types.number):\n" % model_name.lower())
-        target.write("    session = create_session()\n")
+        target.write("    session = db.create_session()\n")
         target.write("    result = session.query(%s).get(id)\n" % model_name)
         target.write("    return result.as_dict() if result else {}\n")
 
@@ -160,7 +147,7 @@ def create_hug_api(table_data):
         target.write("@hug.post(requires=cors_support)\n")
         target.write("def %s(body):\n" % model_name.lower())
         target.write("    try:\n")
-        target.write("        session = create_session()\n")
+        target.write("        session = db.create_session()\n")
         target.write("        param_id = body.get('id', None)\n")
         target.write("        existing_%s = session.query(%s).get(param_id) if param_id else %s()\n" % (model_name.lower(), model_name, model_name))
         target.write("\n")
