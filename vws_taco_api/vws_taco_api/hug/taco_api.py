@@ -43,3 +43,24 @@ def events():
         events.append(d)
 
     return events
+
+
+@hug.get(requires=cors_support)
+def ingredients():
+    ingredients = []
+
+    session = db.create_session()
+    query_result = session.query(Ingredient).all()
+
+    if not query_result:
+        return []
+
+    for result in query_result:
+        d = {}
+        ingredient = result
+
+        d['ingredient'] = ingredient.as_dict()
+
+        ingredients.append(d)
+
+    return ingredients

@@ -1,34 +1,26 @@
 ### IMPORTANT!!! THIS FILE IS SCRIPTED!!! DO NOT EDIT!!! ###
+import db
 import hug
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
 
 
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
 
-_engine = create_engine('sqlite:///vws_taco_database/taco.db')
 
-
-def create_session():
-    Session = sessionmaker(bind=_engine)
-    session = Session()
-    return session
-
-
-@hug.get()
+@hug.get(requires=cors_support)
 def event(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Event).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def event(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_event = session.query(Event).get(param_id) if param_id else Event()
 
@@ -51,17 +43,17 @@ def event(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def ingredient(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def ingredient(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_ingredient = session.query(Ingredient).get(param_id) if param_id else Ingredient()
 
@@ -84,17 +76,17 @@ def ingredient(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def location(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Location).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def location(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_location = session.query(Location).get(param_id) if param_id else Location()
 
@@ -121,17 +113,17 @@ def location(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def order(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Order).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def order(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_order = session.query(Order).get(param_id) if param_id else Order()
 
@@ -155,17 +147,17 @@ def order(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def taco_ingredient(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Taco_Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def taco_ingredient(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_taco_ingredient = session.query(Taco_Ingredient).get(param_id) if param_id else Taco_Ingredient()
 
@@ -187,17 +179,17 @@ def taco_ingredient(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def taco_order(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Taco_Order).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def taco_order(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_taco_order = session.query(Taco_Order).get(param_id) if param_id else Taco_Order()
 
@@ -219,17 +211,17 @@ def taco_order(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def taco_shell(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(Taco_Shell).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def taco_shell(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_taco_shell = session.query(Taco_Shell).get(param_id) if param_id else Taco_Shell()
 
@@ -250,17 +242,17 @@ def taco_shell(body):
 
 
 
-@hug.get()
+@hug.get(requires=cors_support)
 def user(id: hug.types.number):
-    session = create_session()
+    session = db.create_session()
     result = session.query(User).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def user(body):
     try:
-        session = create_session()
+        session = db.create_session()
         param_id = body.get('id', None)
         existing_user = session.query(User).get(param_id) if param_id else User()
 
