@@ -1,6 +1,7 @@
 import Header from './Header';
 import Home from './Home';
 import Login from './Login';
+import OrderBuilder from './OrderBuilder';
 import PageNotFound from './PageNotFound';
 
 
@@ -16,6 +17,11 @@ const routes = {
     {
       path: '/login',
       component: Login
+    },
+
+    {
+      path: '/order-builder',
+      component: OrderBuilder
     },
 
     {
