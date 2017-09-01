@@ -29,6 +29,8 @@ export default class Events extends Component {
               let data = [];
               for(var eventData of body) {
                 var event = {};
+                event.date = eventData.event.event_date;
+                event.locationName = eventData.location.name;
                 event.firstName = eventData.user.first_name;
                 event.lastName = eventData.user.last_name;
                 event.id = eventData.event.id;
@@ -36,6 +38,8 @@ export default class Events extends Component {
               }
 
               const columns = [
+                { name: 'date'},
+                { name: 'locationName'},
                 { name: 'firstName'},
                 { name: 'lastName'}
               ];
