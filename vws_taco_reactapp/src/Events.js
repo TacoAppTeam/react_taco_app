@@ -22,7 +22,9 @@ export default class Events extends Component {
             if (loading) {
               return <div>loading...</div>;
             } else {
-
+              if (error) {
+                return <div> ERROR!! See console </div>
+              }
               let body = result && result.body;
 
               let data = [];

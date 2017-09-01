@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Title from './Title';
 import './App.css';
 
@@ -26,15 +27,23 @@ export default class Header extends Component {
 
   render() {
     return (
-      <div>
-        <div className="App App-header">
-          <Title title="Taco App"></Title>
-          <h2>username</h2>
-          {
+      <div className="container">
+        <Title title="Taco App"></Title>
+        <div className="App navbar navbar-default">
+          <div className="container-fluid">
+            <ul className="nav navbar-nav">
+              <li><a href="#">username</a></li>
+              <li><Link to={'/'}>Events</Link></li>
+              <li><Link to={'/order-builder'}>Order Builder</Link></li>
+            </ul>
+          </div>
+        </div>
+
+           {
             this.state.loggedIn ? (<button onClick={this.logout}>Logout</button>)
             : (<button onClick={this.login}>Login</button>)
-          }
-        </div>
+            }
+
 
         {this.props.children}
       </div>
