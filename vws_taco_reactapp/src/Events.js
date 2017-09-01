@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
 import Request from 'react-http-request';
+import { config } from './config.js';
 
 class TacoRequest extends Component {
 }
@@ -11,7 +12,7 @@ export default class Events extends Component {
 
     return (
       <Request
-        url='http://localhost:8000/v1/events'
+        url={config.api_hostname + ':' + config.api_port + '/v1/events'}
         method='get'
         accept='application/json'
         verbose={true}
