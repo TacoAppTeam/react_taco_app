@@ -8,7 +8,7 @@ export default class IngredientsList extends Component {
 
   addTaco (event) {
     event.preventDefault();
-    console.log('TACO')
+    console.log(event)
     let taco = {}
     this.props.handleAddTaco(taco);
   }
@@ -21,8 +21,8 @@ export default class IngredientsList extends Component {
           <ul>
             {this.props.ingredients.map(ingredient =>
               <li>
-                <input type="checkbox" name="{ingredient}" />
-                {ingredient}
+                <input type="checkbox" name={ingredient.name} id={ingredient.id} />
+                {ingredient.name} - {ingredient.description} - ${ingredient.price}
               </li>
             )}
           </ul>
