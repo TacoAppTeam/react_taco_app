@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^15.6.1",
+    "react-bootstrap": "^0.31.3",
     "react-datagrid": "^2.1.2",
     "react-dom": "^15.6.1",
     "react-http-request": "^1.0.3",
