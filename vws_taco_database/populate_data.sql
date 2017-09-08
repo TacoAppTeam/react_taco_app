@@ -74,4 +74,4 @@ values ('2', '1', '2', '2');
 
 -- Populate Events
 insert into Events (user_id, location_id, event_date)
-values ('3', '1', '06/09/2017');
+values ('3', '1', '06/09/2017'), ('2', '1', '09/01/2017');
