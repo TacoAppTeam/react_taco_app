@@ -17,6 +17,15 @@ export default class TacoModal extends Component {
           <Modal.Header closeButton>
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
+          <Modal.Body>
+            {this.props.body}
+          </Modal.Body>
+          <Modal.Footer>
+            {this.props.showSubmit ? (
+              <Button bsStyle="primary">Submit</Button>
+            ) : (<div></div>)
+            }
+          </Modal.Footer>
         </Modal>
       </div>
     )

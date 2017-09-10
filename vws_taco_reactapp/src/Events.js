@@ -3,7 +3,7 @@ import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
 import Request from 'react-http-request';
 import { config } from './config.js';
-import TacoModal from './Modal.js'
+import TacoModal from './TacoModal.js';
 
 class TacoRequest extends Component {
 }
@@ -79,7 +79,9 @@ export default class Events extends Component {
                   <h4>Upcoming Events</h4>
                   <DataGrid idProperty="id" dataSource={data} columns={columns}></DataGrid>
                   <button onClick={this.createEvent}>Create Event</button>
-                  <TacoModal title="Create Event" showModal={this.state.showModal} close={this.closeModal}></TacoModal>
+                  <TacoModal title="Create Event" body={<div>Test passing a Component into a Component!</div>}
+                             showModal={this.state.showModal} close={this.closeModal} showSubmit={true}>
+                  </TacoModal>
                 </div>
               );
 
