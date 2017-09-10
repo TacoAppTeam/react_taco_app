@@ -18,7 +18,11 @@ export default class Events extends Component {
 
   createEvent = () => {
     this.setState({ showModal: true });
-  }
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
 
   render() {
 
@@ -35,8 +39,6 @@ export default class Events extends Component {
             if (loading) {
               return <div>loading...</div>;
             } else {
-              let showModal = false;
-
               let body = result && result.body;
 
               let data = [];
@@ -77,7 +79,7 @@ export default class Events extends Component {
                   <h4>Upcoming Events</h4>
                   <DataGrid idProperty="id" dataSource={data} columns={columns}></DataGrid>
                   <button onClick={this.createEvent}>Create Event</button>
-                  <TacoModal title="Create Event" showModal={this.state.showModal}></TacoModal>
+                  <TacoModal title="Create Event" showModal={this.state.showModal} close={this.closeModal}></TacoModal>
                 </div>
               );
 

@@ -4,18 +4,11 @@ import { Button, Modal } from 'react-bootstrap';
 export default class TacoModal extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   showModal: false
-    // };
   };
 
-  // close = () => {
-  //   this.setState({ showModal: false });
-  // };
-
-  // open = () => {
-  //   this.setState({ showModal: true });
-  // };
+  close = () => {
+    this.props.close();
+  };
 
   render() {
     return(
