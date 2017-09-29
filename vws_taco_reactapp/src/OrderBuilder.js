@@ -48,8 +48,11 @@ export default class OrderBuilder extends Component {
                 data.push(ingredient);
               }
 
+              // only soft tacos for now
+              let shell = {id: 2, shell: 'soft'}
+
               return (
-                <IngredientsList ingredients={data} handleAddTaco={ this.handleAddTaco }></IngredientsList>
+                <IngredientsList shell={shell} ingredients={data} handleAddTaco={ this.handleAddTaco }></IngredientsList>
               );
 
             }

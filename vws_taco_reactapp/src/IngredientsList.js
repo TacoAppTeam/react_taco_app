@@ -18,7 +18,7 @@ class IngredientsList extends Component {
     const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
     const checkedCheckboxesIDs = checkedCheckboxes.map(input => input.id);
 
-    let new_taco = {ids: checkedCheckboxesIDs, desc: checkedCheckboxesValues.join(', ')}
+    let new_taco = {ids: checkedCheckboxesIDs, desc: checkedCheckboxesValues.join(', '), shell: this.props.shell.id}
     if (new_taco.desc) {
       this.props.handleAddTaco(new_taco);
     }
