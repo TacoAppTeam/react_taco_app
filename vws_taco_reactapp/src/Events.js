@@ -3,11 +3,27 @@ import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
 import Request from 'react-http-request';
 import { config } from './config.js';
+import TacoModal from './TacoModal.js';
 
 class TacoRequest extends Component {
 }
 
 export default class Events extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: false
+    };
+  };
+
+  createEvent = () => {
+    this.setState({ showModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
+
   render() {
 
     return (
@@ -23,7 +39,6 @@ export default class Events extends Component {
             if (loading) {
               return <div>loading...</div>;
             } else {
-
               let body = result && result.body;
 
               let data = [];
@@ -63,7 +78,10 @@ export default class Events extends Component {
                 <div className="events">
                   <h4>Upcoming Events</h4>
                   <DataGrid idProperty="id" dataSource={data} columns={columns}></DataGrid>
-                  <button>Create Event</button>
+                  <button onClick={this.createEvent}>Create Event</button>
+                  <TacoModal title="Create Event" body={<div>Test passing a Component into a Component!</div>}
+                             showModal={this.state.showModal} close={this.closeModal} showSubmit={true}>
+                  </TacoModal>
                 </div>
               );
 
