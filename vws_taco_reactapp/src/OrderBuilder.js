@@ -7,15 +7,17 @@ export default class OrderBuilder extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      orderList: [{orderId: 1, desc: 'Egg, Sausage', count: 3},
-      	{orderId: 2, desc: 'Egg, Potato', count: 2}
-      ]
+      orderList: []
     };
+    this.handleAddTaco = this.handleAddTaco.bind(this);
   }
 
   handleAddTaco (taco) {
-    console.log('taco!');
-    // TODO set state of orderlist with new taco
+    // set state with appended new taco
+    let newState = this.state.orderList.slice()
+    console.log(taco)
+    newState.push({orderId:(newState.length + 1), desc: taco.desc, ingredientIDs: taco.ids, count: 1})
+    this.setState({orderList:newState})
   }
 
   render() {
