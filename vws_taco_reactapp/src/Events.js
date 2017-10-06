@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
 import Request from 'react-http-request';
@@ -81,10 +82,14 @@ export default class Events extends Component {
 
               data = sort(data)
 
+              function handleRowClick(evt) {
+                browserHistory.push('/order-builder?event=' + this.data.id);
+              }
+
               return (
                 <div className="events">
                   <h4>Upcoming Events</h4>
-                  <DataGrid idProperty="id" dataSource={data} columns={columns}></DataGrid>
+                  <DataGrid idProperty="id" dataSource={data} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
                   <button onClick={this.createEvent}>Create Event</button>
                   <TacoModal title="Create Event" body={<EventForm submit={this.submit}/>}
                              showModal={this.state.showModal} close={this.closeModal}>

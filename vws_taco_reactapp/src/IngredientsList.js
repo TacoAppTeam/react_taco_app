@@ -1,31 +1,41 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class IngredientsList extends Component {
+class IngredientsList extends Component {
   constructor (props) {
     super(props);
     this.addTaco = this.addTaco.bind(this);
   }
 
-  addTaco (event) {
+  addTaco = (event) => {
     event.preventDefault();
-    console.log(event)
-    let taco = {}
-    this.props.handleAddTaco(taco);
+
+    // get chosen ingredients from checkboxes
+    const {taco} = this.form
+    const checkboxArray = Array.prototype.slice.call(taco);
+    const checkedCheckboxes = checkboxArray.filter(input => input.checked);
+
+    // use .map() to extract the value from each checked checkbox
+    const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
+    const checkedCheckboxesIDs = checkedCheckboxes.map(input => input.id);
+
+    let new_taco = {ids: checkedCheckboxesIDs, desc: checkedCheckboxesValues.join(', '), shell: this.props.shell.id}
+    if (new_taco.desc) {
+      this.props.handleAddTaco(new_taco);
+    }
   }
 
-  // TODO add props
   render() {
     return (
       <div>
-        <form onSubmit={this.addTaco}>
-          <ul>
+        <form
+          onSubmit={this.addTaco}
+          ref={form => this.form = form}>
             {this.props.ingredients.map(ingredient =>
-              <li>
-                <input type="checkbox" name={ingredient.name} id={ingredient.id} />
-                {ingredient.name} - {ingredient.description} - ${ingredient.price}
-              </li>
+              <label>
+                <input type="checkbox" name="taco" id={ingredient.id} value={ingredient.name}/>
+                {ingredient.name} - {ingredient.description} - ${ingredient.price} ({ingredient.id})
+              </label>
             )}
-          </ul>
           <input type="submit" value="+ Add Taco"></input>
         </form>
       </div>
@@ -37,3 +47,5 @@ IngredientsList.propTypes = {
   handleAddTaco: PropTypes.func.isRequired,
   ingredients: PropTypes.array.isRequired
 }
+
+export default IngredientsList;
