@@ -1,6 +1,7 @@
 import db
 import hug
 import scripted_endpoints
+import json
 
 from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
@@ -12,7 +13,6 @@ from vws_taco_api.vws_taco_api.models import *
 @hug.extend_api()
 def with_other_apis():
     return [scripted_endpoints]
-
 
 # TODO Add more endpoints, with business logic.
 # These can reuse the existing base api, and/or use the models
@@ -64,3 +64,36 @@ def ingredients():
         ingredients.append(d)
 
     return ingredients
+
+
+@hug.get(requires=cors_support,output=hug.output_format.json)
+def event_orders(event_id: hug.types.number, user_id=None):
+    orders = []
+
+    session = db.create_session()
+    query_result = session.query(Order, Taco_Order, Taco_Ingredient, Ingredient)\
+                          .join(Taco_Order, Order.id == Taco_Order.order_id)\
+                          .join(Taco_Ingredient, Taco_Order.id == Taco_Ingredient.order_id)\
+                          .join(Ingredient, Taco_Ingredient.ingredient_id == Ingredient.id)\
+                          .filter(Order.event_id == event_id)
+    if user_id:
+        query_result.filter(Order.user_id == user_id)
+
+    if not query_result:
+        return []
+
+    for result in query_result:
+        order = result[0].as_dict()
+        taco_order = result[1].as_dict()
+        taco_ing = result[2].as_dict()
+        ing = result[3].as_dict()
+        orders.append({
+            "event_id": order.get("event_id"),
+            "order_id": order.get("id"),
+            "taco_order_id": taco_order.get("id"),
+            "user_id": order.get("user_id"),
+            "ingredient": ing.get("name"),
+            "ing_price": ing.get("price")
+        })
+
+    return orders
