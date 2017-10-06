@@ -97,3 +97,30 @@ def event_orders(event_id: hug.types.number, user_id=None):
         })
 
     return orders
+
+
+@hug.post(requires=cors_support)
+def submit_order(body):
+    user_id = body.get('user_id')
+    event = body.get('event')
+    orderList = body.get('orderList')
+
+    try:
+        session = db.create_session()
+
+        new_order = Order()
+        new_order.user_id = user_id
+        new_order.event_id = even.get('id')
+
+        session.commit()    # To prevent lock on the table
+        session.add(new_order)  # Add the new object to the session
+        session.flush()     # Commits and flushes
+        return 'Updated! %s ' % new_order.id
+        # for taco in orderList:
+        #     new_taco = Taco_Order()
+        #     new_taco.order_id = new_order.id
+        #     new_taco.shell_id = taco.shell_id
+    except Exception as Error:
+        print(Error)
+        print('FAILURE ON TACO ORDER SUBMISSION!!!!')
+        raise Error
