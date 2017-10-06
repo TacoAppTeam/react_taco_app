@@ -11,11 +11,15 @@ export default class OrderBuilder extends Component {
       ingredients: [],
       orderList: []
     };
+    this.handleAddTaco = this.handleAddTaco.bind(this);
   }
 
   handleAddTaco (taco) {
-    console.log('taco!');
-    // TODO set state of orderlist with new taco
+    // set state with appended new taco
+    let newState = this.state.orderList.slice()
+    console.log(taco)
+    newState.push({orderId:(newState.length + 1), desc: taco.desc, ingredientIDs: taco.ids, count: 1})
+    this.setState({orderList:newState})
   }
 
   componentDidMount () {
@@ -30,9 +34,10 @@ export default class OrderBuilder extends Component {
   }
 
   render() {
+    let shell = {id: 2, shell: 'soft'}
     return (
       <div>
-        <IngredientsList ingredients={this.state.ingredients} handleAddTaco={ this.handleAddTaco }></IngredientsList>
+        <IngredientsList shell={shell} ingredients={this.state.ingredients} handleAddTaco={ this.handleAddTaco }></IngredientsList>
         <OrderContents orderList={this.state.orderList}></OrderContents>
       </div>
     );
