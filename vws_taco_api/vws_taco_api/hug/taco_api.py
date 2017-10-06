@@ -77,7 +77,7 @@ def event_orders(event_id: hug.types.number, user_id=None):
                           .join(Ingredient, Taco_Ingredient.ingredient_id == Ingredient.id)\
                           .filter(Order.event_id == event_id)
     if user_id:
-        query_result = query_result.filter(Order.user_id == user_id)
+        query_result.filter(Order.user_id == user_id)
 
     if not query_result:
         return []
