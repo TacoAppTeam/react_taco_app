@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Title from './Title';
 import './App.css';
@@ -32,7 +32,7 @@ export default class Header extends Component {
         <div className="App navbar navbar-default">
           <div className="container-fluid">
             <ul className="nav navbar-nav">
-              <li><a href="#">username</a></li>
+              <li><a>username</a></li>
               <li><Link to={'/'}>Events</Link></li>
               <li><Link to={'/order-builder'}>Order Builder</Link></li>
             </ul>

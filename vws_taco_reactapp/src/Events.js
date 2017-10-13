@@ -7,9 +7,6 @@ import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 
-class TacoRequest extends Component {
-}
-
 export default class Events extends Component {
   constructor(props) {
     super(props);
@@ -71,13 +68,6 @@ export default class Events extends Component {
 
               function sort(arr){
                 return arr ? sorty(sortInfo, arr) : arr;
-              }
-
-              // Not using this right now
-              function onSortChange(info){
-                sortInfo = info
-                data = sort(data)
-                //now refresh the grid
               }
 
               data = sort(data)

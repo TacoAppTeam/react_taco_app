@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 
 class IngredientsList extends Component {
   constructor (props) {
@@ -41,11 +41,6 @@ class IngredientsList extends Component {
       </div>
     );
   }
-}
-
-IngredientsList.propTypes = {
-  handleAddTaco: PropTypes.func.isRequired,
-  ingredients: PropTypes.array.isRequired
 }
 
 export default IngredientsList;

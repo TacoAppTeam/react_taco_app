@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
 export default class TacoModal extends Component {
-  constructor(props) {
-    super(props);
-  };
-
   close = () => {
     this.props.close();
   };

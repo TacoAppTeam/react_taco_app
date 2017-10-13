@@ -1,8 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
-import Request from 'react-http-request';
 
 export default class OrderBuilder extends Component {
   constructor (props) {
