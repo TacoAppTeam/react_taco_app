@@ -8,9 +8,6 @@ import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 
-class TacoRequest extends Component {
-}
-
 export default class Events extends Component {
   constructor(props) {
     super(props);
