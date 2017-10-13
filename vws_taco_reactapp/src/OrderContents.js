@@ -5,13 +5,12 @@ export default class OrderContents extends Component {
     super(props);
   }
 
-submitOrder = (event) => {
-    event.preventDefault();
+  submitOrder = (event) => {
+      event.preventDefault();
 
-    // send off to parent
-    this.props.handleSubmitOrder()
-}
-
+      // send off to parent
+      this.props.handleSubmitOrder()
+  }
   render() {
     // this component is display only
     return (

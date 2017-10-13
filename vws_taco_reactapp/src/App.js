@@ -1,6 +1,6 @@
 import routes from './routes';
 import React, { Component } from 'react';
-import { Router, Route, Link, IndexRoute, browserHistory, Redirect } from 'react-router';
+import { Router, browserHistory, Redirect } from 'react-router';
 
 class App extends Component {
   constructor(props) {
@@ -16,10 +16,10 @@ class App extends Component {
 
   render() {
     // TODO: Ask Josh about handling loginToken
-    if(!this.state || !this.state.loginToken) {
-      // Set path to /login
-      <Redirect to="/login"/>
-    }
+    // if(!this.state || !this.state.loginToken) {
+    //   // Set path to /login
+    //   return (<Redirect to="/login"/>)
+    // }
 
     return (
       <Router history={browserHistory} routes={routes}/>
@@ -27,5 +27,4 @@ class App extends Component {
   }
 }
 
-const NotFound = () => (<h1>404.. This page is not found!</h1>)
 export default App
