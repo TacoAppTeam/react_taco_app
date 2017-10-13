@@ -29,12 +29,12 @@ export default class OrderBuilder extends Component {
     // TODO: this api call is failing because:
     // No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
-    // const apiUrl = 'http://' + window.location.hostname + ':8000/v1'
-    // axios.post(apiUrl + '/submit_order', {
-    //   user_id: '1',
-    //   event: this.state.event,
-    //   orderList: this.state.orderList
-    // }).then(res => console.log(res))
+    const apiUrl = 'http://' + window.location.hostname + ':8000/v1'
+    axios.post(apiUrl + '/submit_order', {
+      user_id: '1',
+      event: this.state.event,
+      orderList: this.state.orderList
+    }, {'Access-Control-Allow-Origin': '*'}).then(res => console.log(res))
 
     // logic for api:
     //

@@ -99,6 +99,11 @@ def event_orders(event_id: hug.types.number, user_id=None):
     return orders
 
 
+@hug.options(requires=cors_support)
+def submit_order():
+    return 200
+
+
 @hug.post(requires=cors_support)
 def submit_order(body):
     user_id = body.get('user_id')
@@ -110,7 +115,7 @@ def submit_order(body):
 
         new_order = Order()
         new_order.user_id = user_id
-        new_order.event_id = even.get('id')
+        new_order.event_id = event.get('id')
 
         session.commit()    # To prevent lock on the table
         session.add(new_order)  # Add the new object to the session
