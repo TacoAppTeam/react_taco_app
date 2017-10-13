@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
+import ReactDOM from 'react-dom'
 //import { DatePicker } from 'react-bootstrap-date-picker';
 
 
@@ -23,7 +24,7 @@ export default class EventForm extends Component {
 
   submit = () => {
     var formData = {};
-    formData.user = this.inputUser.value;
+    formData.user = ReactDOM.findDOMNode(this.userSelect).value;
     formData.location = this.inputLocation.value;
     this.props.submit(formData);
   }
@@ -41,7 +42,7 @@ export default class EventForm extends Component {
         <form onSubmit={this.submit}>
           <FormGroup controlId="userSelect">
             <ControlLabel>User</ControlLabel>
-            <FormControl componentClass="select" placeholder="select">
+            <FormControl componentClass="select" placeholder="select" ref={select => { this.userSelect = select }}>
               {userSelects}
             </FormControl>
           </FormGroup>
