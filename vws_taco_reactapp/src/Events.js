@@ -13,7 +13,8 @@ export default class Events extends Component {
     super(props);
     this.state = {
       showModal: false,
-      eventData: []
+      eventData: [],
+      users: []
     };
   };
 
@@ -32,10 +33,9 @@ export default class Events extends Component {
   };
 
   componentDidMount = () => {
-    const url = config.api_hostname + ':' + config.api_port + '/v1/events';
-    axios.get(url).then(res => {
-      console.log(res);
-
+    // Get Event Data
+    const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
+    axios.get(event_url).then(res => {
       for (var data of res.data) {
         var event = {};
         event.date = data.event.event_date;
@@ -44,6 +44,18 @@ export default class Events extends Component {
         event.lastName = data.user.last_name;
         event.id = data.event.id;
         this.state.eventData.push(event);
+      }
+
+      this.setState({'eventData': this.state.eventData});
+
+    });
+
+    // Get User Data
+    const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
+    axios.get(user_url).then(res => {
+      for (var user of res.data) {
+        var user = {};
+        this.state.users.push(user);
       }
 
       this.setState({'eventData': this.state.eventData});
