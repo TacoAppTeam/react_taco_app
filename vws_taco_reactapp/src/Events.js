@@ -3,7 +3,6 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
-import Request from 'react-http-request';
 import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
@@ -36,8 +35,8 @@ export default class Events extends Component {
     // Get Event Data
     const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
     axios.get(event_url).then(res => {
-      for (var data of res.data) {
-        var event = {};
+      for (let data of res.data) {
+        let event = {};
         event.date = data.event.event_date;
         event.locationName = data.location.name;
         event.firstName = data.user.first_name;
@@ -53,7 +52,7 @@ export default class Events extends Component {
     // Get User Data
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
     axios.get(user_url).then(res => {
-      for (var user of res.data) {
+      for (let user of res.data) {
         this.state.users.push(user.email);
       }
 
@@ -92,7 +91,7 @@ export default class Events extends Component {
         <h4>Upcoming Events</h4>
         <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
         <button onClick={this.createEvent}>Create Event</button>
-        <TacoModal title="Create Event" body={<EventForm submit={this.submit}/>}
+        <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
                    showModal={this.state.showModal} close={this.closeModal}>
         </TacoModal>
       </div>

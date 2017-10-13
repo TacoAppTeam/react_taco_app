@@ -29,16 +29,24 @@ export default class EventForm extends Component {
   }
 
   render() {
+    var userSelects = [];
+
+    for (let i = 0; i < this.props.users.length; i++) {
+      let user = this.props.users[i];
+      userSelects.push((<option value={user}>{user}</option>));
+    }
+
     return (
       <div>
         <form onSubmit={this.submit}>
-          <FieldGroup
-            id="user"
-            type="text"
-            label="User"
-            placeholder="Enter text"
-            inputRef = {(input) => this.inputUser = input }
-          />
+          <FormGroup controlId="userSelect">
+            <ControlLabel>User</ControlLabel>
+            <FormControl componentClass="select" placeholder="select">
+              {userSelects}
+            </FormControl>
+          </FormGroup>
+
+
           <FieldGroup
             id="location"
             type="text"
