@@ -54,12 +54,11 @@ export default class Events extends Component {
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
     axios.get(user_url).then(res => {
       for (var user of res.data) {
-        var user = {};
-        this.state.users.push(user);
+        this.state.users.push(user.email);
       }
 
-      this.setState({'eventData': this.state.eventData});
-
+      this.setState({'users': this.state.users});
+      console.log(this.state.users);
     });
   };
 

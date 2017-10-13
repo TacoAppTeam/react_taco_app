@@ -5,11 +5,10 @@
 -- Create Users table
 DROP TABLE IF EXISTS Users;
 CREATE TABLE Users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    password TEXT NOT NULL,
-    email TEXT NOT NULL
+    password TEXT NOT NULL
 );
 
 -- Create Taco_Shell table
