@@ -5,6 +5,7 @@ import sorty from 'sorty';
 import Request from 'react-http-request';
 import { config } from './config.js';
 import TacoModal from './TacoModal.js';
+import EventForm from './EventForm.js';
 
 class TacoRequest extends Component {
 }
@@ -24,6 +25,12 @@ export default class Events extends Component {
   closeModal = () => {
     this.setState({ showModal: false });
   };
+
+  // TODO: Have submit save event
+  submit = (formData) => {
+    console.log(formData);
+    this.closeModal();
+  }
 
   render() {
 
@@ -84,8 +91,8 @@ export default class Events extends Component {
                   <h4>Upcoming Events</h4>
                   <DataGrid idProperty="id" dataSource={data} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
                   <button onClick={this.createEvent}>Create Event</button>
-                  <TacoModal title="Create Event" body={<div>Test passing a Component into a Component!</div>}
-                             showModal={this.state.showModal} close={this.closeModal} showSubmit={true}>
+                  <TacoModal title="Create Event" body={<EventForm submit={this.submit}/>}
+                             showModal={this.state.showModal} close={this.closeModal}>
                   </TacoModal>
                 </div>
               );

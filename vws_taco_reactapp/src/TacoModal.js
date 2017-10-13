@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 export default class TacoModal extends Component {
   constructor(props) {
@@ -20,12 +20,7 @@ export default class TacoModal extends Component {
           <Modal.Body>
             {this.props.body}
           </Modal.Body>
-          <Modal.Footer>
-            {this.props.showSubmit ? (
-              <Button bsStyle="primary">Submit</Button>
-            ) : (<div></div>)
-            }
-          </Modal.Footer>
+          <Modal.Footer/>
         </Modal>
       </div>
     )
