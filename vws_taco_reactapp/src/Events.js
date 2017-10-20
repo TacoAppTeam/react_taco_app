@@ -6,6 +6,7 @@ import sorty from 'sorty';
 import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
+import Loader from 'react-loader'
 
 export default class Events extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class Events extends Component {
     this.state = {
       showModal: false,
       eventData: [],
-      users: []
+      users: [],
+      loaded: false
     };
   };
 
@@ -34,7 +36,7 @@ export default class Events extends Component {
   componentDidMount = () => {
     // Get Event Data
     const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
-    axios.get(event_url).then(res => {
+    let events_promise = axios.get(event_url).then(res => {
       for (let data of res.data) {
         let event = {};
         event.date = data.event.event_date;
@@ -51,13 +53,16 @@ export default class Events extends Component {
 
     // Get User Data
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
-    axios.get(user_url).then(res => {
+    let users_promise = axios.get(user_url).then(res => {
       for (let user of res.data) {
         this.state.users.push(user.email);
       }
 
       this.setState({'users': this.state.users});
-      console.log(this.state.users);
+    });
+
+    Promise.all([events_promise, users_promise]).then(res => {
+      this.setState({'loaded': true});
     });
   };
 
@@ -89,11 +94,13 @@ export default class Events extends Component {
     return (
       <div className="events">
         <h4>Upcoming Events</h4>
-        <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
-        <button onClick={this.createEvent}>Create Event</button>
-        <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
-                   showModal={this.state.showModal} close={this.closeModal}>
-        </TacoModal>
+        <Loader loaded={this.state.loaded}>
+          <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
+          <button onClick={this.createEvent}>Create Event</button>
+          <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
+                     showModal={this.state.showModal} close={this.closeModal}>
+          </TacoModal>
+        </Loader>
       </div>
     );
   }
