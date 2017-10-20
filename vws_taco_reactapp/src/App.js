@@ -16,10 +16,10 @@ class App extends Component {
 
   render() {
     // TODO: Ask Josh about handling loginToken
-    // if(!this.state || !this.state.loginToken) {
-    //   // Set path to /login
-    //   return (<Redirect to="/login"/>)
-    // }
+    if(!this.state || !this.state.loginToken) {
+      // Set path to /login
+      // return (<Redirect to="/login"/>)
+    }
 
     return (
       <Router history={browserHistory} routes={routes}/>

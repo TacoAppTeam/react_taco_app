@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { browserHistory } from 'react-router';
 import DataGrid from 'react-datagrid';
 import sorty from 'sorty';
-import Request from 'react-http-request';
 import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
@@ -11,7 +11,9 @@ export default class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      eventData: [],
+      users: []
     };
   };
 
@@ -27,70 +29,72 @@ export default class Events extends Component {
   submit = (formData) => {
     console.log(formData);
     this.closeModal();
-  }
+  };
+
+  componentDidMount = () => {
+    // Get Event Data
+    const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
+    axios.get(event_url).then(res => {
+      for (let data of res.data) {
+        let event = {};
+        event.date = data.event.event_date;
+        event.locationName = data.location.name;
+        event.firstName = data.user.first_name;
+        event.lastName = data.user.last_name;
+        event.id = data.event.id;
+        this.state.eventData.push(event);
+      }
+
+      this.setState({'eventData': this.state.eventData});
+
+    });
+
+    // Get User Data
+    const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
+    axios.get(user_url).then(res => {
+      for (let user of res.data) {
+        this.state.users.push(user.email);
+      }
+
+      this.setState({'users': this.state.users});
+      console.log(this.state.users);
+    });
+  };
 
   render() {
+    const columns = [
+      { name: 'date'},
+      { name: 'locationName'},
+      { name: 'firstName'},
+      { name: 'lastName'}
+    ];
+
+    let sortInfo = [{name: 'firstName', dir: 'asc'}];
+
+    function sort(arr){
+      return arr ? sorty(sortInfo, arr) : arr;
+    }
+
+    // Not using this right now
+    function onSortChange(info){
+      sortInfo = info
+      this.setState({'eventData': sort(this.state.eventData)});
+      //now refresh the grid
+    }
+
+    function handleRowClick(evt) {
+      browserHistory.push('/order-builder?event=' + this.data.id);
+    }
 
     return (
-      <Request
-        url={config.api_hostname + ':' + config.api_port + '/v1/events'}
-        method='get'
-        accept='application/json'
-        verbose={true}
-        mode='no-cors'
-      >
-        {
-          ({error, result, loading}) => {
-            if (loading) {
-              return <div>loading...</div>;
-            } else {
-              let body = result && result.body;
-
-              let data = [];
-              for(var eventData of body) {
-                var event = {};
-                event.date = eventData.event.event_date;
-                event.locationName = eventData.location.name;
-                event.firstName = eventData.user.first_name;
-                event.lastName = eventData.user.last_name;
-                event.id = eventData.event.id;
-                data.push(event);
-              }
-
-              const columns = [
-                { name: 'date'},
-                { name: 'locationName'},
-                { name: 'firstName'},
-                { name: 'lastName'}
-              ];
-
-              let sortInfo = [{name: 'firstName', dir: 'asc'}];
-
-              function sort(arr){
-                return arr ? sorty(sortInfo, arr) : arr;
-              }
-
-              data = sort(data)
-
-              function handleRowClick(evt) {
-                browserHistory.push('/order-builder?event=' + this.data.id);
-              }
-
-              return (
-                <div className="events">
-                  <h4>Upcoming Events</h4>
-                  <DataGrid idProperty="id" dataSource={data} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
-                  <button onClick={this.createEvent}>Create Event</button>
-                  <TacoModal title="Create Event" body={<EventForm submit={this.submit}/>}
-                             showModal={this.state.showModal} close={this.closeModal}>
-                  </TacoModal>
-                </div>
-              );
-
-            }
-          }
-        }
-      </Request>
+      <div className="events">
+        <h4>Upcoming Events</h4>
+        <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
+        <button onClick={this.createEvent}>Create Event</button>
+        <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
+                   showModal={this.state.showModal} close={this.closeModal}>
+        </TacoModal>
+      </div>
     );
   }
 }
