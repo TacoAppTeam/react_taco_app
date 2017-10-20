@@ -34,7 +34,6 @@ export default class Header extends Component {
             <ul className="nav navbar-nav">
               <li><a>username</a></li>
               <li><Link to={'/'}>Events</Link></li>
-              <li><Link to={'/order-builder'}>Order Builder</Link></li>
             </ul>
           </div>
         </div>

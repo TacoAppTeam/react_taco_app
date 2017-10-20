@@ -20,18 +20,14 @@ export default class OrderBuilder extends Component {
     let newState = this.state.orderList.slice()
     console.log(taco)
     // TODO: increment count on duplicate
-    newState.push({orderId:(newState.length + 1), desc: taco.desc, ingredientIDs: taco.ids, count: 1})
+    newState.push({orderId:(newState.length + 1), desc: taco.desc, ingredientIDs: taco.ids, count: 1, shell_id: taco.shell})
     this.setState({orderList:newState})
   }
 
   handleSubmitOrder () {
-    console.log('submitting order (not really yet)')
-    // TODO: this api call is failing because:
-    // No 'Access-Control-Allow-Origin' header is present on the requested resource.
-
     const apiUrl = 'http://' + window.location.hostname + ':8000/v1'
     axios.post(apiUrl + '/submit_order', {
-      user_id: '1',
+      user_id: '1', // TODO: not hardcode this
       event: this.state.event,
       orderList: this.state.orderList
     }, {'Access-Control-Allow-Origin': '*'}).then(res => console.log(res))
