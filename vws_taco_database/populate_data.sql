@@ -6,7 +6,7 @@ insert into Users (first_name,last_name, password, email)
 values ('Brandon', 'Ojeda', 'password', 'brandon.ojeda@viasat.com');
 
 insert into Users (first_name,last_name, password, email)
-values ('Josh', 'Masterson', 'password', 'jmasterson@viasat.com');
+values ('Josh', 'Masterson', 'password', 'joshua.masterson@viasat.com');
 
 insert into Users (first_name,last_name, password, email)
 values ('Ross', 'Hudgins', 'password', 'michael.hudgins@viasat.com');
@@ -66,12 +66,12 @@ values ('Casa Rodriguez', '111 Test Rd.', 'Bryan', 'Texas', '77807', '9999999999
 
 -- Populate Orders
 insert into Orders (user_id, event_id, payment_amount, order_amount)
-values ('1', '1', '3', '3');
+values ('cody.abney@viasat.com', '1', '3', '3');
 
 insert into Orders (user_id, event_id, payment_amount, order_amount)
-values ('2', '1', '2', '2');
+values ('brandon.ojeda@viasat.com', '1', '2', '2');
 
 
 -- Populate Events
 insert into Events (user_id, location_id, event_date)
-values ('3', '1', '06/09/2017'), ('2', '1', '09/01/2017');
+values ('joshua.masterson@viasat.com', '1', '06/09/2017'), ('2', '1', '09/01/2017');

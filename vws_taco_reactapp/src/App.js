@@ -18,7 +18,7 @@ class App extends Component {
     // TODO: Ask Josh about handling loginToken
     if(!this.state || !this.state.loginToken) {
       // Set path to /login
-      return (<Redirect to="/login"/>)
+      // return (<Redirect to="/login"/>)
     }
 
     return (
