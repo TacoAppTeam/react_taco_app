@@ -119,6 +119,9 @@ def order(id: hug.types.number):
     result = session.query(Order).get(id)
     return result.as_dict() if result else {}
 
+@hug.options(requires=cors_support)
+def order():
+    return
 
 @hug.post(requires=cors_support)
 def order(body):
@@ -258,11 +261,10 @@ def user(body):
 
         # Merge any existing object with the passed in object
         user = session.merge(existing_user)
-        user.id = body.get('id', existing_user.id)
+        user.email = body.get('email', existing_user.email)
         user.first_name = body.get('first_name', existing_user.first_name)
         user.last_name = body.get('last_name', existing_user.last_name)
         user.password = body.get('password', existing_user.password)
-        user.email = body.get('email', existing_user.email)
 
         session.commit()    # To prevent lock on the table
         session.add(user)  # Add the new object to the session
