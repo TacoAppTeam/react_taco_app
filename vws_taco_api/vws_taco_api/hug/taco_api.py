@@ -17,6 +17,7 @@ def with_other_apis():
 # TODO Add more endpoints, with business logic.
 # These can reuse the existing base api, and/or use the models
 
+
 @hug.get(requires=cors_support)
 def events():
     events = []
@@ -98,6 +99,7 @@ def event_orders(event_id: hug.types.number, user_id=None):
 
     return orders
 
+
 @hug.get(requires=cors_support)
 def users():
     users = []
@@ -112,3 +114,19 @@ def users():
         users.append(result.as_dict())
 
     return users
+
+
+@hug.get(requires=cors_support)
+def locations():
+    locations = []
+
+    session = db.create_session()
+    query_result = session.query(Location).all()
+
+    if not query_result:
+        return []
+
+    for result in query_result:
+        locations.append(result.as_dict())
+
+    return locations
