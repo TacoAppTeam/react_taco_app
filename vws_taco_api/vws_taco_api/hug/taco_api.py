@@ -6,6 +6,11 @@ import scripted_endpoints
 from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
 
+import logging
+
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
 
@@ -98,6 +103,67 @@ def event_orders(event_id: hug.types.number, user_id=None):
         })
 
     return orders
+
+
+@hug.options(requires=cors_support)
+def submit_order():
+    print('calling them options')
+    return 200
+
+
+@hug.post(requires=cors_support)
+def submit_order(body):
+    user_id = body.get('user_id')
+    event = body.get('event')
+    orderList = body.get('orderList')
+
+    try:
+        session = db.create_session()
+
+        order = Order()
+        new_order = session.merge(order)
+        new_order.user_id = user_id
+        new_order.event_id = event.get('id')
+        new_order.payment_amount = 0
+        new_order.order_amount = 0
+
+        session.commit()    # To prevent lock on the table
+        session.add(new_order)  # Add the new object to the session
+        session.flush()     # Commits and flushes
+        order_id = new_order.id
+        session.close()
+
+        for taco in orderList:
+            session = db.create_session()
+
+            taco_order = Taco_Order()
+            new_taco = session.merge(taco_order)
+            new_taco.order_id = order_id
+            new_taco.shell_id = taco.get('shell_id', '')
+            session.commit()
+            session.add(new_taco)
+            session.flush()
+            taco_order_id = new_taco.id
+            session.close()
+
+            for ingredient in taco.get('ingredientIDs'):
+                session = db.create_session()
+
+                taco_ing = Taco_Ingredient()
+                new_ing = session.merge(taco_ing)
+                new_ing.order_id = taco_order_id
+                new_ing.ingredient_id = ingredient
+                session.commit()
+                session.add(new_ing)
+                session.flush()
+                session.close()
+
+        return 'Updated! %s ' % new_order.id
+
+    except Exception as Error:
+        print(Error)
+        print('FAILURE ON TACO ORDER SUBMISSION!!!!')
+        raise Error
 
 
 @hug.get(requires=cors_support)
