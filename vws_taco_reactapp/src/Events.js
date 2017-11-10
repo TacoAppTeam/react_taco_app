@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import DataGrid from 'react-datagrid';
-import sorty from 'sorty';
 import { config } from './config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
@@ -80,20 +79,7 @@ export default class Events extends Component {
       { name: 'firstName'},
       { name: 'lastName'}
     ];
-
-    let sortInfo = [{name: 'firstName', dir: 'asc'}];
-
-    function sort(arr){
-      return arr ? sorty(sortInfo, arr) : arr;
-    }
-
-    // Not using this right now
-    function onSortChange(info){
-      sortInfo = info
-      this.setState({'eventData': sort(this.state.eventData)});
-      //now refresh the grid
-    }
-
+    
     function handleRowClick(evt) {
       browserHistory.push('/order-builder?event=' + this.data.id);
     }
@@ -104,8 +90,11 @@ export default class Events extends Component {
         <Loader loaded={this.state.loaded}>
           <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
           <button onClick={this.createEvent}>Create Event</button>
-          <TacoModal title="Create Event" body={<EventForm users={this.state.users} locations={this.state.locations}
-                     submit={this.submit}/>} showModal={this.state.showModal} close={this.closeModal}>
+          <TacoModal 
+              showModal={this.state.showModal} 
+              close={this.closeModal}
+          >
+            <EventForm users={this.state.users} submit={this.submit} locations={this.state.locations} />
           </TacoModal>
         </Loader>
       </div>
