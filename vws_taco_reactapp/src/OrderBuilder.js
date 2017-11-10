@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
+import TacoModal from './TacoModal.js';
 
 export default class OrderBuilder extends Component {
   constructor (props) {
@@ -9,11 +10,16 @@ export default class OrderBuilder extends Component {
     this.state = {
       ingredients: [],
       orderList: [],
-      event: {}
+      event: {},
+      showModal: false
     };
     this.handleAddTaco = this.handleAddTaco.bind(this);
     this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
   }
+
+  closeModal = () => {
+    this.setState({ showModal: false, orderList: [] });
+  };
 
   handleAddTaco (taco) {
     // set state with appended new taco
@@ -30,7 +36,7 @@ export default class OrderBuilder extends Component {
       user_id: '1', // TODO: not hardcode this
       event: this.state.event,
       orderList: this.state.orderList
-    }, {'Access-Control-Allow-Origin': '*'}).then(res => console.log(res))
+    }, {'Access-Control-Allow-Origin': '*'}).then(this.setState({ showModal: true }))
 
     // logic for api:
     //
@@ -66,6 +72,8 @@ export default class OrderBuilder extends Component {
                          >
         </IngredientsList>
         <OrderContents orderList={this.state.orderList} handleSubmitOrder={this.handleSubmitOrder}></OrderContents>
+        <TacoModal title="Order Submitted!" body={""} showModal={this.state.showModal} close={this.closeModal}>
+          </TacoModal>
       </div>
     );
   }
