@@ -17,6 +17,11 @@ def event(id: hug.types.number):
     return result.as_dict() if result else {}
 
 
+@hug.options(requires=cors_support)
+def event():
+    return
+
+
 @hug.post(requires=cors_support)
 def event(body):
     try:
@@ -50,6 +55,11 @@ def ingredient(id: hug.types.number):
     return result.as_dict() if result else {}
 
 
+@hug.options(requires=cors_support)
+def ingredient():
+    return
+
+
 @hug.post(requires=cors_support)
 def ingredient(body):
     try:
@@ -81,6 +91,11 @@ def location(id: hug.types.number):
     session = db.create_session()
     result = session.query(Location).get(id)
     return result.as_dict() if result else {}
+
+
+@hug.options(requires=cors_support)
+def location():
+    return
 
 
 @hug.post(requires=cors_support)
@@ -120,6 +135,11 @@ def order(id: hug.types.number):
     return result.as_dict() if result else {}
 
 
+@hug.options(requires=cors_support)
+def order():
+    return
+
+
 @hug.post(requires=cors_support)
 def order(body):
     try:
@@ -154,6 +174,11 @@ def taco_ingredient(id: hug.types.number):
     return result.as_dict() if result else {}
 
 
+@hug.options(requires=cors_support)
+def taco_ingredient():
+    return
+
+
 @hug.post(requires=cors_support)
 def taco_ingredient(body):
     try:
@@ -184,6 +209,11 @@ def taco_order(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Order).get(id)
     return result.as_dict() if result else {}
+
+
+@hug.options(requires=cors_support)
+def taco_order():
+    return
 
 
 @hug.post(requires=cors_support)
@@ -218,6 +248,11 @@ def taco_shell(id: hug.types.number):
     return result.as_dict() if result else {}
 
 
+@hug.options(requires=cors_support)
+def taco_shell():
+    return
+
+
 @hug.post(requires=cors_support)
 def taco_shell(body):
     try:
@@ -247,6 +282,11 @@ def user(id: hug.types.number):
     session = db.create_session()
     result = session.query(User).get(id)
     return result.as_dict() if result else {}
+
+
+@hug.options(requires=cors_support)
+def user():
+    return
 
 
 @hug.post(requires=cors_support)

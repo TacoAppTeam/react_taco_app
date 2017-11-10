@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
-import FieldGroup from './FieldGroup'
+import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom'
 import DatePicker from 'react-bootstrap-date-picker';
-
-
-function FieldGroup({ id, label, help, inputRef, ...props }) {
-  return (
-    <FormGroup controlId={id}>
-      <ControlLabel>{label}</ControlLabel>
-      <FormControl {...props} inputRef={inputRef}/>
-      {help && <HelpBlock>{help}</HelpBlock>}
-    </FormGroup>
-  );
-}
 
 
 export default class EventForm extends Component {
