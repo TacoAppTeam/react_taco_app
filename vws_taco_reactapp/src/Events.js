@@ -15,6 +15,7 @@ export default class Events extends Component {
       showModal: false,
       eventData: [],
       users: [],
+      locations: [],
       loaded: false
     };
   };
@@ -27,9 +28,14 @@ export default class Events extends Component {
     this.setState({ showModal: false });
   };
 
-  // TODO: Have submit save event
   submit = (formData) => {
     console.log(formData);
+
+    const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
+    axios.post(event_post_url, formData).then(res => {
+      console.log(res);
+    });
+
     this.closeModal();
   };
 
@@ -48,20 +54,21 @@ export default class Events extends Component {
       }
 
       this.setState({'eventData': this.state.eventData});
-
     });
 
     // Get User Data
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
     let users_promise = axios.get(user_url).then(res => {
-      for (let user of res.data) {
-        this.state.users.push(user.email);
-      }
-
-      this.setState({'users': this.state.users});
+      this.setState({'users': res.data});
     });
 
-    Promise.all([events_promise, users_promise]).then(res => {
+    // Get Location Data
+    const location_url = config.api_hostname + ':' + config.api_port + '/v1/locations';
+    let locations_promise = axios.get(location_url).then(res => {
+      this.setState({'locations': res.data});
+    });
+
+    Promise.all([events_promise, users_promise, locations_promise]).then(res => {
       this.setState({'loaded': true});
     });
   };
@@ -97,8 +104,8 @@ export default class Events extends Component {
         <Loader loaded={this.state.loaded}>
           <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
           <button onClick={this.createEvent}>Create Event</button>
-          <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
-                     showModal={this.state.showModal} close={this.closeModal}>
+          <TacoModal title="Create Event" body={<EventForm users={this.state.users} locations={this.state.locations}
+                     submit={this.submit}/>} showModal={this.state.showModal} close={this.closeModal}>
           </TacoModal>
         </Loader>
       </div>
