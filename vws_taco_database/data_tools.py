@@ -141,6 +141,13 @@ def create_hug_api(table_data):
         target.write("    result = session.query(%s).get(id)\n" % model_name)
         target.write("    return result.as_dict() if result else {}\n")
 
+        # Create options endpoint
+        target.write("\n")
+        target.write("\n")
+        target.write("@hug.options(requires=cors_support)\n")
+        target.write("def %s():\n" % model_name.lower())
+        target.write("    return\n")
+
         # Create post endpoint
         target.write("\n")
         target.write("\n")
