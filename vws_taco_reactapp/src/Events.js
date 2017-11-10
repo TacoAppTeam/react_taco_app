@@ -80,13 +80,6 @@ export default class Events extends Component {
       return arr ? sorty(sortInfo, arr) : arr;
     }
 
-    // Not using this right now
-    function onSortChange(info){
-      sortInfo = info
-      this.setState({'eventData': sort(this.state.eventData)});
-      //now refresh the grid
-    }
-
     function handleRowClick(evt) {
       browserHistory.push('/order-builder?event=' + this.data.id);
     }
@@ -97,8 +90,12 @@ export default class Events extends Component {
         <Loader loaded={this.state.loaded}>
           <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
           <button onClick={this.createEvent}>Create Event</button>
-          <TacoModal title="Create Event" body={<EventForm users={this.state.users} submit={this.submit}/>}
-                     showModal={this.state.showModal} close={this.closeModal}>
+          <TacoModal 
+            title="Create Event"
+            showModal={this.state.showModal}
+            close={this.closeModal}
+          >
+            <EventForm users={this.state.users} submit={this.submit}/>
           </TacoModal>
         </Loader>
       </div>

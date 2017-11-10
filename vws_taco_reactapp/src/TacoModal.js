@@ -14,7 +14,7 @@ export default class TacoModal extends Component {
             <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.props.body}
+            {this.props.children}
           </Modal.Body>
           <Modal.Footer/>
         </Modal>

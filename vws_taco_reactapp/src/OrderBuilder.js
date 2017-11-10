@@ -72,7 +72,7 @@ export default class OrderBuilder extends Component {
                          >
         </IngredientsList>
         <OrderContents orderList={this.state.orderList} handleSubmitOrder={this.handleSubmitOrder}></OrderContents>
-        <TacoModal title="Order Submitted!" body={""} showModal={this.state.showModal} close={this.closeModal}>
+        <TacoModal title="Order Submitted!"  showModal={this.state.showModal} close={this.closeModal}>
           </TacoModal>
       </div>
     );

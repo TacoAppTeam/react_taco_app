@@ -119,9 +119,6 @@ def order(id: hug.types.number):
     result = session.query(Order).get(id)
     return result.as_dict() if result else {}
 
-@hug.options(requires=cors_support)
-def order():
-    return
 
 @hug.post(requires=cors_support)
 def order(body):

@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Title from './Title';
+import LoginBody from './LoginBody';
 import './App.css';
+import TacoModal from './TacoModal.js';
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      showLoginModal: false
     };
   }
 
-  login = () => {
-    console.log('login');
+  closeModal = () => {
+    this.setState({ showLoginModal: false });
+  };
+
+  login = () => {    
     this.setState({
-      loggedIn: true
+      showLoginModal: true
     });
   };
 
@@ -32,7 +38,7 @@ export default class Header extends Component {
         <div className="App navbar navbar-default">
           <div className="container-fluid">
             <ul className="nav navbar-nav">
-              <li><a>username</a></li>
+              <li><a>{window.currentUser || "Please Log In"}</a></li>
               <li><Link to={'/'}>Events</Link></li>
             </ul>
           </div>
@@ -43,6 +49,13 @@ export default class Header extends Component {
             : (<button onClick={this.login}>Login</button>)
             }
 
+          <TacoModal 
+            title="Choose a User" 
+            showModal={this.state.showLoginModal} 
+            close={this.closeModal}
+          >
+            <LoginBody submit={this.closeModal}/>
+          </TacoModal>
 
         {this.props.children}
       </div>
