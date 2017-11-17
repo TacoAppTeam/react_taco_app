@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 import ReactDOM from 'react-dom';   
+import { connect } from "react-redux";
 import axios from 'axios';
 import { config } from './config.js';
 
-export default class LoginBody extends Component {
+function mapStateToProps(state) {
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+class LoginBody extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -12,9 +19,13 @@ export default class LoginBody extends Component {
       }
     }
 
-    submit = () => {
-        window.currentUser = ReactDOM.findDOMNode(this.userSelect).value;
-        this.props.submit();
+    onSubmit = () => {
+        //TODO dispatch action to setUser
+        this.props.dispatch({
+            type: 'SET_CURRENT_USER',
+            user: ReactDOM.findDOMNode(this.userSelect).value
+        });
+        this.props.onSubmit();
     }
 
     componentDidMount () {
@@ -37,7 +48,7 @@ export default class LoginBody extends Component {
       }
 
       return (
-        <form onSubmit={this.submit}>
+        <form onSubmit={this.onSubmit}>
             <FormGroup controlId="userSelect">
                 <ControlLabel>User</ControlLabel>
                 <FormControl componentClass="select" placeholder="select" ref={select => { this.userSelect = select }}>
@@ -45,8 +56,10 @@ export default class LoginBody extends Component {
                 </FormControl>
             </FormGroup>
 
-            <Button bsStyle="primary" onClick={this.submit}>Submit</Button>
+            <Button bsStyle="primary" onClick={this.onSubmit}>Submit</Button>
         </form>
       )
     }
   }
+
+export default connect(mapStateToProps)(LoginBody)  
