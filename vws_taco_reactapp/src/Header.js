@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { Link } from 'react-router';
 import Title from './Title';
 import LoginBody from './LoginBody';
 import './App.css';
 import TacoModal from './TacoModal.js';
 
-export default class Header extends Component {
+function mapStateToProps (state) {
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +45,7 @@ export default class Header extends Component {
         <div className="App navbar navbar-default">
           <div className="container-fluid">
             <ul className="nav navbar-nav">
-              <li><a>{window.currentUser || "Please Log In"}</a></li>
+              <li><a>{this.props.currentUser || "Please Log In"}</a></li>
               <li><Link to={'/'}>Events</Link></li>
             </ul>
           </div>
@@ -54,7 +61,7 @@ export default class Header extends Component {
             showModal={this.state.showLoginModal} 
             close={this.closeModal}
           >
-            <LoginBody submit={this.closeModal}/>
+            <LoginBody onSubmit={this.closeModal}/>
           </TacoModal>
 
         {this.props.children}
@@ -62,3 +69,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(Header);
