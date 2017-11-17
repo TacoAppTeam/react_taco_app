@@ -1,8 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class OrderContents extends Component {
   constructor(props) {
     super(props);
+
+    // If this constructor isn't going to do something, it is "useless" and should be removed.
+    // https://eslint.org/docs/2.0.0/rules/no-useless-constructor
+    doSomething();
   }
 
   submitOrder = (event) => {
@@ -33,4 +38,8 @@ export default class OrderContents extends Component {
 
 OrderContents.propTypes = {
   handleSubmitOrder: PropTypes.func.isRequired
+}
+
+function doSomething() {
+  return;
 }
