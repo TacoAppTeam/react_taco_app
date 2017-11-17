@@ -48,7 +48,7 @@ class LoginBody extends Component {
       }
 
       return (
-        <form submit={this.onSubmit}>
+        <form onSubmit={this.onSubmit}>
             <FormGroup controlId="userSelect">
                 <ControlLabel>User</ControlLabel>
                 <FormControl componentClass="select" placeholder="select" ref={select => { this.userSelect = select }}>
