@@ -7,6 +7,9 @@ import './index.css';
 import '../node_modules/react-datagrid/index.css';
 import { Provider } from "react-redux";
 import { createStore } from "redux";
+import { config } from './config.js';
+import axios from 'axios';
+
 
 console.log('STARTING UPPPP')
 const initialState = {
@@ -19,7 +22,30 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentUser: action.user
-            }    
+            }
+
+        case 'GET_EVENT_DATA':
+            // Get Event Data
+            let eventData = [];
+
+            const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
+            let events_promise = axios.get(event_url).then(res => {
+              for (let data of res.data) {
+                let event = {};
+                event.date = data.event.event_date;
+                event.locationName = data.location.name;
+                event.firstName = data.user.first_name;
+                event.lastName = data.user.last_name;
+                event.id = data.event.id;
+                eventData.push(event);
+              }
+            });
+
+            return {
+                ...state,
+                eventData: eventData
+            }
+
         default:
             return state;
     }
