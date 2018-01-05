@@ -2,17 +2,24 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import DataGrid from 'react-datagrid';
-import { config } from './config.js';
+import { config } from '../config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
-import Loader from 'react-loader'
+import Loader from 'react-loader';
+import { connect } from "react-redux";
+import { Actions } from '../store'
 
-export default class Events extends Component {
+function mapStateToProps(state) {
+    return {
+        eventData: state.event.eventData
+    }
+}
+
+class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showModal: false,
-      eventData: [],
       users: [],
       locations: [],
       loaded: false
@@ -40,20 +47,7 @@ export default class Events extends Component {
 
   componentDidMount = () => {
     // Get Event Data
-    const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
-    let events_promise = axios.get(event_url).then(res => {
-      for (let data of res.data) {
-        let event = {};
-        event.date = data.event.event_date;
-        event.locationName = data.location.name;
-        event.firstName = data.user.first_name;
-        event.lastName = data.user.last_name;
-        event.id = data.event.id;
-        this.state.eventData.push(event);
-      }
-
-      this.setState({'eventData': this.state.eventData});
-    });
+    this.props.dispatch(Actions.event.fetchEvents())
 
     // Get User Data
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
@@ -67,7 +61,7 @@ export default class Events extends Component {
       this.setState({'locations': res.data});
     });
 
-    Promise.all([events_promise, users_promise, locations_promise]).then(res => {
+    Promise.all([users_promise, locations_promise]).then(res => {
       this.setState({'loaded': true});
     });
   };
@@ -79,7 +73,7 @@ export default class Events extends Component {
       { name: 'firstName'},
       { name: 'lastName'}
     ];
-    
+
     function handleRowClick(evt) {
       browserHistory.push('/order-builder?event=' + this.data.id);
     }
@@ -88,10 +82,10 @@ export default class Events extends Component {
       <div className="events">
         <h4>Upcoming Events</h4>
         <Loader loaded={this.state.loaded}>
-          <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
+          <DataGrid idProperty="id" dataSource={this.props.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
           <button onClick={this.createEvent}>Create Event</button>
-          <TacoModal 
-              showModal={this.state.showModal} 
+          <TacoModal
+              showModal={this.state.showModal}
               close={this.closeModal}
           >
             <EventForm users={this.state.users} submit={this.submit} locations={this.state.locations} />
@@ -102,3 +96,4 @@ export default class Events extends Component {
   }
 }
 
+export default connect(mapStateToProps)(Events)

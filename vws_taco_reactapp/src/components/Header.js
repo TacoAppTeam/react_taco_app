@@ -8,7 +8,7 @@ import TacoModal from './TacoModal.js';
 
 function mapStateToProps (state) {
     return {
-        currentUser: state.currentUser
+        currentUser: state.user.currentUser
     }
 }
 

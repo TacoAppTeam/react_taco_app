@@ -1,8 +1,8 @@
-import Header from './Header';
-import Home from './Home';
-import Login from './Login';
-import OrderBuilder from './OrderBuilder';
-import PageNotFound from './PageNotFound';
+import Header from './components/Header';
+import Home from './components/Home';
+import Login from './components/Login';
+import OrderBuilder from './components/OrderBuilder';
+import PageNotFound from './components/PageNotFound';
 
 
 const routes = {

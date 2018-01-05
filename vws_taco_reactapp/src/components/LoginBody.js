@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
-import ReactDOM from 'react-dom';   
+import ReactDOM from 'react-dom';
 import { connect } from "react-redux";
 import axios from 'axios';
-import { config } from './config.js';
+import { config } from '../config.js';
+import * as userActions from '../store/user/actions';
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.currentUser
+        currentUser: state.user.currentUser
     }
 }
 
@@ -20,9 +21,8 @@ class LoginBody extends Component {
     }
 
     onSubmit = () => {
-        //TODO dispatch action to setUser
         this.props.dispatch({
-            type: 'SET_CURRENT_USER',
+            type: userActions.SET_CURRENT_USER,
             user: ReactDOM.findDOMNode(this.userSelect).value
         });
         this.props.onSubmit();
@@ -34,14 +34,14 @@ class LoginBody extends Component {
           for (let user of res.data) {
             this.state.users.push(user.email);
           }
-    
+
           this.setState({'users': this.state.users});
         });
     }
 
     render = () => {
       let userSelects = [];
-    
+
       for (let i = 0; i < this.state.users.length; i++) {
         let user = this.state.users[i];
         userSelects.push((<option value={user}>{user}</option>));
@@ -62,4 +62,4 @@ class LoginBody extends Component {
     }
   }
 
-export default connect(mapStateToProps)(LoginBody)  
+export default connect(mapStateToProps)(LoginBody)

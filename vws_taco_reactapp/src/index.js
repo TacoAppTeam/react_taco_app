@@ -6,26 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import '../node_modules/react-datagrid/index.css';
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-
-console.log('STARTING UPPPP')
-const initialState = {
-    currentUser: 'Please Login'
-}
-
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'SET_CURRENT_USER':
-            return {
-                ...state,
-                currentUser: action.user
-            }    
-        default:
-            return state;
-    }
-}
-
-const store = createStore(reducer);
+import store from './store';
 
 class App extends React.Component {
     render()  {
