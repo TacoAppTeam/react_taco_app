@@ -1,18 +1,19 @@
-import {combineReducers} from 'redux';
-// import {routerReducer as routing} from 'react-router-redux';
+import {combineReducers, applyMiddleware, createStore} from 'redux';
+import thunkMiddleware from 'redux-thunk';
 import userReducer from './user/reducer';
+import eventReducer from './event/reducer';
 import * as userActions from './user/actions';
+import * as eventActions from './event/actions';
 
 // reducer name maps to state tree its responsible for
-const rootReducer = combineReducers({
-		userReducer
-	})
-;
+const rootReducer = combineReducers({user: userReducer, event: eventReducer});
 
-export default rootReducer;
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+export default store;
 
 export const Actions = {
-	movie: userActions
+    user: userActions,
+    event: eventActions
 };
 
 // TOD export more for 3rd parties?

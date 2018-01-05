@@ -7,10 +7,11 @@ import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 import Loader from 'react-loader';
 import { connect } from "react-redux";
+import { Actions } from '../store'
 
 function mapStateToProps(state) {
     return {
-        eventData: state.eventData
+        eventData: state.event.eventData
     }
 }
 
@@ -46,9 +47,7 @@ class Events extends Component {
 
   componentDidMount = () => {
     // Get Event Data
-    this.props.dispatch({
-        type: 'GET_EVENT_DATA'
-    });
+    this.props.dispatch(Actions.event.fetchEvents())
 
     // Get User Data
     const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
@@ -83,7 +82,7 @@ class Events extends Component {
       <div className="events">
         <h4>Upcoming Events</h4>
         <Loader loaded={this.state.loaded}>
-          <DataGrid idProperty="id" dataSource={this.state.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
+          <DataGrid idProperty="id" dataSource={this.props.eventData} columns={columns} rowProps={ { onClick: handleRowClick } }></DataGrid>
           <button onClick={this.createEvent}>Create Event</button>
           <TacoModal
               showModal={this.state.showModal}

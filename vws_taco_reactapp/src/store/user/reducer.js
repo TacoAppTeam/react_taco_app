@@ -1,10 +1,10 @@
 import { SET_CURRENT_USER } from './actions';
 
 const initialState = {
-    currentUser: 'Please Login'
+    currentUser: 'Please Log in'
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state= initialState, action) => {
     switch (action.type) {
         case SET_CURRENT_USER:
             return {

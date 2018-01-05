@@ -6,13 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import '../node_modules/react-datagrid/index.css';
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import rootReducer from './store';
-
-console.log('STARTING UPPPP')
-
-
-const store = createStore(rootReducer);
+import store from './store';
 
 class App extends React.Component {
     render()  {

@@ -8,7 +8,7 @@ import * as userActions from '../store/user/actions';
 
 function mapStateToProps(state) {
     return {
-        currentUser: state.currentUser
+        currentUser: state.user.currentUser
     }
 }
 
