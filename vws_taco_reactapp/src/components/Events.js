@@ -11,7 +11,14 @@ import {Actions} from '../store';
 
 function mapStateToProps(state) {
   return {
-    eventData: state.event.eventData
+    eventData: state.event.eventData,
+    eventsPending: state.event.eventsPending,
+    users: state.user.users,
+    usersPending: state.user.usersPending,
+    locations: state.location.locations,
+    locationsPending: state.location.locationsPending,
+    eventCreatePending: state.event.eventCreatePending,
+    eventCreateResponse: state.event.eventCreateResponse
   };
 }
 
@@ -36,13 +43,7 @@ class Events extends Component {
 
   submit = formData => {
     console.log(formData);
-
-    const event_post_url =
-      config.api_hostname + ':' + config.api_port + '/v1/event';
-    axios.post(event_post_url, formData).then(res => {
-      console.log(res);
-    });
-
+    this.props.dispatch(Actions.event.createEvent(formData));
     this.closeModal();
   };
 
@@ -51,21 +52,10 @@ class Events extends Component {
     this.props.dispatch(Actions.event.fetchEvents());
 
     // Get User Data
-    const user_url = config.api_hostname + ':' + config.api_port + '/v1/users';
-    let users_promise = axios.get(user_url).then(res => {
-      this.setState({users: res.data});
-    });
+    this.props.dispatch(Actions.user.fetchUsers());
 
     // Get Location Data
-    const location_url =
-      config.api_hostname + ':' + config.api_port + '/v1/locations';
-    let locations_promise = axios.get(location_url).then(res => {
-      this.setState({locations: res.data});
-    });
-
-    Promise.all([users_promise, locations_promise]).then(res => {
-      this.setState({loaded: true});
-    });
+    this.props.dispatch(Actions.location.fetchLocations());
   };
 
   render() {
@@ -83,7 +73,7 @@ class Events extends Component {
     return (
       <div className="events">
         <h4>Upcoming Events</h4>
-        <Loader loaded={this.state.loaded}>
+        <Loader loaded={!this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending}>
           <DataGrid
             idProperty="id"
             dataSource={this.props.eventData}
@@ -93,9 +83,9 @@ class Events extends Component {
           <button onClick={this.createEvent}>Create Event</button>
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
             <EventForm
-              users={this.state.users}
+              users={this.props.users}
               submit={this.submit}
-              locations={this.state.locations}
+              locations={this.props.locations}
             />
           </TacoModal>
         </Loader>

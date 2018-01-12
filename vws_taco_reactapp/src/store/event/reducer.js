@@ -1,6 +1,6 @@
 import * as eventActions from './actions';
 
-const initialState = {};
+const initialState = {eventsPending: false, eventCreatePending: false};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -10,13 +10,27 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        eventData: eventData
+        eventData: eventData,
+        eventsPending: true
       };
     case eventActions.EVENTS_RETRIEVED:
       return {
         ...state,
-        eventData: action.events
+        eventData: action.events,
+        eventsPending: false
       };
+    case eventActions.CREATE_EVENT:
+      return {
+        ...state,
+        eventCreatePending: true,
+        eventCreateResponse: {}
+      };
+    case eventActions.EVENT_CREATED:
+      return {
+        ...state,
+        eventCreatePending: false,
+        eventCreateResponse: action.eventCreateResponse
+      }
     default:
       return state;
   }
