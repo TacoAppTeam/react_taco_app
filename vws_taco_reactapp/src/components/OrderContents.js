@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 export default class OrderContents extends Component {
@@ -10,26 +10,26 @@ export default class OrderContents extends Component {
     doSomething();
   }
 
-  submitOrder = (event) => {
-      event.preventDefault();
+  submitOrder = event => {
+    event.preventDefault();
 
-      // send off to parent
-      this.props.handleSubmitOrder()
-  }
+    // send off to parent
+    this.props.handleSubmitOrder();
+  };
   render() {
     // this component is display only
     return (
       <div>
-      	Taco Orders:
-        <form
-          onSubmit={this.submitOrder}
-          ref={form => this.form = form}>
-            <ul>
-            {this.props.orderList.map(order =>
-                  <li>{order.count} - {order.desc}</li>
-                )}
-            </ul>
-          <input type="submit" value="Sounds Tasty! ®"></input>
+        Taco Orders:
+        <form onSubmit={this.submitOrder} ref={form => (this.form = form)}>
+          <ul>
+            {this.props.orderList.map(order => (
+              <li>
+                {order.count} - {order.desc}
+              </li>
+            ))}
+          </ul>
+          <input type="submit" value="Sounds Tasty! ®" />
         </form>
       </div>
     );
@@ -38,7 +38,7 @@ export default class OrderContents extends Component {
 
 OrderContents.propTypes = {
   handleSubmitOrder: PropTypes.func.isRequired
-}
+};
 
 function doSomething() {
   return;

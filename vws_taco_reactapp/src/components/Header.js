@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { Link } from 'react-router';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import Title from './Title';
 import LoginBody from './LoginBody';
 import './App.css';
 import TacoModal from './TacoModal.js';
 
-function mapStateToProps (state) {
-    return {
-        currentUser: state.user.currentUser
-    }
+function mapStateToProps(state) {
+  return {
+    currentUser: state.user.currentUser
+  };
 }
 
 class Header extends Component {
@@ -22,10 +22,10 @@ class Header extends Component {
   }
 
   closeModal = () => {
-    this.setState({ showLoginModal: false });
+    this.setState({showLoginModal: false});
   };
 
-  login = () => {    
+  login = () => {
     this.setState({
       showLoginModal: true
     });
@@ -41,28 +41,33 @@ class Header extends Component {
   render() {
     return (
       <div className="container">
-        <Title title="Taco App"></Title>
+        <Title title="Taco App" />
         <div className="App navbar navbar-default">
           <div className="container-fluid">
             <ul className="nav navbar-nav">
-              <li><a>{this.props.currentUser || "Please Log In"}</a></li>
-              <li><Link to={'/'}>Events</Link></li>
+              <li>
+                <a>{this.props.currentUser || 'Please Log In'}</a>
+              </li>
+              <li>
+                <Link to={'/'}>Events</Link>
+              </li>
             </ul>
           </div>
         </div>
 
-           {
-            this.state.loggedIn ? (<button onClick={this.logout}>Logout</button>)
-            : (<button onClick={this.login}>Login</button>)
-            }
+        {this.state.loggedIn ? (
+          <button onClick={this.logout}>Logout</button>
+        ) : (
+          <button onClick={this.login}>Login</button>
+        )}
 
-          <TacoModal 
-            title="Choose a User" 
-            showModal={this.state.showLoginModal} 
-            close={this.closeModal}
-          >
-            <LoginBody onSubmit={this.closeModal}/>
-          </TacoModal>
+        <TacoModal
+          title="Choose a User"
+          showModal={this.state.showLoginModal}
+          close={this.closeModal}
+        >
+          <LoginBody onSubmit={this.closeModal} />
+        </TacoModal>
 
         {this.props.children}
       </div>

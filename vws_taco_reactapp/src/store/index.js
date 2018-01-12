@@ -12,8 +12,8 @@ const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export default store;
 
 export const Actions = {
-    user: userActions,
-    event: eventActions
+  user: userActions,
+  event: eventActions
 };
 
 // TOD export more for 3rd parties?
