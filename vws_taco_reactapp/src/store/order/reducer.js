@@ -17,13 +17,28 @@ const reducer = (state = initialState, action) => {
       action.newOrder.orderList.forEach(o => {
         const formattedOrder = {
           user: action.newOrder.user_id,
-          desc: o.desc
+          desc: o.desc,
+          data: o.data
         };
         newEventOrders.push(formattedOrder);
       });
       return {
         ...state,
         currentEventOrders: newEventOrders,
+        pending: false
+      };
+    case actions.REMOVE_TACO_PENDING:
+      return {
+        ...state,
+        pending: true
+      };
+    case actions.REMOVE_TACO:
+      const newTacoOrders = state.currentEventOrders.filter(
+        o => o.data.taco_order_id !== action.tacoId
+      );
+      return {
+        ...state,
+        currentEventOrders: newTacoOrders,
         pending: false
       };
     case actions.EVENT_ORDERS_RETRIEVED:

@@ -2,13 +2,9 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
-import TacoModal from './TacoModal.js';
 import {connect} from 'react-redux';
 import Loader from 'react-loader';
 import {Actions} from '../store';
-
-import {config} from '../config.js';
-import {match} from 'react-router/lib';
 
 const mapStateToProps = state => {
   return {
@@ -35,14 +31,18 @@ class OrderBuilder extends Component {
       alert('NO YOU CANT YOU JUST CANT');
       return;
     }
-    let orderList = this.state.orderList.filter(
-      o => o.orderId !== taco.orderId
-    );
-    this.setState({orderList});
+    if (taco.data) {
+      this.props.dispatch(Actions.order.removeTaco(taco.data.taco_order_id));
+    } else {
+      let orderList = this.state.orderList.filter(
+        o => o.orderId !== taco.orderId
+      );
+      this.setState({orderList});
+    }
   }
 
   handleSubmitOrder() {
-    if (this.props.currentUser == 'Please Log in') {
+    if (this.props.currentUser === 'Please Log in') {
       alert('Please log in before submitting an order!');
       return;
     }

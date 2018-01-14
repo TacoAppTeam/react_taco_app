@@ -8,6 +8,7 @@ import locationReducer from './location/reducer';
 import * as userActions from './user/actions';
 import * as eventActions from './event/actions';
 import * as orderActions from './order/actions';
+import * as locationActions from './location/actions';
 
 // reducer name maps to state tree its responsible for
 const rootReducer = combineReducers({

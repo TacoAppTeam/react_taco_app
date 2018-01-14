@@ -72,7 +72,7 @@ def ingredients():
     return ingredients
 
 
-@hug.get(requires=cors_support,output=hug.output_format.json)
+@hug.get(requires=cors_support, output=hug.output_format.json)
 def event_orders(event_id: hug.types.number, user_id=None):
     orders = []
 
@@ -117,6 +117,8 @@ def submit_order(body):
     event = body.get('event')
     orderList = body.get('orderList')
 
+    respList = []
+
     try:
         session = db.create_session()
 
@@ -158,7 +160,16 @@ def submit_order(body):
                 session.flush()
                 session.close()
 
-        return 'Updated! %s ' % new_order.id
+                respList.append({
+                    "event_id": new_order.event_id,
+                    "taco_order_id": taco_order_id,
+                    "order_id": order_id,
+                    "shell_id": new_taco.shell_id,
+                    "ingredient": ingredient,
+                    "user_id": user_id
+                })
+
+        return respList
 
     except Exception as Error:
         print(Error)
@@ -196,3 +207,29 @@ def locations():
         locations.append(result.as_dict())
 
     return locations
+
+
+@hug.options(requires=cors_support)
+def removeTaco():
+    print('calling them options')
+    return 200
+
+
+@hug.post(requires=cors_support)
+def removeTaco(body):
+    taco_id = body.get('taco_order_id')
+
+    print('DELETING taco:', taco_id)
+
+    session = db.create_session()
+    taco_order = session.query(Taco_Order).filter(Taco_Order.id == taco_id)
+    taco_ingredients = session.query(Taco_Ingredient).filter(
+        Taco_Ingredient.order_id == taco_id)
+
+    taco_order.delete()
+    taco_ingredients.delete()
+
+    session.commit()
+    session.flush()
+
+    return

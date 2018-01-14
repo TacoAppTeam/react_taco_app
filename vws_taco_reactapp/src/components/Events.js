@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import {browserHistory} from 'react-router';
-import {config} from '../config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 import Loader from 'react-loader';
