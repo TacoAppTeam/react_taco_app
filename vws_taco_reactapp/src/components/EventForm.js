@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
-import ReactDOM from 'react-dom'
+import React, {Component} from 'react';
+import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import ReactDOM from 'react-dom';
 import DatePicker from 'react-bootstrap-date-picker';
-
 
 export default class EventForm extends Component {
   constructor(props) {
@@ -10,7 +9,7 @@ export default class EventForm extends Component {
     this.state = {
       eventDate: ''
     };
-  };
+  }
 
   submit = () => {
     let formData = {};
@@ -59,14 +58,16 @@ export default class EventForm extends Component {
 
     for (let i = 0; i < this.props.users.length; i++) {
       let user = this.props.users[i];
-      userSelects.push((<option value={user.email}>{user.email}</option>));
+      userSelects.push(<option value={user.email}>{user.email}</option>);
     }
 
     let locationSelects = [];
 
     for (let j = 0; j < this.props.locations.length; j++) {
       let location = this.props.locations[j];
-      locationSelects.push((<option value={location.id}>{location.name}</option>));
+      locationSelects.push(
+        <option value={location.id}>{location.name}</option>
+      );
     }
 
     return (
@@ -74,26 +75,44 @@ export default class EventForm extends Component {
         <form onSubmit={this.submit}>
           <FormGroup controlId="userSelect">
             <ControlLabel>Runner</ControlLabel>
-            <FormControl componentClass="select" placeholder="select" ref={select => { this.userSelect = select }}>
+            <FormControl
+              componentClass="select"
+              placeholder="select"
+              ref={select => {
+                this.userSelect = select;
+              }}
+            >
               {userSelects}
             </FormControl>
           </FormGroup>
 
           <FormGroup controlId="locationSelect">
             <ControlLabel>Location</ControlLabel>
-            <FormControl componentClass="select" placeholder="select" ref={select => { this.locationSelect = select }}>
+            <FormControl
+              componentClass="select"
+              placeholder="select"
+              ref={select => {
+                this.locationSelect = select;
+              }}
+            >
               {locationSelects}
             </FormControl>
           </FormGroup>
 
           <FormGroup>
             <ControlLabel>Event Date</ControlLabel>
-            <DatePicker id="event-datepicker" value={this.state.eventDate} onChange={this.handleDateChange}/>
+            <DatePicker
+              id="event-datepicker"
+              value={this.state.eventDate}
+              onChange={this.handleDateChange}
+            />
           </FormGroup>
 
-          <Button bsStyle="primary" onClick={this.submit}>Submit</Button>
+          <Button bsStyle="primary" onClick={this.submit}>
+            Submit
+          </Button>
         </form>
       </div>
-    )
+    );
   }
 }

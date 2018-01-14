@@ -4,7 +4,6 @@ import Login from './components/Login';
 import OrderBuilder from './components/OrderBuilder';
 import PageNotFound from './components/PageNotFound';
 
-
 const routes = {
   // Header component (wrapper for the whole application)
   component: Header,
