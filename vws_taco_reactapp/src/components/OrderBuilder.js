@@ -3,8 +3,21 @@ import axios from 'axios';
 import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
 import TacoModal from './TacoModal.js';
+import {connect} from 'react-redux';
+import {Actions} from '../store';
 
-export default class OrderBuilder extends Component {
+import {config} from '../config.js';
+import {match} from 'react-router/lib';
+
+const mapStateToProps = state => {
+  return {
+    submitOrderPending: state.order.pending,
+    currentUser: state.user.currentUser,
+    currentEventData: state.order.currentEventOrders
+  };
+};
+
+class OrderBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,10 +34,23 @@ export default class OrderBuilder extends Component {
     this.setState({showModal: false, orderList: []});
   };
 
+  handleSubmitOrder() {
+    if (this.props.currentUser == 'Please Log in') {
+      alert('Please log in before submitting an order!');
+      return;
+    }
+    const newOrder = {
+      user_id: this.props.currentUser, // TODO: not hardcode this
+      event: this.state.event,
+      orderList: this.state.orderList
+    };
+    this.props.dispatch(Actions.order.addNewOrder(newOrder));
+    this.setState({orderList: []});
+  }
+
   handleAddTaco(taco) {
     // set state with appended new taco
     let newState = this.state.orderList.slice();
-    console.log(taco);
     // TODO: increment count on duplicate
     newState.push({
       orderId: newState.length + 1,
@@ -36,32 +62,12 @@ export default class OrderBuilder extends Component {
     this.setState({orderList: newState});
   }
 
-  handleSubmitOrder() {
-    const apiUrl = 'http://' + window.location.hostname + ':8000/v1';
-    axios
-      .post(
-        apiUrl + '/submit_order',
-        {
-          user_id: '1', // TODO: not hardcode this
-          event: this.state.event,
-          orderList: this.state.orderList
-        },
-        {'Access-Control-Allow-Origin': '*'}
-      )
-      .then(this.setState({showModal: true}));
-
-    // logic for api:
-    //
-    // create Order(logged in userid, this.state.event.id)
-    // get Order.getID
-    // for taco in orderList:
-    //    create Taco_Order(order_id, taco.shell_id)
-    //    get Taco_Order id from ^
-    //    for ingredient in taco.ingredients:
-    //        create Taco_ing(taco_order id, ingredient id)
-  }
-
   componentDidMount() {
+    this.props.dispatch(
+      Actions.order.fetchEventOrders(this.props.location.query['event'])
+    );
+
+    //TODO change to mapState, dispatch
     const apiUrl = 'http://' + window.location.hostname + ':8000/v1';
     axios.get(apiUrl + '/ingredients').then(res => {
       let ingredients = res.data.map(ing => ing.ingredient);
@@ -75,7 +81,9 @@ export default class OrderBuilder extends Component {
   }
 
   render() {
+    //TODO replace this with correct data
     let shell = {id: 2, shell: 'soft'};
+
     return (
       <div>
         <IngredientsList
@@ -86,13 +94,26 @@ export default class OrderBuilder extends Component {
         <OrderContents
           orderList={this.state.orderList}
           handleSubmitOrder={this.handleSubmitOrder}
+          overwriteUser={this.props.currentUser}
+          handleDeleteTaco={taco => {
+            let orderList = this.state.orderList.filter(
+              o => o.orderId === taco.orderId
+            );
+            this.setState({orderList});
+          }}
         />
         <TacoModal
           title="Order Submitted!"
           showModal={this.state.showModal}
           close={this.closeModal}
         />
+        <OrderContents
+          orderList={this.props.currentEventData}
+          handleSubmitOrder={null}
+        />
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps)(OrderBuilder);
