@@ -1,4 +1,4 @@
-import {SET_CURRENT_USER} from './actions';
+import * as userActions from './actions';
 
 const initialState = {
   currentUser: 'Please Log in'
@@ -6,11 +6,23 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_CURRENT_USER:
+    case userActions.SET_CURRENT_USER:
       return {
         ...state,
         currentUser: action.user
       };
+    case userActions.GET_USERS_DATA:
+      return {
+        ...state,
+        users: [],
+        usersPending: true
+      };
+    case userActions.USERS_RETRIEVED:
+      return {
+        ...state,
+        users: action.users,
+        usersPending: false
+      }
     default:
       return state;
   }

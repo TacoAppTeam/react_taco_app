@@ -4,11 +4,10 @@ import {config} from '../../config';
 export const GET_EVENT_DATA = 'GET_EVENT_DATA';
 export const EVENTS_RETRIEVED = 'EVENTS_RETRIEVED';
 
-export const fetchEvents = () => {
-  // dispatch({
-  //     type: 'EVENTS_PENDING'
-  // });
+export const CREATE_EVENT = 'CREATE_EVENT';
+export const EVENT_CREATED = 'EVENT_CREATED';
 
+export const fetchEvents = () => {
   const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
 
   function getEventsFromAPI() {
@@ -30,6 +29,10 @@ export const fetchEvents = () => {
   }
 
   return function(dispatch) {
+    dispatch({
+      type: GET_EVENT_DATA,
+    })
+
     return getEventsFromAPI().then(events =>
       dispatch({
         type: EVENTS_RETRIEVED,
@@ -38,3 +41,27 @@ export const fetchEvents = () => {
     );
   };
 };
+
+export const createEvent = (formData) => {
+  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
+
+  function createEventPost() {
+    return axios.post(event_post_url, formData).then(res => {
+      console.log(res);
+      return res;
+    });
+  }
+
+  return function(dispatch) {
+    dispatch({
+      type: CREATE_EVENT
+    })
+
+    return createEventPost().then(res =>
+      dispatch({
+        type: EVENT_CREATED,
+        eventCreateResponse: res
+      })
+    )
+  }
+}
