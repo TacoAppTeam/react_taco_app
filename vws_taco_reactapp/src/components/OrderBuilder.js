@@ -4,6 +4,7 @@ import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
 import TacoModal from './TacoModal.js';
 import {connect} from 'react-redux';
+import Loader from 'react-loader';
 import {Actions} from '../store';
 
 import {config} from '../config.js';
@@ -11,7 +12,7 @@ import {match} from 'react-router/lib';
 
 const mapStateToProps = state => {
   return {
-    submitOrderPending: state.order.pending,
+    pending: state.order.pending,
     currentUser: state.user.currentUser,
     currentEventData: state.order.currentEventOrders
   };
@@ -23,20 +24,30 @@ class OrderBuilder extends Component {
     this.state = {
       ingredients: [],
       orderList: [],
-      event: {},
-      showModal: false
+      event: {}
     };
     this.handleAddTaco = this.handleAddTaco.bind(this);
     this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
   }
 
-  closeModal = () => {
-    this.setState({showModal: false, orderList: []});
-  };
+  deleteTaco(taco) {
+    if (this.props.currentUser !== taco.user) {
+      alert('NO YOU CANT YOU JUST CANT');
+      return;
+    }
+    let orderList = this.state.orderList.filter(
+      o => o.orderId !== taco.orderId
+    );
+    this.setState({orderList});
+  }
 
   handleSubmitOrder() {
     if (this.props.currentUser == 'Please Log in') {
       alert('Please log in before submitting an order!');
+      return;
+    }
+    if (!this.state.orderList.length) {
+      alert('Please put some tacos in the basket, I mean CMON!');
       return;
     }
     const newOrder = {
@@ -49,6 +60,10 @@ class OrderBuilder extends Component {
   }
 
   handleAddTaco(taco) {
+    if (this.props.currentUser === 'Please Log in') {
+      alert('YOU MUST log in or no tacos');
+      return;
+    }
     // set state with appended new taco
     let newState = this.state.orderList.slice();
     // TODO: increment count on duplicate
@@ -57,7 +72,8 @@ class OrderBuilder extends Component {
       desc: taco.desc,
       ingredientIDs: taco.ids,
       count: 1,
-      shell_id: taco.shell
+      shell_id: taco.shell,
+      user: this.props.currentUser
     });
     this.setState({orderList: newState});
   }
@@ -91,26 +107,18 @@ class OrderBuilder extends Component {
           ingredients={this.state.ingredients}
           handleAddTaco={this.handleAddTaco}
         />
-        <OrderContents
-          orderList={this.state.orderList}
-          handleSubmitOrder={this.handleSubmitOrder}
-          overwriteUser={this.props.currentUser}
-          handleDeleteTaco={taco => {
-            let orderList = this.state.orderList.filter(
-              o => o.orderId === taco.orderId
-            );
-            this.setState({orderList});
-          }}
-        />
-        <TacoModal
-          title="Order Submitted!"
-          showModal={this.state.showModal}
-          close={this.closeModal}
-        />
-        <OrderContents
-          orderList={this.props.currentEventData}
-          handleSubmitOrder={null}
-        />
+        <Loader loaded={!this.props.pending}>
+          <OrderContents
+            orderList={this.state.orderList}
+            handleSubmitOrder={this.handleSubmitOrder}
+            handleDeleteTaco={this.deleteTaco.bind(this)}
+          />
+          <OrderContents
+            orderList={this.props.currentEventData}
+            handleSubmitOrder={null}
+            handleDeleteTaco={this.deleteTaco.bind(this)}
+          />
+        </Loader>
       </div>
     );
   }

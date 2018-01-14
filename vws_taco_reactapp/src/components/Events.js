@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {browserHistory} from 'react-router';
-import DataGrid from 'react-datagrid';
 import {config} from '../config.js';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import {Actions} from '../store';
+import ReactDataGrid from 'react-data-grid';
+
+// const ReactDataGrid = require('react-data-grid');
 
 function mapStateToProps(state) {
   return {
@@ -70,27 +72,36 @@ class Events extends Component {
 
   render() {
     const columns = [
-      {name: 'date'},
-      {name: 'locationName'},
-      {name: 'firstName'},
-      {name: 'lastName'}
+      {key: 'date', name: 'date'},
+      {key: 'locationName', name: 'locationName'},
+      {key: 'firstName', name: 'firstName'},
+      {key: 'lastName', name: 'lastName'}
     ];
 
-    function handleRowClick(evt) {
-      browserHistory.push('/order-builder?event=' + this.data.id);
+    function handleRowClick(rowIndex) {
+      const row = this.props.eventData[rowIndex];
+      browserHistory.push('/order-builder?event=' + row.id);
+    }
+
+    function rowGetter(i) {
+      return this.props.eventData[i];
     }
 
     return (
       <div className="events">
         <h4>Upcoming Events</h4>
         <Loader loaded={this.state.loaded}>
-          <DataGrid
-            idProperty="id"
-            dataSource={this.props.eventData}
-            columns={columns}
-            rowProps={{onClick: handleRowClick}}
-          />
-          <button onClick={this.createEvent}>Create Event</button>
+          <div>
+            <ReactDataGrid
+              columns={columns}
+              rowGetter={rowGetter.bind(this)}
+              rowsCount={this.props.eventData ? this.props.eventData.length : 0}
+              onRowClick={handleRowClick.bind(this)}
+            />
+          </div>
+          <span>
+            <button onClick={this.createEvent}>Create Event</button>
+          </span>
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
             <EventForm
               users={this.state.users}

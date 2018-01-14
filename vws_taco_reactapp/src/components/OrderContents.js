@@ -20,9 +20,12 @@ export default class OrderContents extends Component {
             <ul>
               {this.props.orderList.map(order => (
                 <li>
-                  {order.desc} (from:
-                  {order.user || this.props.overwriteUser})
-                  <span onClick={() => this.props.handleDeleteTaco(order)}>
+                  {order.desc} (from: {order.user})
+                  <span
+                    onClick={() => {
+                      this.props.handleDeleteTaco(order);
+                    }}
+                  >
                     X
                   </span>
                 </li>
