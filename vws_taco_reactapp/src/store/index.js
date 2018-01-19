@@ -2,13 +2,21 @@ import {combineReducers, applyMiddleware, createStore} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import userReducer from './user/reducer';
 import eventReducer from './event/reducer';
+import orderReducer from './order/reducer';
 import locationReducer from './location/reducer';
+
 import * as userActions from './user/actions';
 import * as eventActions from './event/actions';
+import * as orderActions from './order/actions';
 import * as locationActions from './location/actions';
 
 // reducer name maps to state tree its responsible for
-const rootReducer = combineReducers({user: userReducer, event: eventReducer, location: locationReducer});
+const rootReducer = combineReducers({
+  user: userReducer,
+  event: eventReducer,
+  order: orderReducer,
+  location: locationReducer
+});
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export default store;
@@ -16,6 +24,7 @@ export default store;
 export const Actions = {
   user: userActions,
   event: eventActions,
+  order: orderActions,
   location: locationActions
 };
 

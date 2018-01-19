@@ -4,7 +4,6 @@ import routes from './routes';
 import {Router, browserHistory} from 'react-router';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import '../node_modules/react-datagrid/index.css';
 import {Provider} from 'react-redux';
 import store from './store';
 

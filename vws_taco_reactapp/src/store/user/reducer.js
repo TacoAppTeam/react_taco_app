@@ -1,7 +1,7 @@
 import * as userActions from './actions';
 
 const initialState = {
-  currentUser: 'Please Log in'
+  currentUser: 'cody.abney@viasat.com'
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         users: action.users,
         usersPending: false
-      }
+      };
     default:
       return state;
   }
