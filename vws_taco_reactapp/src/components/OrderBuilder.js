@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import IngredientsList from './IngredientsList';
 import OrderContents from './OrderContents';
 import {connect} from 'react-redux';
@@ -10,7 +9,8 @@ const mapStateToProps = state => {
   return {
     pending: state.order.pending,
     currentUser: state.user.currentUser,
-    currentEventData: state.order.currentEventOrders
+    currentEventData: state.order.currentEventOrders,
+    ingredients: state.ingredient.ingredients
   };
 };
 
@@ -18,7 +18,6 @@ class OrderBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingredients: [],
       orderList: [],
       event: {}
     };
@@ -82,18 +81,7 @@ class OrderBuilder extends Component {
     this.props.dispatch(
       Actions.order.fetchEventOrders(this.props.location.query['event'])
     );
-
-    //TODO change to mapState, dispatch
-    const apiUrl = 'http://' + window.location.hostname + ':8000/v1';
-    axios.get(apiUrl + '/ingredients').then(res => {
-      let ingredients = res.data.map(ing => ing.ingredient);
-      this.setState({ingredients: ingredients});
-    });
-
-    const eventId = this.props.location.query['event'];
-    axios
-      .get(apiUrl + '/event?id=' + eventId)
-      .then(res => this.setState({event: res.data}));
+    this.props.dispatch(Actions.ingredient.fetchIngredients());
   }
 
   render() {
@@ -104,7 +92,7 @@ class OrderBuilder extends Component {
       <div>
         <IngredientsList
           shell={shell}
-          ingredients={this.state.ingredients}
+          ingredients={this.props.ingredients}
           handleAddTaco={this.handleAddTaco}
         />
         <Loader loaded={!this.props.pending}>

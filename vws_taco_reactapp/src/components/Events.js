@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   return {
     eventData: state.event.eventData,
     eventsPending: state.event.eventsPending,
-    users: state.user.users,
+    users: state.user.list,
     usersPending: state.user.usersPending,
     locations: state.location.locations,
     locationsPending: state.location.locationsPending,

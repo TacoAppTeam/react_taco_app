@@ -1,7 +1,8 @@
 import * as userActions from './actions';
 
 const initialState = {
-  currentUser: 'cody.abney@viasat.com'
+  currentUser: 'cody.abney@viasat.com',
+  list: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,13 +15,12 @@ const reducer = (state = initialState, action) => {
     case userActions.GET_USERS_DATA:
       return {
         ...state,
-        users: [],
         usersPending: true
       };
     case userActions.USERS_RETRIEVED:
       return {
         ...state,
-        users: action.users,
+        list: action.list,
         usersPending: false
       };
     default:
