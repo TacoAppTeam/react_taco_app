@@ -1,6 +1,10 @@
 import * as eventActions from './actions';
 
-const initialState = {eventsPending: false, eventCreatePending: false};
+const initialState = {
+  eventsPending: false,
+  eventCreatePending: false,
+  eventData: []
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -30,7 +34,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         eventCreatePending: false,
         eventCreateResponse: action.eventCreateResponse
-      }
+      };
     default:
       return state;
   }

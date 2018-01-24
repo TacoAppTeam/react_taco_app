@@ -7,6 +7,8 @@ export const ADD_ORDER_PENDING = 'ADD_ORDER_PENDING';
 export const EVENT_ORDERS_RETRIEVED = 'EVENT_ORDERS_RETRIEVED';
 export const REMOVE_TACO_PENDING = 'REMOVE_TACO_PENDING';
 export const REMOVE_TACO = 'REMOVE_TACO';
+export const GET_USER_ORDER_DATA = 'GET_USER_ORDER_DATA';
+export const USER_ORDER_DATA_RETRIEVED = 'USER_ORDER_DATA_RETRIEVED';
 
 export const addNewOrder = newOrder => {
   function addOrderToAPI(data) {
@@ -80,6 +82,35 @@ export const fetchEventOrders = eventId => {
       dispatch({
         type: EVENT_ORDERS_RETRIEVED,
         eventOrders: res
+      })
+    );
+  };
+};
+
+export const fetchUserOrders = (eventId, userId) => {
+  function getUserOrders(eventId, userId) {
+    const order_url =
+      config.api_hostname +
+      ':' +
+      config.api_port +
+      '/v1/event_orders?event_id=' +
+      eventId +
+      '&user_id=' +
+      userId;
+    return axios.get(order_url).then(res => {
+      return formatOrders(res.data);
+    });
+  }
+
+  return function(dispatch) {
+    dispatch({
+      type: GET_USER_ORDER_DATA
+    });
+
+    return getUserOrders(eventId, userId).then(res =>
+      dispatch({
+        type: USER_ORDER_DATA_RETRIEVED,
+        userOrders: res
       })
     );
   };
