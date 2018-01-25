@@ -46,18 +46,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentEventOrders: action.eventOrders
       };
-    case actions.GET_USER_ORDER_DATA:
-      return {
-        ...state,
-        currentUserOrders: [],
-        getUserOrdersPending: true
-      };
-    case actions.USER_ORDER_DATA_RETRIEVED:
-      return {
-        ...state,
-        currentUserOrders: action.userOrders,
-        getUserOrdersPending: false
-      };
     default:
       return state;
   }

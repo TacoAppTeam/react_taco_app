@@ -7,8 +7,6 @@ export const ADD_ORDER_PENDING = 'ADD_ORDER_PENDING';
 export const EVENT_ORDERS_RETRIEVED = 'EVENT_ORDERS_RETRIEVED';
 export const REMOVE_TACO_PENDING = 'REMOVE_TACO_PENDING';
 export const REMOVE_TACO = 'REMOVE_TACO';
-export const GET_USER_ORDER_DATA = 'GET_USER_ORDER_DATA';
-export const USER_ORDER_DATA_RETRIEVED = 'USER_ORDER_DATA_RETRIEVED';
 
 export const addNewOrder = newOrder => {
   function addOrderToAPI(data) {
