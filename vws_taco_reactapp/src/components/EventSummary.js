@@ -11,8 +11,6 @@ function mapStateToProps(state) {
     currentUser: state.user.currentUser,
     eventOrderList: state.order.currentEventOrders,
     eventOrderListPending: state.order.pending,
-    userOrderList: state.order.currentUserOrders,
-    userOrderListPending: state.order.getUserOrdersPending,
     eventData: state.event.eventData,
     eventsPending: state.event.eventsPending
   };
@@ -37,7 +35,6 @@ class EventSummary extends Component {
   };
 
   closeModal = () => {
-    this.getOrders();
     this.setState({showModal: false});
   };
 
@@ -50,17 +47,12 @@ class EventSummary extends Component {
     this.props.dispatch(Actions.order.removeTaco(taco.data.taco_order_id));
   };
 
-  getOrders = () => {
-    this.props.dispatch(
-      Actions.order.fetchUserOrders(
-        this.props.location.query['event'],
-        this.props.currentUser
-      )
-    );
+  getUserEvents = () => {
+    let user = this.props.currentUser;
 
-    this.props.dispatch(
-      Actions.order.fetchEventOrders(this.props.location.query['event'])
-    );
+    return this.props.eventOrderList.filter(function(order) {
+      return order.user === user;
+    });
   };
 
   componentDidMount() {
@@ -68,7 +60,9 @@ class EventSummary extends Component {
       Actions.event.fetchEvents(this.props.location.query['event'])
     );
 
-    this.getOrders();
+    this.props.dispatch(
+      Actions.order.fetchEventOrders(this.props.location.query['event'])
+    );
   }
 
   render() {
@@ -86,7 +80,7 @@ class EventSummary extends Component {
           <OrderContents orderList={this.props.eventOrderList} />
           <h3>User orders</h3>
           <OrderContents
-            orderList={this.props.userOrderList}
+            orderList={this.getUserEvents()}
             handleDeleteTaco={this.deleteTaco}
           />
           <button onClick={this.openModal}>Order Tacos</button>
