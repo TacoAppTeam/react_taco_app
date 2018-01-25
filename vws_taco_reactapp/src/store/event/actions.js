@@ -8,7 +8,7 @@ export const CREATE_EVENT = 'CREATE_EVENT';
 export const EVENT_CREATED = 'EVENT_CREATED';
 
 export const fetchEvents = () => {
-  let event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
+  const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
 
   function getEventsFromAPI() {
     return axios.get(event_url).then(res => {
