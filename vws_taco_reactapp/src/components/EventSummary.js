@@ -68,11 +68,7 @@ class EventSummary extends Component {
   render() {
     return (
       <Loader
-        loaded={
-          !this.props.eventOrderListPending &&
-          !this.props.userOrderListPending &&
-          !this.props.eventsPending
-        }
+        loaded={!this.props.eventOrderListPending && !this.props.eventsPending}
       >
         <div className="eventSummary">
           <h2>Date of Event: {this.getEventDate()}</h2>
