@@ -22,9 +22,26 @@ class EventSummary extends Component {
     this.state = {showModal: false};
   }
 
+  getEventData = () => {
+    let eventData = {};
+    let eventId = parseInt(this.props.location.query['event']);
+
+    eventData = this.props.eventData.find(function(event) {
+      return event.id === eventId;
+    });
+
+    if (eventData) {
+      return eventData;
+    }
+
+    return {};
+  };
+
   getEventDate = () => {
-    if (this.props.eventData.length) {
-      return this.props.eventData[0].date;
+    let eventData = this.getEventData();
+
+    if (Object.keys(eventData).length) {
+      return eventData.date;
     }
 
     return '';
@@ -56,9 +73,7 @@ class EventSummary extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(
-      Actions.event.fetchEvents(this.props.location.query['event'])
-    );
+    this.props.dispatch(Actions.event.fetchEvents());
 
     this.props.dispatch(
       Actions.order.fetchEventOrders(this.props.location.query['event'])

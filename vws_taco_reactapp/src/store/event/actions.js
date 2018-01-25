@@ -7,12 +7,8 @@ export const EVENTS_RETRIEVED = 'EVENTS_RETRIEVED';
 export const CREATE_EVENT = 'CREATE_EVENT';
 export const EVENT_CREATED = 'EVENT_CREATED';
 
-export const fetchEvents = event_id => {
+export const fetchEvents = () => {
   let event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
-
-  if (event_id) {
-    event_url += '?event_id=' + event_id;
-  }
 
   function getEventsFromAPI() {
     return axios.get(event_url).then(res => {
@@ -28,7 +24,6 @@ export const fetchEvents = event_id => {
         eventData.push(event);
       }
 
-      console.log(eventData);
       return eventData;
     });
   }
@@ -53,7 +48,6 @@ export const createEvent = formData => {
 
   function createEventPost() {
     return axios.post(event_post_url, formData).then(res => {
-      console.log(res);
       return res;
     });
   }
