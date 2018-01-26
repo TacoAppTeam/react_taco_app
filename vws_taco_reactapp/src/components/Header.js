@@ -46,7 +46,11 @@ class Header extends Component {
           <div className="container-fluid">
             <ul className="nav navbar-nav">
               <li>
-                <a>{this.props.currentUser || 'Please Log In'}</a>
+                <a>
+                  {this.props.currentUser
+                    ? `Hello, ${this.props.currentUser.first_name}`
+                    : 'Please Log In'}
+                </a>
               </li>
               <li>
                 <Link to={'/'}>Events</Link>

@@ -22,12 +22,15 @@ export const addNewOrder = newOrder => {
       type: ADD_ORDER_PENDING
     });
     return addOrderToAPI(newOrder).then(res => {
+      newOrder.orderList = newOrder.orderList.map(order => {
+        return (order.data = order);
+      });
       dispatch({
         type: ADD_NEW_ORDER,
         newOrder: {
           user_id: newOrder.user_id,
           event: newOrder.event,
-          orderList: formatOrders(res.data)
+          orderList: newOrder.orderList
         }
       });
     });

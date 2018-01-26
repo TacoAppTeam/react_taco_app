@@ -125,7 +125,7 @@ def submit_order(body):
         order = Order()
         new_order = session.merge(order)
         new_order.user_id = user_id
-        new_order.event_id = event.get('id')
+        new_order.event_id = event
         new_order.payment_amount = 0
         new_order.order_amount = 0
 

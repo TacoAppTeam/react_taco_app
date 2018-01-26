@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {Actions} from '../store';
+import Loader from 'react-loader';
 
 function mapStateToProps(state) {
   return {
@@ -15,16 +18,19 @@ class LoginBody extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: []
+      selectedUser: null
     };
   }
-
   onSubmit = () => {
     this.props.dispatch({
       type: Actions.user.SET_CURRENT_USER,
-      user: ReactDOM.findDOMNode(this.userSelect).value
+      user: this.state.selectedUser
     });
     this.props.onSubmit();
+  };
+
+  changeUser = (evt, idx, val) => {
+    this.setState({selectedUser: val});
   };
 
   componentDidMount() {
@@ -32,32 +38,30 @@ class LoginBody extends Component {
   }
 
   render = () => {
-    let userSelects = [];
-
-    for (let i = 0; i < this.prop.users.length; i++) {
-      let user = this.prop.users[i];
-      userSelects.push(<option value={user}>{user}</option>);
-    }
-
     return (
-      <form onSubmit={this.onSubmit}>
-        <FormGroup controlId="userSelect">
-          <ControlLabel>User</ControlLabel>
-          <FormControl
-            componentClass="select"
-            placeholder="select"
-            ref={select => {
-              this.userSelect = select;
-            }}
+      <Loader loaded={!this.props.usersPending}>
+        <form onSubmit={this.onSubmit}>
+          <SelectField
+            floatingLabelText="User"
+            value={this.state.selectedUser}
+            onChange={this.changeUser}
           >
-            {userSelects}
-          </FormControl>
-        </FormGroup>
+            <MenuItem value={null} primaryText="" />
+            {this.props.users.map(user => (
+              <MenuItem
+                value={user}
+                primaryText={user.first_name + ' ' + user.last_name}
+              />
+            ))}
+          </SelectField>
 
-        <Button bsStyle="primary" onClick={this.onSubmit}>
-          Submit
-        </Button>
-      </form>
+          <FlatButton
+            label="Submit"
+            bsStyle="primary"
+            onClick={this.onSubmit.bind(this)}
+          />
+        </form>
+      </Loader>
     );
   };
 }

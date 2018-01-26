@@ -19,14 +19,14 @@ class OrderBuilder extends Component {
     super(props);
     this.state = {
       orderList: [],
-      event: {}
+      eventId: null
     };
     this.handleAddTaco = this.handleAddTaco.bind(this);
     this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
   }
 
   deleteTaco(taco) {
-    if (this.props.currentUser !== taco.user) {
+    if (this.props.currentUser.email !== taco.user) {
       alert('NO YOU CANT YOU JUST CANT');
       return;
     }
@@ -41,7 +41,7 @@ class OrderBuilder extends Component {
   }
 
   handleSubmitOrder() {
-    if (this.props.currentUser === 'Please Log in') {
+    if (!this.props.currentUser) {
       alert('Please log in before submitting an order!');
       return;
     }
@@ -50,8 +50,8 @@ class OrderBuilder extends Component {
       return;
     }
     const newOrder = {
-      user_id: this.props.currentUser, // TODO: not hardcode this
-      event: this.state.event,
+      user_id: this.props.currentUser.email, // TODO: not hardcode this
+      event: this.state.eventId,
       orderList: this.state.orderList
     };
     this.props.dispatch(Actions.order.addNewOrder(newOrder));
@@ -59,7 +59,7 @@ class OrderBuilder extends Component {
   }
 
   handleAddTaco(taco) {
-    if (this.props.currentUser === 'Please Log in') {
+    if (!this.props.currentUser) {
       alert('YOU MUST log in or no tacos');
       return;
     }
@@ -72,15 +72,15 @@ class OrderBuilder extends Component {
       ingredientIDs: taco.ids,
       count: 1,
       shell_id: taco.shell,
-      user: this.props.currentUser
+      user: this.props.currentUser.email
     });
     this.setState({orderList: newState});
   }
 
   componentDidMount() {
-    this.props.dispatch(
-      Actions.order.fetchEventOrders(this.props.location.query['event'])
-    );
+    const id = this.props.location.query['event'];
+    this.setState({eventId: id});
+    this.props.dispatch(Actions.order.fetchEventOrders(id));
     this.props.dispatch(Actions.ingredient.fetchIngredients());
   }
 

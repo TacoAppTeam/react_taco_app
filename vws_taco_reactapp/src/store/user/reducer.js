@@ -1,7 +1,7 @@
 import * as userActions from './actions';
 
 const initialState = {
-  currentUser: 'cody.abney@viasat.com',
+  currentUser: null,
   list: []
 };
 

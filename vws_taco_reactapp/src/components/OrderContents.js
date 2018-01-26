@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Button} from 'react-bootstrap';
 
 export default class OrderContents extends Component {
   submitOrder = event => {
@@ -21,13 +22,13 @@ export default class OrderContents extends Component {
               {this.props.orderList.map(order => (
                 <li>
                   {order.desc} (from: {order.user})
-                  <span
+                  <Button
                     onClick={() => {
                       this.props.handleDeleteTaco(order);
                     }}
                   >
                     X
-                  </span>
+                  </Button>
                 </li>
               ))}
             </ul>
