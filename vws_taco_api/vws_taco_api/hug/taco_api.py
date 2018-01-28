@@ -24,14 +24,18 @@ def with_other_apis():
 
 
 @hug.get(requires=cors_support)
-def events():
+def events(event_id: hug.types.number=0):
     events = []
 
     session = db.create_session()
-    query_result = session.query(Event, User, Location)\
+    query = session.query(Event, User, Location)\
                           .join(User, Event.user_id == User.email)\
-                          .join(Location, Event.location_id == Location.id)\
-                          .all()
+                          .join(Location, Event.location_id == Location.id)
+
+    if event_id:
+        query = query.filter(Event.id == event_id)
+
+    query_result = query.all()
 
     if not query_result:
         return []
@@ -73,7 +77,7 @@ def ingredients():
 
 
 @hug.get(requires=cors_support, output=hug.output_format.json)
-def event_orders(event_id: hug.types.number, user_id=None):
+def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
     orders = []
 
     session = db.create_session()
@@ -82,6 +86,7 @@ def event_orders(event_id: hug.types.number, user_id=None):
                           .join(Taco_Ingredient, Taco_Order.id == Taco_Ingredient.order_id)\
                           .join(Ingredient, Taco_Ingredient.ingredient_id == Ingredient.id)\
                           .filter(Order.event_id == event_id)
+
     if user_id:
         query_result.filter(Order.user_id == user_id)
 
@@ -114,7 +119,7 @@ def submit_order():
 @hug.post(requires=cors_support)
 def submit_order(body):
     user_id = body.get('user_id')
-    event = body.get('event')
+    event_id = body.get('eventId')
     orderList = body.get('orderList')
 
     respList = []
@@ -125,7 +130,7 @@ def submit_order(body):
         order = Order()
         new_order = session.merge(order)
         new_order.user_id = user_id
-        new_order.event_id = event
+        new_order.event_id = event_id
         new_order.payment_amount = 0
         new_order.order_amount = 0
 

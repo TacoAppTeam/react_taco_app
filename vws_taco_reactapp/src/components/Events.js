@@ -68,7 +68,7 @@ class Events extends Component {
 
     function handleRowClick(rowIndex) {
       const row = this.props.eventData[rowIndex];
-      browserHistory.push('/order-builder?event=' + row.id);
+      browserHistory.push('/event-summary?event=' + row.id);
     }
 
     function rowGetter(i) {

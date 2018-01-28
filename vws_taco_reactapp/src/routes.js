@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import Home from './components/Home';
 import Login from './components/Login';
+import EventSummary from './components/EventSummary';
 import OrderBuilder from './components/OrderBuilder';
 import PageNotFound from './components/PageNotFound';
 
@@ -22,7 +23,10 @@ const routes = {
       path: '/order-builder',
       component: OrderBuilder
     },
-
+    {
+      path: '/event-summary',
+      component: EventSummary
+    },
     {
       path: '*',
       component: PageNotFound

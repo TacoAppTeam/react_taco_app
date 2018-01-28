@@ -30,8 +30,8 @@ export const fetchEvents = () => {
 
   return function(dispatch) {
     dispatch({
-      type: GET_EVENT_DATA,
-    })
+      type: GET_EVENT_DATA
+    });
 
     return getEventsFromAPI().then(events =>
       dispatch({
@@ -42,12 +42,12 @@ export const fetchEvents = () => {
   };
 };
 
-export const createEvent = (formData) => {
-  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
+export const createEvent = formData => {
+  const event_post_url =
+    config.api_hostname + ':' + config.api_port + '/v1/event';
 
   function createEventPost() {
     return axios.post(event_post_url, formData).then(res => {
-      console.log(res);
       return res;
     });
   }
@@ -55,13 +55,13 @@ export const createEvent = (formData) => {
   return function(dispatch) {
     dispatch({
       type: CREATE_EVENT
-    })
+    });
 
     return createEventPost().then(res =>
       dispatch({
         type: EVENT_CREATED,
         eventCreateResponse: res
       })
-    )
-  }
-}
+    );
+  };
+};

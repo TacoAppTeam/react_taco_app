@@ -9,7 +9,6 @@ const mapStateToProps = state => {
   return {
     pending: state.order.pending,
     currentUser: state.user.currentUser,
-    currentEventData: state.order.currentEventOrders,
     ingredients: state.ingredient.ingredients
   };
 };
@@ -18,8 +17,7 @@ class OrderBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderList: [],
-      eventId: null
+      orderList: []
     };
     this.handleAddTaco = this.handleAddTaco.bind(this);
     this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
@@ -30,14 +28,11 @@ class OrderBuilder extends Component {
       alert('NO YOU CANT YOU JUST CANT');
       return;
     }
-    if (taco.data) {
-      this.props.dispatch(Actions.order.removeTaco(taco.data.taco_order_id));
-    } else {
-      let orderList = this.state.orderList.filter(
-        o => o.orderId !== taco.orderId
-      );
-      this.setState({orderList});
-    }
+
+    let orderList = this.state.orderList.filter(
+      o => o.orderId !== taco.orderId
+    );
+    this.setState({orderList});
   }
 
   handleSubmitOrder() {
@@ -50,12 +45,16 @@ class OrderBuilder extends Component {
       return;
     }
     const newOrder = {
-      user_id: this.props.currentUser.email, // TODO: not hardcode this
-      event: this.state.eventId,
+      user_id: this.props.currentUser,
+      eventId: this.props.eventId,
       orderList: this.state.orderList
     };
     this.props.dispatch(Actions.order.addNewOrder(newOrder));
     this.setState({orderList: []});
+
+    if (this.props.submitOrderFinished) {
+      this.props.submitOrderFinished();
+    }
   }
 
   handleAddTaco(taco) {
@@ -78,9 +77,6 @@ class OrderBuilder extends Component {
   }
 
   componentDidMount() {
-    const id = this.props.location.query['event'];
-    this.setState({eventId: id});
-    this.props.dispatch(Actions.order.fetchEventOrders(id));
     this.props.dispatch(Actions.ingredient.fetchIngredients());
   }
 
@@ -99,11 +95,6 @@ class OrderBuilder extends Component {
           <OrderContents
             orderList={this.state.orderList}
             handleSubmitOrder={this.handleSubmitOrder}
-            handleDeleteTaco={this.deleteTaco.bind(this)}
-          />
-          <OrderContents
-            orderList={this.props.currentEventData}
-            handleSubmitOrder={null}
             handleDeleteTaco={this.deleteTaco.bind(this)}
           />
         </Loader>

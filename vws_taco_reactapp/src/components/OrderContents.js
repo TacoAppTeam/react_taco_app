@@ -22,13 +22,15 @@ export default class OrderContents extends Component {
               {this.props.orderList.map(order => (
                 <li>
                   {order.desc} (from: {order.user})
-                  <Button
-                    onClick={() => {
-                      this.props.handleDeleteTaco(order);
-                    }}
-                  >
-                    X
-                  </Button>
+                  {this.props.handleDeleteTaco ? (
+                    <span
+                      onClick={() => {
+                        this.props.handleDeleteTaco(order);
+                      }}
+                    >
+                      X
+                    </span>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -44,7 +46,4 @@ export default class OrderContents extends Component {
   }
 }
 
-OrderContents.propTypes = {
-  handleSubmitOrder: PropTypes.func.isRequired,
-  handleDeleteTaco: PropTypes.func.isRequired
-};
+OrderContents.propTypes = {};
