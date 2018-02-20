@@ -29,8 +29,8 @@ def events(event_id: hug.types.number=0):
 
     session = db.create_session()
     query = session.query(Event, User, Location)\
-                          .join(User, Event.user_id == User.email)\
-                          .join(Location, Event.location_id == Location.id)
+        .join(User, Event.user_id == User.email)\
+        .join(Location, Event.location_id == Location.id)
 
     if event_id:
         query = query.filter(Event.id == event_id)
@@ -122,6 +122,8 @@ def submit_order(body):
     event_id = body.get('eventId')
     orderList = body.get('orderList')
 
+    print('Got them params - eventid: %s' % event_id)
+
     respList = []
 
     try:
@@ -139,6 +141,8 @@ def submit_order(body):
         session.flush()     # Commits and flushes
         order_id = new_order.id
         session.close()
+
+        print('first order added *&******')
 
         for taco in orderList:
             session = db.create_session()

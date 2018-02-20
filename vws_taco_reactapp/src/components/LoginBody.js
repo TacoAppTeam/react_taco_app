@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {Actions} from '../store';
@@ -55,11 +55,13 @@ class LoginBody extends Component {
             ))}
           </SelectField>
 
-          <FlatButton
-            label="Submit"
-            bsStyle="primary"
-            onClick={this.onSubmit.bind(this)}
-          />
+          <div>
+            <RaisedButton
+              label="Submit"
+              primary
+              onClick={this.onSubmit.bind(this)}
+            />
+          </div>
         </form>
       </Loader>
     );
