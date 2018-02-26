@@ -7,7 +7,14 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case userActions.LOGIN_PENDING:
+      return {
+        ...state,
+        loginPending: true,
+        currentUser: null
+      };
     case userActions.SET_CURRENT_USER:
+      localStorage.setItem('user', action.user);
       return {
         ...state,
         currentUser: action.user

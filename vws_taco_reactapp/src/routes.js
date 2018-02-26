@@ -1,10 +1,3 @@
-import Header from './components/Header';
-import Home from './components/Home';
-import Login from './components/Login';
-import EventSummary from './components/EventSummary';
-import OrderBuilder from './components/OrderBuilder';
-import PageNotFound from './components/PageNotFound';
-
 const routes = {
   // Header component (wrapper for the whole application)
   component: Header,

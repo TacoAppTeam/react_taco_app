@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const formatOrders = function(orders) {
   let flattenedOrders = [];
   for (let i = 0; i < orders.length; i++) {
@@ -10,4 +12,12 @@ export const formatOrders = function(orders) {
     flattenedOrders[i].data = order;
   }
   return flattenedOrders;
+};
+
+export const dateFormat = function(props) {
+  const value = props && (props.value || props);
+  if (value) {
+    return <div>{new Date(value).toLocaleDateString()}</div>;
+  }
+  return <div />;
 };

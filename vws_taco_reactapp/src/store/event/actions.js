@@ -43,8 +43,7 @@ export const fetchEvents = () => {
 };
 
 export const createEvent = formData => {
-  const event_post_url =
-    config.api_hostname + ':' + config.api_port + '/v1/event';
+  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
 
   function createEventPost() {
     return axios.post(event_post_url, formData).then(res => {

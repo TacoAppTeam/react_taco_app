@@ -2,27 +2,29 @@
 import db
 import hug
 
-from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
+from vws_taco_api.vws_taco_api.utils import Auth
 
 
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
 
 
-@hug.get(requires=cors_support)
+auth_hug = Auth.auth_hug
+
+@auth_hug.get()
 def event(id: hug.types.number):
     session = db.create_session()
     result = session.query(Event).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def event():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def event(body):
     try:
         session = db.create_session()
@@ -48,19 +50,19 @@ def event(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def ingredient(id: hug.types.number):
     session = db.create_session()
     result = session.query(Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def ingredient():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def ingredient(body):
     try:
         session = db.create_session()
@@ -86,19 +88,19 @@ def ingredient(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def location(id: hug.types.number):
     session = db.create_session()
     result = session.query(Location).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def location():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def location(body):
     try:
         session = db.create_session()
@@ -128,19 +130,19 @@ def location(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def order(id: hug.types.number):
     session = db.create_session()
     result = session.query(Order).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def order():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def order(body):
     try:
         session = db.create_session()
@@ -167,19 +169,19 @@ def order(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def taco_ingredient(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def taco_ingredient():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def taco_ingredient(body):
     try:
         session = db.create_session()
@@ -204,19 +206,19 @@ def taco_ingredient(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def taco_order(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Order).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def taco_order():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def taco_order(body):
     try:
         session = db.create_session()
@@ -241,19 +243,19 @@ def taco_order(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def taco_shell(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Shell).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def taco_shell():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def taco_shell(body):
     try:
         session = db.create_session()
@@ -277,19 +279,19 @@ def taco_shell(body):
 
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get()
 def user(id: hug.types.number):
     session = db.create_session()
     result = session.query(User).get(id)
     return result.as_dict() if result else {}
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options()
 def user():
     return
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post()
 def user(body):
     try:
         session = db.create_session()

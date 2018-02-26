@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {browserHistory} from 'react-router';
 import TacoModal from './TacoModal.js';
 import EventForm from './EventForm.js';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import {Actions} from '../store';
-import ReactDataGrid from 'react-data-grid';
-
-// const ReactDataGrid = require('react-data-grid');
+import EventGrid from './EventGrid.js';
+import {dateFormat} from '../utils/format';
 
 function mapStateToProps(state) {
   return {
@@ -29,7 +27,8 @@ class Events extends Component {
       showModal: false,
       users: [],
       locations: [],
-      loaded: false
+      loaded: false,
+      originalRows: []
     };
   }
 
@@ -60,39 +59,25 @@ class Events extends Component {
 
   render() {
     const columns = [
-      {key: 'date', name: 'date'},
+      {
+        key: 'date',
+        name: 'date',
+        formatter: dateFormat
+      },
       {key: 'locationName', name: 'locationName'},
       {key: 'firstName', name: 'firstName'},
       {key: 'lastName', name: 'lastName'}
     ];
-
-    function handleRowClick(rowIndex) {
-      const row = this.props.eventData[rowIndex];
-      browserHistory.push('/event-summary?event=' + row.id);
-    }
-
-    function rowGetter(i) {
-      return this.props.eventData[i];
-    }
 
     return (
       <div className="events">
         <h4>Upcoming Events</h4>
         <Loader
           loaded={
-            !this.props.eventsPending &&
-            !this.props.locationsPending &&
-            !this.props.usersPending
+            !this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending
           }
         >
-          <div>
-            <ReactDataGrid
-              columns={columns}
-              rowGetter={rowGetter.bind(this)}
-              rowsCount={this.props.eventData ? this.props.eventData.length : 0}
-              onRowClick={handleRowClick.bind(this)}
-            />
-          </div>
+          <EventGrid columns={columns} eventData={this.props.eventData} />
           <span>
             <button onClick={this.createEvent}>Create Event</button>
           </span>

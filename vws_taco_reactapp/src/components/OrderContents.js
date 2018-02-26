@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
 
 export default class OrderContents extends Component {
   submitOrder = event => {
@@ -34,9 +32,7 @@ export default class OrderContents extends Component {
                 </li>
               ))}
             </ul>
-            {this.props.handleSubmitOrder ? (
-              <input type="submit" value="Sounds Tasty! ®" />
-            ) : null}
+            {this.props.handleSubmitOrder ? <input type="submit" value="Sounds Tasty! ®" /> : null}
           </form>
         ) : (
           <div>NO ORDERS YET!!!</div>

@@ -65,9 +65,7 @@ export default class EventForm extends Component {
 
     for (let j = 0; j < this.props.locations.length; j++) {
       let location = this.props.locations[j];
-      locationSelects.push(
-        <option value={location.id}>{location.name}</option>
-      );
+      locationSelects.push(<option value={location.id}>{location.name}</option>);
     }
 
     return (

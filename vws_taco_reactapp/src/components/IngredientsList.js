@@ -36,18 +36,9 @@ class IngredientsList extends Component {
             const ingredient = item.ingredient;
             return (
               <div>
-                <input
-                  type="checkbox"
-                  name="taco"
-                  id={ingredient.id}
-                  value={ingredient.name}
-                />
+                <input type="checkbox" name="taco" id={ingredient.id} value={ingredient.name} />
                 <span>
-                  {ingredient.name +
-                    ' - ' +
-                    ingredient.description +
-                    ' - $' +
-                    ingredient.price}
+                  {ingredient.name + ' - ' + ingredient.description + ' - $' + ingredient.price}
                 </span>
               </div>
             );

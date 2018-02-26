@@ -29,9 +29,7 @@ class OrderBuilder extends Component {
       return;
     }
 
-    let orderList = this.state.orderList.filter(
-      o => o.orderId !== taco.orderId
-    );
+    let orderList = this.state.orderList.filter(o => o.orderId !== taco.orderId);
     this.setState({orderList});
   }
 
