@@ -22,14 +22,18 @@ class App extends React.Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <Header>
-            <Router history={browserHistory}>
-              (localStorage.getItem('user') ?
-              <Route component={Home} path="/" />
-              <Route component={Login} path="/login" />
-              <Route component={EventSummary} path="/events" />
-              <Route component={PageNotFound} path="*" />
-              : <Route component={Login} path="*" />)
-            </Router>
+            {localStorage.getItem('user') ? (
+              <Router history={browserHistory}>
+                <Route component={Home} path="/" />
+                <Route component={Login} path="/login" />
+                <Route component={EventSummary} path="/events" />
+                <Route component={PageNotFound} path="*" />
+              </Router>
+            ) : (
+              <Router history={browserHistory}>
+                <Route component={Login} path="*" />
+              </Router>
+            )}
           </Header>
         </MuiThemeProvider>
       </Provider>

@@ -7,7 +7,7 @@ export const INGREDIENTS_RECEIVED = 'INGREDIENTS_RECEIVED';
 export const fetchIngredients = () => {
   function getIngredients() {
     const url = config.api_hostname + ':' + config.api_port + '/v1/ingredients';
-    return axios.get(url).then(res => {
+    return axios.get(url, null, {Authorization: localStorage.getItem('user')}).then(res => {
       return res.data;
     });
   }

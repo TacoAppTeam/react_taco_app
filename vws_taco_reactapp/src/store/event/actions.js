@@ -11,7 +11,7 @@ export const fetchEvents = () => {
   const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
 
   function getEventsFromAPI() {
-    return axios.get(event_url).then(res => {
+    return axios.get(event_url, null, {Authorization: localStorage.getItem('user')}).then(res => {
       const eventData = [];
 
       for (let data of res.data) {
@@ -46,9 +46,13 @@ export const createEvent = formData => {
   const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
 
   function createEventPost() {
-    return axios.post(event_post_url, formData).then(res => {
-      return res;
-    });
+    return axios
+      .post(event_post_url, formData, {
+        Authorization: localStorage.getItem('user')
+      })
+      .then(res => {
+        return res;
+      });
   }
 
   return function(dispatch) {

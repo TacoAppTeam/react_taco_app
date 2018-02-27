@@ -8,9 +8,11 @@ export const fetchLocations = () => {
   const locations_url = config.api_hostname + ':' + config.api_port + '/v1/locations';
 
   function getLocationsFromAPI() {
-    return axios.get(locations_url).then(res => {
-      return res.data;
-    });
+    return axios
+      .get(locations_url, null, {Authorization: localStorage.getItem('user')})
+      .then(res => {
+        return res.data;
+      });
   }
 
   return function(dispatch) {

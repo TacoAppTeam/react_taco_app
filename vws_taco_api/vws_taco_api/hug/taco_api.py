@@ -7,7 +7,7 @@ import logging
 
 from vws_taco_api.vws_taco_api.models import *
 from vws_taco_api.vws_taco_api.utils import Auth
-from hug_middleware_cors import CORSMiddleware
+from cors import cors_support
 
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -17,11 +17,14 @@ logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 auth_hug = Auth.auth_hug
 
-api = hug.API(__name__)
-api.http.add_middleware(CORSMiddleware(api))
+
+@hug.options(requires=cors_support)
+def token_generation():
+    print('calling them options')
+    return 200
 
 
-@hug.post()
+@hug.post(requires=cors_support)
 def token_generation(username, password):
     """ Authenticate and return a token"""
     print('+++++++++++++++++++IN CALL')
@@ -49,7 +52,7 @@ def with_other_apis():
 # These can reuse the existing base api, and/or use the models
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def events(event_id: hug.types.number=0):
     events = []
 
@@ -220,7 +223,7 @@ def submit_order(body):
         raise Error
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def users():
     users = []
 
@@ -236,7 +239,7 @@ def users():
     return users
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def locations():
     locations = []
 

@@ -14,7 +14,8 @@ const reducer = (state = initialState, action) => {
         currentUser: null
       };
     case userActions.SET_CURRENT_USER:
-      localStorage.setItem('user', action.user);
+      localStorage.setItem('user', action.token);
+
       return {
         ...state,
         currentUser: action.user
