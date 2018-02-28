@@ -4,6 +4,7 @@ import hug
 
 from vws_taco_api.vws_taco_api.models import *
 from vws_taco_api.vws_taco_api.utils import Auth
+from cors import cors_support
 
 
 """Taco API Module."""
@@ -12,19 +13,19 @@ from vws_taco_api.vws_taco_api.utils import Auth
 
 auth_hug = Auth.auth_hug
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def event(id: hug.types.number):
     session = db.create_session()
     result = session.query(Event).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def event():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def event(body):
     try:
         session = db.create_session()
@@ -50,19 +51,19 @@ def event(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def ingredient(id: hug.types.number):
     session = db.create_session()
     result = session.query(Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def ingredient():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def ingredient(body):
     try:
         session = db.create_session()
@@ -88,19 +89,19 @@ def ingredient(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def location(id: hug.types.number):
     session = db.create_session()
     result = session.query(Location).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def location():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def location(body):
     try:
         session = db.create_session()
@@ -130,19 +131,19 @@ def location(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def order(id: hug.types.number):
     session = db.create_session()
     result = session.query(Order).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def order():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def order(body):
     try:
         session = db.create_session()
@@ -169,19 +170,19 @@ def order(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def taco_ingredient(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Ingredient).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def taco_ingredient():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def taco_ingredient(body):
     try:
         session = db.create_session()
@@ -206,19 +207,19 @@ def taco_ingredient(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def taco_order(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Order).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def taco_order():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def taco_order(body):
     try:
         session = db.create_session()
@@ -243,19 +244,19 @@ def taco_order(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def taco_shell(id: hug.types.number):
     session = db.create_session()
     result = session.query(Taco_Shell).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def taco_shell():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def taco_shell(body):
     try:
         session = db.create_session()
@@ -279,19 +280,19 @@ def taco_shell(body):
 
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def user(id: hug.types.number):
     session = db.create_session()
     result = session.query(User).get(id)
     return result.as_dict() if result else {}
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def user():
     return
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def user(body):
     try:
         session = db.create_session()

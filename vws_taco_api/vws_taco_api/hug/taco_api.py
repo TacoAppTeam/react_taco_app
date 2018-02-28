@@ -84,7 +84,7 @@ def events(event_id: hug.types.number=0):
     return events
 
 
-@auth_hug.get()
+@auth_hug.get(requires=cors_support)
 def ingredients():
     ingredients = []
 
@@ -105,7 +105,7 @@ def ingredients():
     return ingredients
 
 
-@auth_hug.get(output=hug.output_format.json)
+@auth_hug.get(output=hug.output_format.json, requires=cors_support)
 def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
     orders = []
 
@@ -142,13 +142,13 @@ def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
     return orders
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def submit_order():
     print('calling them options')
     return 200
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def submit_order(body):
     user_id = body.get('user_id').get('email')
     event_id = body.get('eventId')
@@ -255,13 +255,13 @@ def locations():
     return locations
 
 
-@auth_hug.options()
+@auth_hug.options(requires=cors_support)
 def removeTaco():
     print('calling them options')
     return 200
 
 
-@auth_hug.post()
+@auth_hug.post(requires=cors_support)
 def removeTaco(body):
     taco_id = body.get('taco_order_id')
 

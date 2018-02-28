@@ -78,6 +78,7 @@ def create_models_py(table_data):
         target.write("from sqlalchemy.types import *\n")
         target.write(
             "from sqlalchemy.ext.declarative import declarative_base\n")
+
         target.write("\n")
         target.write("Base = declarative_base()\n")
         target.write("\n")
@@ -129,6 +130,7 @@ def create_hug_api(table_data):
     target.write("import hug\n\n")
     target.write("from vws_taco_api.vws_taco_api.models import *\n")
     target.write("from vws_taco_api.vws_taco_api.utils import Auth\n")
+    target.write("from cors import cors_support\n")
     target.write("\n")
     target.write("\n")
     target.write("\"\"\"Taco API Module.\"\"\"\n")
@@ -146,7 +148,7 @@ def create_hug_api(table_data):
         # Create get endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@auth_hug.get()\n")
+        target.write("@auth_hug.get(requires=cors_support)\n")
         target.write("def %s(id: hug.types.number):\n" % model_name.lower())
         target.write("    session = db.create_session()\n")
         target.write("    result = session.query(%s).get(id)\n" % model_name)
@@ -155,14 +157,14 @@ def create_hug_api(table_data):
         # Create options endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@auth_hug.options()\n")
+        target.write("@auth_hug.options(requires=cors_support)\n")
         target.write("def %s():\n" % model_name.lower())
         target.write("    return\n")
 
         # Create post endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@auth_hug.post()\n")
+        target.write("@auth_hug.post(requires=cors_support)\n")
         target.write("def %s(body):\n" % model_name.lower())
         target.write("    try:\n")
         target.write("        session = db.create_session()\n")

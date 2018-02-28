@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {config} from '../../config';
+import jwt_decode from 'jwt-decode';
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
@@ -45,7 +46,11 @@ export const signIn = (username, password) => {
         {'Access-Control-Allow-Origin': '*'}
       )
       .then(res => {
-        return res.data;
+        if (res.data.success) {
+          const user = jwt_decode(res.data.token);
+          return {token: res.data.token, user: user};
+        }
+        return {token: null, user: null};
       })
       .catch(err => {
         console.error(err);
@@ -59,9 +64,10 @@ export const signIn = (username, password) => {
     });
 
     return callSignIn(username, password).then(result => {
-      if (result.success) {
+      if (result.token) {
         dispatch({
           type: SET_CURRENT_USER,
+          user: result.user,
           token: result.token
         });
       }
