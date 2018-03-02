@@ -24,7 +24,7 @@ class App extends React.Component {
       const user = jwt_decode(token);
 
       return user;
-    } catch {
+    } catch (err) {
       return false;
     }
   }
@@ -34,7 +34,7 @@ class App extends React.Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
           <Header>
-            {checkLoggedIn() ? (
+            {this.checkLoggedIn() ? (
               <Router history={browserHistory}>
                 <Route component={Home} path="/" />
                 <Route component={Login} path="/login" />
