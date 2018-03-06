@@ -19,6 +19,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         currentUser: action.user
       };
+    case userActions.LOGOUT_CURRENT_USER:
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return {
+        ...state,
+        currentUser: null
+      };
     case userActions.GET_USERS_DATA:
       return {
         ...state,

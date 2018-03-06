@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import {Router, Route, browserHistory} from 'react-router';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import {Provider} from 'react-redux';
+import {Provider, connect} from 'react-redux';
+import {Actions} from './store';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -18,35 +19,17 @@ import PageNotFound from './components/PageNotFound';
 import store from './store';
 
 class App extends React.Component {
-  checkLoggedIn() {
-    try {
-      const token = localStorage.getItem('token');
-      const user = jwt_decode(token);
-
-      return user;
-    } catch (err) {
-      return false;
-    }
-  }
-
   render() {
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-          <Header>
-            {this.checkLoggedIn() ? (
-              <Router history={browserHistory}>
-                <Route component={Home} path="/" />
-                <Route component={Login} path="/login" />
-                <Route component={EventSummary} path="/event-summary" />
-                <Route component={PageNotFound} path="*" />
-              </Router>
-            ) : (
-              <Router history={browserHistory}>
-                <Route component={Login} path="*" />
-              </Router>
-            )}
-          </Header>
+          <Router history={browserHistory}>
+            <Header>
+              <Route component={Home} path="/" />
+              <Route component={EventSummary} path="/event-summary" />
+              <Route component={PageNotFound} path="*" />
+            </Header>
+          </Router>
         </MuiThemeProvider>
       </Provider>
     );

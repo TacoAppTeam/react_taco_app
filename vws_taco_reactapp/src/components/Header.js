@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import {Actions} from '../store';
 import Title from './Title';
 import LoginBody from './LoginBody';
 import './App.css';
@@ -21,6 +22,10 @@ class Header extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch(Actions.user.checkUserLoggedIn());
+  }
+
   closeModal = () => {
     this.setState({showLoginModal: false});
   };
@@ -32,9 +37,8 @@ class Header extends Component {
   };
 
   logout = () => {
-    console.log('logout');
-    this.setState({
-      loggedIn: false
+    this.props.dispatch({
+      type: Actions.user.LOGOUT_CURRENT_USER
     });
   };
 
@@ -44,27 +48,23 @@ class Header extends Component {
         <Title title="Taco App" />
         <div className="App navbar navbar-default">
           <div className="container-fluid">
-            <ul className="nav navbar-nav">
-              <li>
-                <a>
-                  {this.props.currentUser
-                    ? `Hello, ${this.props.currentUser.first_name}`
-                    : 'Please Log In'}
-                </a>
-              </li>
-              <li>
-                <Link to={'/'}>Events</Link>
-              </li>
-            </ul>
+            {this.props.currentUser ? (
+              <ul className="nav navbar-nav">
+                <li>
+                  <label>{`Hello, ${this.props.currentUser.first_name}`}</label>
+                  <button onClick={this.logout}>Logout</button>
+                </li>
+              </ul>
+            ) : (
+              <ul className="nav navbar-nav">
+                <li>
+                  {' '}
+                  <button onClick={this.login}>Login</button>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
-
-        {this.state.loggedIn ? (
-          <button onClick={this.logout}>Logout</button>
-        ) : (
-          <button onClick={this.login}>Login</button>
-        )}
-
         <TacoModal
           title="Choose a User"
           showModal={this.state.showLoginModal}
@@ -72,7 +72,6 @@ class Header extends Component {
         >
           <LoginBody onSubmit={this.closeModal} />
         </TacoModal>
-
         {this.props.children}
       </div>
     );

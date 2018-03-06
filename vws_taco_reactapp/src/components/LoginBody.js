@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
 import {connect} from 'react-redux';
 import {Actions} from '../store';
-import Loader from 'react-loader';
 
 class LoginBody extends Component {
   constructor(props) {

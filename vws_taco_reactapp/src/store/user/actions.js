@@ -3,6 +3,8 @@ import {config} from '../../config';
 import jwt_decode from 'jwt-decode';
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const CHECK_USER_LOGGED_IN = 'CHECK_USER_LOGGED_IN';
+export const LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
 
 export const GET_USERS_DATA = 'GET_USERS_DATA';
@@ -32,6 +34,21 @@ export const fetchUsers = () => {
         list: users
       })
     );
+  };
+};
+
+export const checkUserLoggedIn = () => {
+  return function(dispatch) {
+    // TODO validate token
+    const token = localStorage.getItem('token');
+    const user = token && jwt_decode(token);
+    if (token && user) {
+      dispatch({
+        type: SET_CURRENT_USER,
+        user: user,
+        token: token
+      });
+    }
   };
 };
 
