@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import ReactDOM from 'react-dom';
-import DatePicker from 'react-bootstrap-date-picker';
+import DatePicker from 'react-16-bootstrap-date-picker';
 
 export default class EventForm extends Component {
   constructor(props) {
@@ -10,25 +10,6 @@ export default class EventForm extends Component {
       eventDate: ''
     };
   }
-
-  submit = () => {
-    let formData = {};
-    formData.user_id = ReactDOM.findDOMNode(this.userSelect).value;
-    formData.location_id = ReactDOM.findDOMNode(this.locationSelect).value;
-    formData.event_date = this.state.eventDate;
-    this.props.submit(formData);
-  };
-
-  handleDateChange = (value, formattedValue) => {
-    let eventDate = new Date(value);
-    eventDate.setHours(8);
-    eventDate.setMinutes(0);
-    eventDate.setSeconds(0);
-    eventDate.setMilliseconds(0);
-    eventDate = eventDate.toISOString();
-    console.log(eventDate);
-    this.setState({eventDate: eventDate});
-  };
 
   componentDidMount = () => {
     function getNextDayOfWeek(date, dayOfWeek) {
@@ -51,6 +32,25 @@ export default class EventForm extends Component {
 
     let eventDate = getNextDayOfWeek(today, 5).toISOString();
     this.setState({eventDate: eventDate});
+  };
+
+  handleDateChange = (value, formattedValue) => {
+    let eventDate = new Date(value);
+    eventDate.setHours(8);
+    eventDate.setMinutes(0);
+    eventDate.setSeconds(0);
+    eventDate.setMilliseconds(0);
+    eventDate = eventDate.toISOString();
+    console.log(eventDate);
+    this.setState({eventDate: eventDate});
+  };
+
+  submit = () => {
+    let formData = {};
+    formData.user_id = ReactDOM.findDOMNode(this.userSelect).value;
+    formData.location_id = ReactDOM.findDOMNode(this.locationSelect).value;
+    formData.event_date = this.state.eventDate;
+    this.props.submit(formData);
   };
 
   render() {

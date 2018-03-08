@@ -11,17 +11,19 @@ class LoginBody extends Component {
     };
   }
 
-  onSubmit = evt => {
-    evt.preventDefault();
-    this.props.dispatch(Actions.user.signIn(this.state.username, this.state.password));
-    this.props.onSubmit();
-  };
-
   onChange = (evt, which) => {
     var val = evt.currentTarget.value;
     let newState = {};
     newState[which] = val;
     this.setState(newState);
+  };
+
+  onSubmit = evt => {
+    evt.preventDefault();
+    this.props.dispatch(Actions.user.signIn(this.state.username, this.state.password));
+    if (this.props.onSubmit) {
+      this.props.onSubmit();
+    }
   };
 
   render = () => {
@@ -43,7 +45,7 @@ class LoginBody extends Component {
           onChange={e => this.onChange(e, 'password')}
         />
         <br />
-        <button label="Submit" primary />
+        <button label="Submit" />
       </form>
     );
   };

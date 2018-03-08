@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router';
+import React from 'react';
+import {Link} from 'react-router-dom';
 
-export default class Title extends Component {
-  render() {
-    return (
-      <div className="title">
-        <h1>
-          <Link to="home">{this.props.title}</Link>
-        </h1>
-      </div>
-    );
-  }
-}
+const Title = ({title}) => {
+  return (
+    <div className="title">
+      <h1>
+        <Link to="/home">{title}</Link>
+      </h1>
+    </div>
+  );
+};
+
+export default Title;

@@ -19,8 +19,10 @@ class OrderBuilder extends Component {
     this.state = {
       orderList: []
     };
-    this.handleAddTaco = this.handleAddTaco.bind(this);
-    this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(Actions.ingredient.fetchIngredients());
   }
 
   deleteTaco(taco) {
@@ -33,7 +35,26 @@ class OrderBuilder extends Component {
     this.setState({orderList});
   }
 
-  handleSubmitOrder() {
+  handleAddTaco = taco => {
+    if (!this.props.currentUser) {
+      alert('YOU MUST log in or no tacos');
+      return;
+    }
+    // set state with appended new taco
+    let newState = this.state.orderList.slice();
+    // TODO: increment count on duplicate
+    newState.push({
+      orderId: newState.length + 1,
+      desc: taco.desc,
+      ingredientIDs: taco.ids,
+      count: 1,
+      shell_id: taco.shell,
+      user: this.props.currentUser.email
+    });
+    this.setState({orderList: newState});
+  };
+
+  handleSubmitOrder = () => {
     if (!this.props.currentUser) {
       alert('Please log in before submitting an order!');
       return;
@@ -53,30 +74,7 @@ class OrderBuilder extends Component {
     if (this.props.submitOrderFinished) {
       this.props.submitOrderFinished();
     }
-  }
-
-  handleAddTaco(taco) {
-    if (!this.props.currentUser) {
-      alert('YOU MUST log in or no tacos');
-      return;
-    }
-    // set state with appended new taco
-    let newState = this.state.orderList.slice();
-    // TODO: increment count on duplicate
-    newState.push({
-      orderId: newState.length + 1,
-      desc: taco.desc,
-      ingredientIDs: taco.ids,
-      count: 1,
-      shell_id: taco.shell,
-      user: this.props.currentUser.email
-    });
-    this.setState({orderList: newState});
-  }
-
-  componentDidMount() {
-    this.props.dispatch(Actions.ingredient.fetchIngredients());
-  }
+  };
 
   render() {
     //TODO replace this with correct data

@@ -1,40 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, browserHistory} from 'react-router';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import {Provider, connect} from 'react-redux';
-import {Actions} from './store';
+import {Provider} from 'react-redux';
+
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import jwt_decode from 'jwt-decode';
 
 import Header from './components/Header';
 import Home from './components/Home';
-import Login from './components/Login';
+import LoginBody from './components/LoginBody';
 import EventSummary from './components/EventSummary';
 import PageNotFound from './components/PageNotFound';
+import ProtectedRoute from './ProtectedRoute';
 
 import store from './store';
 
-class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-          <Router history={browserHistory}>
-            <Header>
-              <Route component={Home} path="/" />
-              <Route component={EventSummary} path="/event-summary" />
-              <Route component={PageNotFound} path="*" />
-            </Header>
-          </Router>
-        </MuiThemeProvider>
-      </Provider>
-    );
-  }
-}
+const App = props => {
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+        <BrowserRouter>
+          <Header>
+            <Switch>
+              <Route component={LoginBody} path="/login" />
+              <ProtectedRoute component={Home} path="/" />
+              <ProtectedRoute component={EventSummary} path="/event-summary/:event" />
+              <ProtectedRoute component={PageNotFound} />
+            </Switch>
+          </Header>
+        </BrowserRouter>
+      </MuiThemeProvider>
+    </Provider>
+  );
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

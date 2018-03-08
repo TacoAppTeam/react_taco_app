@@ -23,9 +23,17 @@ class EventSummary extends Component {
     this.state = {showModal: false};
   }
 
+  componentDidMount() {
+    this.props.dispatch(Actions.event.fetchEvents());
+
+    this.props.dispatch(
+      Actions.order.fetchEventOrders(parseInt(this.props.match.params.event, 10))
+    );
+  }
+
   getEventData = () => {
     let eventData = {};
-    let eventId = parseInt(this.props.location.query['event'], 10);
+    let eventId = parseInt(this.props.match.params.event, 10);
 
     eventData = this.props.eventData.find(function(event) {
       return event.id === eventId;
@@ -48,8 +56,14 @@ class EventSummary extends Component {
     return '';
   };
 
-  openModal = () => {
-    this.setState({showModal: true});
+  getUserEvents = () => {
+    let user = this.props.currentUser;
+
+    return this.props.eventOrderList.length
+      ? this.props.eventOrderList.filter(function(order) {
+          return user && order.user === user.email;
+        })
+      : null;
   };
 
   closeModal = () => {
@@ -65,21 +79,9 @@ class EventSummary extends Component {
     this.props.dispatch(Actions.order.removeTaco(taco.data.taco_order_id));
   };
 
-  getUserEvents = () => {
-    let user = this.props.currentUser;
-
-    return this.props.eventOrderList.length
-      ? this.props.eventOrderList.filter(function(order) {
-          return user && order.user === user.email;
-        })
-      : null;
+  openModal = () => {
+    this.setState({showModal: true});
   };
-
-  componentDidMount() {
-    this.props.dispatch(Actions.event.fetchEvents());
-
-    this.props.dispatch(Actions.order.fetchEventOrders(this.props.location.query['event']));
-  }
 
   render() {
     return (
@@ -95,7 +97,7 @@ class EventSummary extends Component {
           <button onClick={this.openModal}>Order Tacos</button>
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
-              eventId={this.props.location.query['event']}
+              eventId={this.props.match.params.event}
               submitOrderFinished={this.closeModal}
             />
           </TacoModal>

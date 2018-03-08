@@ -32,20 +32,6 @@ class Events extends Component {
     };
   }
 
-  createEvent = () => {
-    this.setState({showModal: true});
-  };
-
-  closeModal = () => {
-    this.setState({showModal: false});
-  };
-
-  submit = formData => {
-    console.log(formData);
-    this.props.dispatch(Actions.event.createEvent(formData));
-    this.closeModal();
-  };
-
   componentDidMount = () => {
     // Get Event Data
     this.props.dispatch(Actions.event.fetchEvents());
@@ -55,6 +41,20 @@ class Events extends Component {
 
     // Get Location Data
     this.props.dispatch(Actions.location.fetchLocations());
+  };
+
+  closeModal = () => {
+    this.setState({showModal: false});
+  };
+
+  createEvent = () => {
+    this.setState({showModal: true});
+  };
+
+  submit = formData => {
+    console.log(formData);
+    this.props.dispatch(Actions.event.createEvent(formData));
+    this.closeModal();
   };
 
   render() {

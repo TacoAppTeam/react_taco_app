@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {Actions} from '../store';
 import Title from './Title';
 import LoginBody from './LoginBody';
@@ -53,6 +53,9 @@ class Header extends Component {
                 <li>
                   <label>{`Hello, ${this.props.currentUser.first_name}`}</label>
                   <button onClick={this.logout}>Logout</button>
+                </li>
+                <li>
+                  <Link to="/home">Home</Link>
                 </li>
               </ul>
             ) : (
