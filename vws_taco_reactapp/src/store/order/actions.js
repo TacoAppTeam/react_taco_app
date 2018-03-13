@@ -22,16 +22,9 @@ export const addNewOrder = newOrder => {
       type: ADD_ORDER_PENDING
     });
     return addOrderToAPI(newOrder).then(res => {
-      newOrder.orderList = newOrder.orderList.map(order => {
-        return (order.data = order);
-      });
+      fetchEventOrders(newOrder.eventId)(dispatch);
       dispatch({
-        type: ADD_NEW_ORDER,
-        newOrder: {
-          user_id: newOrder.user_id,
-          event: newOrder.eventId,
-          orderList: newOrder.orderList
-        }
+        type: ADD_NEW_ORDER
       });
     });
   };
@@ -46,9 +39,6 @@ export const removeTaco = tacoId => {
         {taco_order_id: tacoId},
         {Authorization: localStorage.getItem('user'), 'Access-Control-Allow-Origin': '*'}
       )
-      .then(res => {
-        console.log('Removed the taco, boss.');
-      });
   }
 
   return function(dispatch) {

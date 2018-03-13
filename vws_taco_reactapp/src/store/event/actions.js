@@ -60,11 +60,9 @@ export const createEvent = formData => {
       type: CREATE_EVENT
     });
 
-    return createEventPost().then(res =>
-      dispatch({
-        type: EVENT_CREATED,
-        eventCreateResponse: res
-      })
-    );
+    return createEventPost().then(res => {
+      dispatch({type: EVENT_CREATED});
+      fetchEvents()(dispatch);
+    });
   };
 };
