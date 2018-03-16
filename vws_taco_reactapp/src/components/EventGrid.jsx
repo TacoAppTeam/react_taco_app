@@ -23,7 +23,13 @@ class EventGrid extends Component {
   }
 
   rowGetter(i) {
-    return this.props.eventData[i];
+    let newEventData = this.props.eventData[i];
+    if (newEventData && this.props.computedColumns) {
+      this.props.computedColumns.map(
+        computeInfo => (newEventData[computeInfo.columnKey] = computeInfo.compute(newEventData))
+      );
+    }
+    return newEventData;
   }
 
   render() {

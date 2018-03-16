@@ -4,6 +4,7 @@ import EventForm from './EventForm';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 import {Actions} from '../store';
 import EventGrid from './EventGrid';
 import {dateFormat} from '../utils/format';
@@ -60,26 +61,39 @@ class Events extends Component {
     const columns = [
       {
         key: 'date',
-        name: 'date',
+        name: 'Date',
         formatter: dateFormat
       },
-      {key: 'locationName', name: 'locationName'},
-      {key: 'firstName', name: 'firstName'},
-      {key: 'lastName', name: 'lastName'}
+      {key: 'locationName', name: 'Location'},
+      {key: 'name', name: 'Runner'}
+    ];
+
+    const computedColumns = [
+      {
+        columnKey: 'name',
+        compute: row => {
+          return `${row.firstName} ${row.lastName}`;
+        }
+      }
     ];
 
     return (
       <div className="events">
-        <h4>Upcoming Events</h4>
+        <h3>Upcoming Events</h3>
         <Loader
           loaded={
             !this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending
           }
         >
-          <EventGrid columns={columns} eventData={this.props.eventData} />
-          <span>
-            <RaisedButton onClick={this.createEvent} label="Create Event" />
-          </span>
+          <EventGrid
+            computedColumns={computedColumns}
+            columns={columns}
+            eventData={this.props.eventData}
+          />
+          <br />
+
+          <RaisedButton onClick={this.createEvent} label="Create Event" />
+
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
             <EventForm
               users={this.props.users}
