@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class OrderContents extends Component {
   submitOrder = event => {
@@ -33,7 +34,9 @@ export default class OrderContents extends Component {
                 );
               })}
             </ul>
-            {this.props.handleSubmitOrder ? <input type="submit" value="Sounds Tasty! ®" /> : null}
+            {this.props.handleSubmitOrder ? (
+              <FlatButton type="submit" label="Sounds Tasty! ®" />
+            ) : null}
           </form>
         ) : (
           <div>NO ORDERS YET!!!</div>

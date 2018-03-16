@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import FlatButton from 'material-ui/FlatButton';
+
 import {Actions} from '../store';
 import Title from './Title';
 import LoginBody from './LoginBody';
-import './App.css';
 import TacoModal from './TacoModal';
 
 function mapStateToProps(state) {
@@ -46,28 +48,19 @@ class Header extends Component {
     return (
       <div className="container">
         <Title title="Taco App" />
-        <div className="App navbar navbar-default">
-          <div className="container-fluid">
-            {this.props.currentUser ? (
-              <ul className="nav navbar-nav">
-                <li>
-                  <label>{`Hello, ${this.props.currentUser.first_name}`}</label>
-                  <button onClick={this.logout}>Logout</button>
-                </li>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-              </ul>
-            ) : (
-              <ul className="nav navbar-nav">
-                <li>
-                  {' '}
-                  <button onClick={this.login}>Login</button>
-                </li>
-              </ul>
-            )}
-          </div>
-        </div>
+        <Toolbar className="App">
+          {this.props.currentUser ? (
+            <ToolbarGroup>
+              <FlatButton onClick={this.logout} primary={true} label="Log out" />
+
+              <FlatButton label="Home" containerElement={<Link to="/" />} />
+            </ToolbarGroup>
+          ) : (
+            <ToolbarGroup>
+              <FlatButton label="Login" onClick={this.login} />
+            </ToolbarGroup>
+          )}
+        </Toolbar>
         <TacoModal
           title="Choose a User"
           showModal={this.state.showLoginModal}

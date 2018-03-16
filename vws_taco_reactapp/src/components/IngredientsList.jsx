@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import FlatButton from 'material-ui/FlatButton';
 
 class IngredientsList extends Component {
   constructor(props) {
@@ -43,9 +44,7 @@ class IngredientsList extends Component {
               </div>
             );
           })}
-          <button bsStyle="primary" type="submit">
-            Add yo'taco!
-          </button>
+          <FlatButton bsStyle="primary" type="submit" label="Add yo'taco!" />
         </form>
       </div>
     );
