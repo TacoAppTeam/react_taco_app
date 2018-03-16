@@ -17,12 +17,34 @@ import ProtectedRoute from './ProtectedRoute';
 
 import store from './store';
 
+const colorPalette = {
+  primary1Color: '#f57c00',
+  primary2Color: '#e64a19',
+  accent1Color: '#80deea',
+  pickerHeaderColor: '#2196f3'
+};
+
+const getTheme = () => {
+  let overwrites = {
+    colorPalette
+  };
+  return getMuiTheme(lightBaseTheme, overwrites);
+};
+
+let theme = getTheme();
+export const styles = {
+  palette: colorPalette,
+  header: {
+    color: theme.primary1Color
+  }
+};
+
 const App = props => {
   return (
     <Provider store={store}>
-      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+      <MuiThemeProvider muiTheme={theme}>
         <BrowserRouter>
-          <Header>
+          <Header styles={styles.header}>
             <Switch>
               <ProtectedRoute component={EventSummary} exact path="/event-summary/:event" />
               <ProtectedRoute component={Home} path="/" />

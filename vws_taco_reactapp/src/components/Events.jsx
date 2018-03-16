@@ -3,7 +3,7 @@ import TacoModal from './TacoModal';
 import EventForm from './EventForm';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
 import EventGrid from './EventGrid';
 import {dateFormat} from '../utils/format';
@@ -78,7 +78,7 @@ class Events extends Component {
         >
           <EventGrid columns={columns} eventData={this.props.eventData} />
           <span>
-            <FlatButton onClick={this.createEvent} label="Create Event" />
+            <RaisedButton onClick={this.createEvent} label="Create Event" />
           </span>
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
             <EventForm

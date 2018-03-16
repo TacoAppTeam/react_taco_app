@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import OrderContents from './OrderContents';
 import {Actions} from '../store';
 import Loader from 'react-loader';
@@ -95,7 +95,7 @@ class EventSummary extends Component {
           />
           <h3>User orders</h3>
           <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
-          <FlatButton onClick={this.openModal} label="Order Tacos" />
+          <RaisedButton onClick={this.openModal} label="Order Tacos" />
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
               eventId={this.props.match.params.event}

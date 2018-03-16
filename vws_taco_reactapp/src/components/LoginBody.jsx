@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
 
 class LoginBody extends Component {
@@ -46,7 +46,7 @@ class LoginBody extends Component {
           onChange={e => this.onChange(e, 'password')}
         />
         <br />
-        <FlatButton label="Submit" type="submit" />
+        <RaisedButton label="Submit" type="submit" />
       </form>
     );
   };
