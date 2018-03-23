@@ -44,6 +44,29 @@ def token_generation(username, password):
     return {"success": False, "message": "Should NOT tell you this, but your password is wrong. Don't taze me bro"}
 
 
+@hug.options(requires=cors_support)
+def create_user():
+    return 200
+
+
+@hug.post(requires=cors_support)
+def create_user(email, first_name, last_name, password):
+    """ Create a new user """
+
+    session = db.create_session()
+    query = session.query(User).filter(User.email == email).first()
+
+    if query:
+        return {"success": False, "message": "There already is a you."}
+
+    new_hash = ph.hash(password)
+    scripted_endpoints.user(
+        {"email": email, "first_name": first_name,
+         "last_name": last_name, "password": new_hash}
+    )
+    return {"success": True, "message": "Added user, go login fool"}
+
+
 @hug.extend_api()
 def with_other_apis():
     return [scripted_endpoints]

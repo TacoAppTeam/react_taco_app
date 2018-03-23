@@ -6,6 +6,8 @@ export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const CHECK_USER_LOGGED_IN = 'CHECK_USER_LOGGED_IN';
 export const LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 export const LOGIN_PENDING = 'LOGIN_PENDING';
+export const CREATE_USER_PENDING = 'CREATE_USER_PENDING';
+export const USER_CREATED = 'USER_CREATED';
 
 export const GET_USERS_DATA = 'GET_USERS_DATA';
 export const USERS_RETRIEVED = 'USERS_RETRIEVED';
@@ -86,6 +88,41 @@ export const signIn = (username, password) => {
           type: SET_CURRENT_USER,
           user: result.user,
           token: result.token
+        });
+      }
+      // TODO add error handling better
+    });
+  };
+};
+
+export const createUser = (username, firstName, lastName, password) => {
+  const addUserUrl = config.api_hostname + ':' + config.api_port + '/create_user';
+
+  function callCreateUser(username, firstName, lastName, password) {
+    return axios
+      .post(
+        addUserUrl,
+        {email: username, first_name: firstName, last_name: lastName, password},
+        {'Access-Control-Allow-Origin': '*'}
+      )
+      .then(res => {
+        return res.data.success;
+      })
+      .catch(err => {
+        console.error(err);
+        return false;
+      });
+  }
+
+  return function(dispatch) {
+    dispatch({
+      type: CREATE_USER_PENDING
+    });
+
+    return callCreateUser(username, firstName, lastName, password).then(success => {
+      if (success) {
+        dispatch({
+          type: USER_CREATED
         });
       }
       // TODO add error handling better

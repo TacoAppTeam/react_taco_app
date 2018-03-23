@@ -46,7 +46,6 @@ def event(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -84,7 +83,6 @@ def ingredient(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -126,7 +124,6 @@ def location(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -165,7 +162,6 @@ def order(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -202,7 +198,6 @@ def taco_ingredient(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -239,7 +234,6 @@ def taco_order(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -275,7 +269,6 @@ def taco_shell(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 
 
@@ -313,6 +306,5 @@ def user(body):
         return 'SUCCESS: Updated the TACOBASE'
     except Exception as Error:
         print(Error)
-        print('FAILURE ON TACO EVENT CREATION!!!!')
         raise Error
 

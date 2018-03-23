@@ -37,6 +37,16 @@ const reducer = (state = initialState, action) => {
         list: action.list,
         usersPending: false
       };
+    case userActions.CREATE_USER_PENDING:
+      return {
+        ...state,
+        createUserPending: true
+      };
+    case userActions.USER_CREATED:
+      return {
+        ...state,
+        createUserPending: false
+      };
     default:
       return state;
   }

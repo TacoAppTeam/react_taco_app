@@ -103,7 +103,8 @@ def create_models_py(table_data):
                     bool(column.get("column_nullable")),
                     column.get("column_default_value"),
                     bool(column.get("column_is_pk")),
-                    bool(column.get("column_is_pk"))
+                    bool(column.get("column_is_pk") and column.get(
+                        "column_type").upper() == "INTEGER")
                 )
             )
 
@@ -191,7 +192,6 @@ def create_hug_api(table_data):
         target.write("        return 'SUCCESS: Updated the TACOBASE'\n")
         target.write("    except Exception as Error:\n")
         target.write("        print(Error)\n")
-        target.write("        print('FAILURE ON TACO EVENT CREATION!!!!')\n")
         target.write("        raise Error\n")
         target.write("\n")
 
