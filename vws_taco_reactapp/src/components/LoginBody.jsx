@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import {Actions} from '../store';
 
 class LoginBody extends Component {
@@ -30,7 +31,7 @@ class LoginBody extends Component {
   render = () => {
     return (
       <form onSubmit={this.onSubmit} ref={form => (this.form = form)}>
-        <input
+        <TextField
           name="username"
           placeholder="Username"
           type="text"
@@ -38,7 +39,7 @@ class LoginBody extends Component {
           onChange={e => this.onChange(e, 'username')}
         />
         <br />
-        <input
+        <TextField
           name="password"
           placeholder="Password"
           type="password"

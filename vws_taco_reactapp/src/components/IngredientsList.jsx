@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
 
 class IngredientsList extends Component {
   constructor(props) {
@@ -37,10 +39,16 @@ class IngredientsList extends Component {
             const ingredient = item.ingredient;
             return (
               <div>
-                <input type="checkbox" name="taco" id={ingredient.id} value={ingredient.name} />
-                <span>
-                  {ingredient.name + ' - ' + ingredient.description + ' - $' + ingredient.price}
-                </span>
+                <Checkbox
+                  type="checkbox"
+                  name="taco"
+                  id={ingredient.id}
+                  value={ingredient.name}
+                  label={
+                    ingredient.name + ' - ' + ingredient.description + ' - $' + ingredient.price
+                  }
+                />
+                <div />
               </div>
             );
           })}
