@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         locations: action.locations,
         locationsPending: false
-      }
+      };
     default:
       return state;
   }

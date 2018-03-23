@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import {Link, withRouter} from 'react-router-dom';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import FlatButton from 'material-ui/FlatButton';
+
+import {Actions} from '../store';
 import Title from './Title';
 import LoginBody from './LoginBody';
-import './App.css';
-import TacoModal from './TacoModal.js';
+import TacoModal from './TacoModal';
 
 function mapStateToProps(state) {
   return {
@@ -21,6 +24,10 @@ class Header extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch(Actions.user.checkUserLoggedIn());
+  }
+
   closeModal = () => {
     this.setState({showLoginModal: false});
   };
@@ -32,9 +39,8 @@ class Header extends Component {
   };
 
   logout = () => {
-    console.log('logout');
-    this.setState({
-      loggedIn: false
+    this.props.dispatch({
+      type: Actions.user.LOGOUT_CURRENT_USER
     });
   };
 
@@ -42,25 +48,19 @@ class Header extends Component {
     return (
       <div className="container">
         <Title title="Taco App" />
-        <div className="App navbar navbar-default">
-          <div className="container-fluid">
-            <ul className="nav navbar-nav">
-              <li>
-                <a>{this.props.currentUser || 'Please Log In'}</a>
-              </li>
-              <li>
-                <Link to={'/'}>Events</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <Toolbar className="App">
+          {this.props.currentUser ? (
+            <ToolbarGroup>
+              <FlatButton onClick={this.logout} primary={true} label="Log out" />
 
-        {this.state.loggedIn ? (
-          <button onClick={this.logout}>Logout</button>
-        ) : (
-          <button onClick={this.login}>Login</button>
-        )}
-
+              <FlatButton label="Home" containerElement={<Link to="/" />} />
+            </ToolbarGroup>
+          ) : (
+            <ToolbarGroup>
+              <FlatButton label="Login" onClick={this.login} />
+            </ToolbarGroup>
+          )}
+        </Toolbar>
         <TacoModal
           title="Choose a User"
           showModal={this.state.showLoginModal}
@@ -68,11 +68,10 @@ class Header extends Component {
         >
           <LoginBody onSubmit={this.closeModal} />
         </TacoModal>
-
         {this.props.children}
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

@@ -5,24 +5,26 @@ export const GET_LOCATIONS_DATA = 'GET_LOCATIONS_DATA';
 export const LOCATIONS_RETRIEVED = 'LOCATIONS_RETRIEVED';
 
 export const fetchLocations = () => {
-    const locations_url = config.api_hostname + ':' + config.api_port + '/v1/locations';
+  const locations_url = config.api_hostname + ':' + config.api_port + '/v1/locations';
 
-    function getLocationsFromAPI() {
-        return axios.get(locations_url).then(res => {
-            return res.data;
-        })
-    }
+  function getLocationsFromAPI() {
+    return axios
+      .get(locations_url, null, {Authorization: localStorage.getItem('user')})
+      .then(res => {
+        return res.data;
+      });
+  }
 
-    return function(dispatch) {
-        dispatch({
-          type: GET_LOCATIONS_DATA,
-        })
+  return function(dispatch) {
+    dispatch({
+      type: GET_LOCATIONS_DATA
+    });
 
-        return getLocationsFromAPI().then(locations =>
-          dispatch({
-            type: LOCATIONS_RETRIEVED,
-            locations: locations
-          })
-        )
-    }
-}
+    return getLocationsFromAPI().then(locations =>
+      dispatch({
+        type: LOCATIONS_RETRIEVED,
+        locations: locations
+      })
+    );
+  };
+};

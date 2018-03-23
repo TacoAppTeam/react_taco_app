@@ -1,18 +1,47 @@
 import db
 import hug
 import json
+import jwt
 import scripted_endpoints
-
-from cors import cors_support
-from vws_taco_api.vws_taco_api.models import *
-
 import logging
+
+from vws_taco_api.vws_taco_api.models import *
+from vws_taco_api.vws_taco_api.utils import Auth
+from cors import cors_support
 
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
+
+auth_hug = Auth.auth_hug
+
+
+@hug.options(requires=cors_support)
+def token_generation():
+    print('calling them options')
+    return 200
+
+
+@hug.post(requires=cors_support)
+def token_generation(username, password):
+    """ Authenticate and return a token"""
+    print('+++++++++++++++++++IN CALL')
+    print('+++++++++++++++++++ %s' % username)
+
+    session = db.create_session()
+    query = session.query(User).filter(User.email == username).first()
+
+    if not query:
+        return {"success": False, "message": "Shouldnt tell you this but you don't exist or something"}
+
+    user = query.as_dict()
+    if (user.get(password, '') == password):
+        token = jwt.encode({"email": username, "first_name": user.get("first_name"),
+                            "last_name": user.get("last_name")}, Auth.secret_key, algorithm='HS256')
+        return {"success": True, "token": token}
+    return {"success": False, "message": "Should NOT tell you this, but your password is wrong. Don't taze me bro"}
 
 
 @hug.extend_api()
@@ -23,14 +52,14 @@ def with_other_apis():
 # These can reuse the existing base api, and/or use the models
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get(requires=cors_support)
 def events(event_id: hug.types.number=0):
     events = []
 
     session = db.create_session()
     query = session.query(Event, User, Location)\
-                          .join(User, Event.user_id == User.email)\
-                          .join(Location, Event.location_id == Location.id)
+        .join(User, Event.user_id == User.email)\
+        .join(Location, Event.location_id == Location.id)
 
     if event_id:
         query = query.filter(Event.id == event_id)
@@ -55,7 +84,7 @@ def events(event_id: hug.types.number=0):
     return events
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get(requires=cors_support)
 def ingredients():
     ingredients = []
 
@@ -76,51 +105,58 @@ def ingredients():
     return ingredients
 
 
-@hug.get(requires=cors_support, output=hug.output_format.json)
+@auth_hug.get(output=hug.output_format.json, requires=cors_support)
 def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
     orders = []
 
     session = db.create_session()
-    query_result = session.query(Order, Taco_Order, Taco_Ingredient, Ingredient)\
-                          .join(Taco_Order, Order.id == Taco_Order.order_id)\
-                          .join(Taco_Ingredient, Taco_Order.id == Taco_Ingredient.order_id)\
-                          .join(Ingredient, Taco_Ingredient.ingredient_id == Ingredient.id)\
-                          .filter(Order.event_id == event_id)
+    querystr = '''select 
+                                o.event_id, 
+                                o.id, 
+                                taco.id, 
+                                o.user_id, 
+                                group_concat(ing.name, ', ') 
+                    from Orders o 
+                    join Taco_Order taco on taco.order_id=o.id 
+                    join Taco_Ingredient ti on taco.id=ti.order_id 
+                    join Ingredients ing on ing.id=ti.ingredient_id 
+                    where o.event_id=:event_id group by taco.id'''
+    query_result = session.execute(querystr, {"event_id": event_id})
 
-    if user_id:
-        query_result.filter(Order.user_id == user_id)
+    # if user_id:
+    #     query_result.filter(Order.user_id == user_id)
 
     if not query_result:
         return []
 
     for result in query_result:
-        order = result[0].as_dict()
-        taco_order = result[1].as_dict()
-        taco_ing = result[2].as_dict()
-        ing = result[3].as_dict()
         orders.append({
-            "event_id": order.get("event_id"),
-            "order_id": order.get("id"),
-            "taco_order_id": taco_order.get("id"),
-            "user_id": order.get("user_id"),
-            "ingredient": ing.get("name"),
-            "ing_price": ing.get("price")
+            "event_id": result[0],
+            "order_id": result[1],
+            "taco_order_id": result[2],
+            "user_id": result[3],
+            "ingredient": result[4],
+            "ing_price": 0
         })
 
     return orders
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options(requires=cors_support)
 def submit_order():
     print('calling them options')
     return 200
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post(requires=cors_support)
 def submit_order(body):
-    user_id = body.get('user_id')
+    user_id = body.get('user_id').get('email')
     event_id = body.get('eventId')
     orderList = body.get('orderList')
+
+    print('Got them params - eventid: %s' % event_id)
+    print('<<>>XXX<<<>>> user-id: %s' % user_id)
+    print('Order list - %s' % orderList)
 
     respList = []
 
@@ -133,12 +169,17 @@ def submit_order(body):
         new_order.event_id = event_id
         new_order.payment_amount = 0
         new_order.order_amount = 0
+        print('<<>>><<>> Before commit')
 
         session.commit()    # To prevent lock on the table
         session.add(new_order)  # Add the new object to the session
         session.flush()     # Commits and flushes
         order_id = new_order.id
         session.close()
+
+        print('<<<>><<<>>> After commit')
+
+        print('first order added *&******')
 
         for taco in orderList:
             session = db.create_session()
@@ -182,7 +223,7 @@ def submit_order(body):
         raise Error
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get(requires=cors_support)
 def users():
     users = []
 
@@ -198,7 +239,7 @@ def users():
     return users
 
 
-@hug.get(requires=cors_support)
+@auth_hug.get(requires=cors_support)
 def locations():
     locations = []
 
@@ -214,13 +255,13 @@ def locations():
     return locations
 
 
-@hug.options(requires=cors_support)
+@auth_hug.options(requires=cors_support)
 def removeTaco():
     print('calling them options')
     return 200
 
 
-@hug.post(requires=cors_support)
+@auth_hug.post(requires=cors_support)
 def removeTaco(body):
     taco_id = body.get('taco_order_id')
 

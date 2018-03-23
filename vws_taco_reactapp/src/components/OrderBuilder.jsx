@@ -19,24 +19,43 @@ class OrderBuilder extends Component {
     this.state = {
       orderList: []
     };
-    this.handleAddTaco = this.handleAddTaco.bind(this);
-    this.handleSubmitOrder = this.handleSubmitOrder.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(Actions.ingredient.fetchIngredients());
   }
 
   deleteTaco(taco) {
-    if (this.props.currentUser !== taco.user) {
+    if (this.props.currentUser.email !== taco.user) {
       alert('NO YOU CANT YOU JUST CANT');
       return;
     }
 
-    let orderList = this.state.orderList.filter(
-      o => o.orderId !== taco.orderId
-    );
+    let orderList = this.state.orderList.filter(o => o.orderId !== taco.orderId);
     this.setState({orderList});
   }
 
-  handleSubmitOrder() {
-    if (this.props.currentUser === 'Please Log in') {
+  handleAddTaco = taco => {
+    if (!this.props.currentUser) {
+      alert('YOU MUST log in or no tacos');
+      return;
+    }
+    // set state with appended new taco
+    let newState = this.state.orderList.slice();
+    // TODO: increment count on duplicate
+    newState.push({
+      orderId: newState.length + 1,
+      desc: taco.desc,
+      ingredientIDs: taco.ids,
+      count: 1,
+      shell_id: taco.shell,
+      user: this.props.currentUser.email
+    });
+    this.setState({orderList: newState});
+  };
+
+  handleSubmitOrder = () => {
+    if (!this.props.currentUser) {
       alert('Please log in before submitting an order!');
       return;
     }
@@ -51,34 +70,8 @@ class OrderBuilder extends Component {
     };
     this.props.dispatch(Actions.order.addNewOrder(newOrder));
     this.setState({orderList: []});
-
-    if (this.props.submitOrderFinished) {
-      this.props.submitOrderFinished();
-    }
-  }
-
-  handleAddTaco(taco) {
-    if (this.props.currentUser === 'Please Log in') {
-      alert('YOU MUST log in or no tacos');
-      return;
-    }
-    // set state with appended new taco
-    let newState = this.state.orderList.slice();
-    // TODO: increment count on duplicate
-    newState.push({
-      orderId: newState.length + 1,
-      desc: taco.desc,
-      ingredientIDs: taco.ids,
-      count: 1,
-      shell_id: taco.shell,
-      user: this.props.currentUser
-    });
-    this.setState({orderList: newState});
-  }
-
-  componentDidMount() {
-    this.props.dispatch(Actions.ingredient.fetchIngredients());
-  }
+    this.props.submitOrderFinished();
+  };
 
   render() {
     //TODO replace this with correct data

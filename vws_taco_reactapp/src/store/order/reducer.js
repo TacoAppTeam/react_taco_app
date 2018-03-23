@@ -13,18 +13,8 @@ const reducer = (state = initialState, action) => {
         pending: true
       };
     case actions.ADD_NEW_ORDER:
-      const newEventOrders = state.currentEventOrders.slice();
-      action.newOrder.orderList.forEach(o => {
-        const formattedOrder = {
-          user: action.newOrder.user_id,
-          desc: o.desc,
-          data: o.data
-        };
-        newEventOrders.push(formattedOrder);
-      });
       return {
         ...state,
-        currentEventOrders: newEventOrders,
         pending: false
       };
     case actions.REMOVE_TACO_PENDING:

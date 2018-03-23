@@ -29,12 +29,14 @@ def init_models():
     print('INITIALIZING DATA MODELS --- ALL CURRENT FILES ARE BEING OVERWRITTEN')
     with closing(connect_db()) as db:
         cursor = db.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sql_%';")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sql_%';")
         result = cursor.fetchall()
         table_names = sorted(next(zip(*result)))
         table_data = {}
         for table_name in table_names:
-            result = cursor.execute("PRAGMA table_info('%s')" % table_name).fetchall()
+            result = cursor.execute(
+                "PRAGMA table_info('%s')" % table_name).fetchall()
             table_data[table_name] = []
             for column in result:
                 table_data[table_name].append({
@@ -52,7 +54,8 @@ def init_models():
 
 def create_init_py(table_names):
     table_names = list(map(map_table_names, table_names))
-    init_py_import_str = "\n".join("from ." + nm + " import " + nm for nm in table_names)
+    init_py_import_str = "\n".join(
+        "from ." + nm + " import " + nm for nm in table_names)
     init_target = open("../vws_taco_api/vws_taco_api/models/__init__.py", "w")
     init_target.write(init_py_import_str)
     init_target.close()
@@ -64,7 +67,8 @@ def create_models_py(table_data):
         model_name = map_table_names(table)
 
         print("Creating %s.py" % model_name)
-        target = open("../vws_taco_api/vws_taco_api/models/" + model_name + '.py', 'w')
+        target = open("../vws_taco_api/vws_taco_api/models/" +
+                      model_name + '.py', 'w')
 
         # Clear old file
         target.truncate()
@@ -72,7 +76,9 @@ def create_models_py(table_data):
         target.write("# SCRIPTED FILE --- DO NOT MODIFY\n")
         target.write("from sqlalchemy import Column\n")
         target.write("from sqlalchemy.types import *\n")
-        target.write("from sqlalchemy.ext.declarative import declarative_base\n")
+        target.write(
+            "from sqlalchemy.ext.declarative import declarative_base\n")
+
         target.write("\n")
         target.write("Base = declarative_base()\n")
         target.write("\n")
@@ -89,17 +95,17 @@ def create_models_py(table_data):
 
         for column in table_info:
             target.write(
-                    ("    %s = Column(%s, nullable=%s, " +
-                    "default=%s, primary_key=%s, autoincrement=%s)\n") %
-                    (
-                        column.get("column_name"),
-                        column.get("column_type").upper(),
-                        bool(column.get("column_nullable")),
-                        column.get("column_default_value"),
-                        bool(column.get("column_is_pk")),
-                        bool(column.get("column_is_pk"))
-                    )
+                ("    %s = Column(%s, nullable=%s, " +
+                 "default=%s, primary_key=%s, autoincrement=%s)\n") %
+                (
+                    column.get("column_name"),
+                    column.get("column_type").upper(),
+                    bool(column.get("column_nullable")),
+                    column.get("column_default_value"),
+                    bool(column.get("column_is_pk")),
+                    bool(column.get("column_is_pk"))
                 )
+            )
 
             repr_string_1 += ("%s = %%s," % column.get("column_name"))
             repr_string_3 += ("self.%s," % column.get("column_name"))
@@ -108,23 +114,30 @@ def create_models_py(table_data):
         target.write(repr_string_2 + repr_string_3 + repr_string_4)
         target.write("\n\n")
         target.write("    def as_dict(self):\n")
-        target.write("        return {c.name: getattr(self, c.name) for c in self.__table__.columns}\n")
+        target.write(
+            "        return {c.name: getattr(self, c.name) for c in self.__table__.columns}\n")
         target.close()
 
 
 def create_hug_api(table_data):
     print("Creating scripted_endpoints.py")
-    target = open("../vws_taco_api/vws_taco_api/hug/scripted_endpoints.py", "w")
+    target = open(
+        "../vws_taco_api/vws_taco_api/hug/scripted_endpoints.py", "w")
 
-    target.write("### IMPORTANT!!! THIS FILE IS SCRIPTED!!! DO NOT EDIT!!! ###\n")
+    target.write(
+        "### IMPORTANT!!! THIS FILE IS SCRIPTED!!! DO NOT EDIT!!! ###\n")
     target.write("import db\n")
     target.write("import hug\n\n")
-    target.write("from cors import cors_support\n")
     target.write("from vws_taco_api.vws_taco_api.models import *\n")
+    target.write("from vws_taco_api.vws_taco_api.utils import Auth\n")
+    target.write("from cors import cors_support\n")
     target.write("\n")
     target.write("\n")
     target.write("\"\"\"Taco API Module.\"\"\"\n")
     target.write("\"\"\"To run, execute `hug -f taco_api.py`\"\"\"\n")
+    target.write("\n")
+    target.write("\n")
+    target.write("auth_hug = Auth.auth_hug")
 
     for table in table_data:
         table_info = table_data[table]
@@ -135,7 +148,7 @@ def create_hug_api(table_data):
         # Create get endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@hug.get(requires=cors_support)\n")
+        target.write("@auth_hug.get(requires=cors_support)\n")
         target.write("def %s(id: hug.types.number):\n" % model_name.lower())
         target.write("    session = db.create_session()\n")
         target.write("    result = session.query(%s).get(id)\n" % model_name)
@@ -144,29 +157,35 @@ def create_hug_api(table_data):
         # Create options endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@hug.options(requires=cors_support)\n")
+        target.write("@auth_hug.options(requires=cors_support)\n")
         target.write("def %s():\n" % model_name.lower())
         target.write("    return\n")
 
         # Create post endpoint
         target.write("\n")
         target.write("\n")
-        target.write("@hug.post(requires=cors_support)\n")
+        target.write("@auth_hug.post(requires=cors_support)\n")
         target.write("def %s(body):\n" % model_name.lower())
         target.write("    try:\n")
         target.write("        session = db.create_session()\n")
         target.write("        param_id = body.get('id', None)\n")
-        target.write("        existing_%s = session.query(%s).get(param_id) if param_id else %s()\n" % (model_name.lower(), model_name, model_name))
+        target.write("        existing_%s = session.query(%s).get(param_id) if param_id else %s()\n" % (
+            model_name.lower(), model_name, model_name))
         target.write("\n")
-        target.write("        # Merge any existing object with the passed in object\n")
-        target.write("        %s = session.merge(existing_%s)\n" % (model_name.lower(), model_name.lower()))
+        target.write(
+            "        # Merge any existing object with the passed in object\n")
+        target.write("        %s = session.merge(existing_%s)\n" %
+                     (model_name.lower(), model_name.lower()))
         for column in table_info:
             name = column.get("column_name")
-            target.write("        %s.%s = body.get('%s', existing_%s.%s)\n" % (model_name.lower(), name, name, model_name.lower(), name))
+            target.write("        %s.%s = body.get('%s', existing_%s.%s)\n" % (
+                model_name.lower(), name, name, model_name.lower(), name))
 
         target.write("\n")
-        target.write("        session.commit()    # To prevent lock on the table\n")
-        target.write("        session.add(%s)  # Add the new object to the session\n" % model_name.lower())
+        target.write(
+            "        session.commit()    # To prevent lock on the table\n")
+        target.write(
+            "        session.add(%s)  # Add the new object to the session\n" % model_name.lower())
         target.write("        session.flush()     # Commits and flushes\n")
         target.write("        session.close()\n")
         target.write("        return 'SUCCESS: Updated the TACOBASE'\n")
@@ -179,8 +198,10 @@ def create_hug_api(table_data):
         # TODO Create delete endpoint
     target.close()
 
+
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
+
 
 if __name__ == '__main__':
     init_db()

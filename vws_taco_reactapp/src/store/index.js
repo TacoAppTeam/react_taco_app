@@ -1,4 +1,4 @@
-import {combineReducers, applyMiddleware, createStore} from 'redux';
+import {combineReducers, applyMiddleware, createStore, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import userReducer from './user/reducer';
 import eventReducer from './event/reducer';
@@ -21,7 +21,8 @@ const rootReducer = combineReducers({
   ingredient: ingredientReducer
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 export default store;
 
 export const Actions = {

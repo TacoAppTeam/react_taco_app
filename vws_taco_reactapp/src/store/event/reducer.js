@@ -9,12 +9,9 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case eventActions.GET_EVENT_DATA:
-      // Get Event Data
-      let eventData = [];
-
       return {
         ...state,
-        eventData: eventData,
+        eventData: [],
         eventsPending: true
       };
     case eventActions.EVENTS_RETRIEVED:
@@ -26,14 +23,12 @@ const reducer = (state = initialState, action) => {
     case eventActions.CREATE_EVENT:
       return {
         ...state,
-        eventCreatePending: true,
-        eventCreateResponse: {}
+        eventCreatePending: true
       };
     case eventActions.EVENT_CREATED:
       return {
         ...state,
-        eventCreatePending: false,
-        eventCreateResponse: action.eventCreateResponse
+        eventCreatePending: false
       };
     default:
       return state;

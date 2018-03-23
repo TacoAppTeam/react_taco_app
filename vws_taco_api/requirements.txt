@@ -1,4 +1,4 @@
 Hug==2.3.0
 SQLAlchemy==1.1.13
 Flask==0.12.2
-
+PyJWT==1.5.3
