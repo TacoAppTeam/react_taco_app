@@ -3,6 +3,7 @@ import * as eventActions from './actions';
 const initialState = {
   eventsPending: false,
   eventCreatePending: false,
+  eventDeletePending: false,
   eventData: []
 };
 
@@ -29,6 +30,16 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         eventCreatePending: false
+      };
+    case eventActions.DELETE_EVENT:
+      return {
+        ...state,
+        eventDeletePending: true
+      };
+    case eventActions.EVENT_DELETED:
+      return {
+        ...state,
+        eventDeletePending: false
       };
     default:
       return state;

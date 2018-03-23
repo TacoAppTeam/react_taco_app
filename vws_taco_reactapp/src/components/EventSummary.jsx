@@ -7,6 +7,7 @@ import Loader from 'react-loader';
 import TacoModal from './TacoModal';
 import OrderBuilder from './OrderBuilder';
 import {dateFormat} from '../utils/format';
+import {Redirect} from 'react-router';
 
 function mapStateToProps(state) {
   return {
@@ -21,7 +22,10 @@ function mapStateToProps(state) {
 class EventSummary extends Component {
   constructor(props) {
     super(props);
-    this.state = {showModal: false};
+    this.state = {
+      showModal: false,
+      redirect: false
+    };
   }
 
   componentDidMount() {
@@ -84,7 +88,18 @@ class EventSummary extends Component {
     this.setState({showModal: true});
   };
 
+  deleteEvent = () => {
+    if (window.confirm('Whoah now, this is gonna delete this event aaaand all the orders.. Are you sure you want to kill these tacos?')) {
+      let eventData = {eventId: this.props.match.params.event}
+      this.props.dispatch(Actions.event.deleteEvent(eventData));
+      this.setState({redirect: true})
+    }
+  }
+
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to={'/'} />;
+    }
     return (
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
@@ -96,6 +111,7 @@ class EventSummary extends Component {
           <h3>User orders</h3>
           <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
           <RaisedButton onClick={this.openModal} label="Order Tacos" />
+          <RaisedButton onClick={this.deleteEvent} label="Delete Event" />
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
               eventId={this.props.match.params.event}

@@ -7,6 +7,9 @@ export const EVENTS_RETRIEVED = 'EVENTS_RETRIEVED';
 export const CREATE_EVENT = 'CREATE_EVENT';
 export const EVENT_CREATED = 'EVENT_CREATED';
 
+export const DELETE_EVENT = 'DELETE_EVENT';
+export const EVENT_DELETED = 'EVENT_DELETED';
+
 export const fetchEvents = () => {
   const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
 
@@ -66,3 +69,28 @@ export const createEvent = formData => {
     });
   };
 };
+
+export const deleteEvent = eventData => {
+  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/delete_event';
+
+  function deleteEventPost() {
+    return axios
+      .post(event_post_url, eventData, {
+        Authorization: localStorage.getItem('user')
+      })
+      .then(res => {
+        return res;
+      });
+  }
+
+  return function(dispatch) {
+    dispatch({
+      type: DELETE_EVENT
+    });
+
+    return deleteEventPost().then(res => {
+      dispatch({type: EVENT_DELETED});
+      fetchEvents()(dispatch);
+    });
+  };
+}

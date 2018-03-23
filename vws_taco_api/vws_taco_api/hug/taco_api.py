@@ -143,6 +143,46 @@ def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
 
 
 @auth_hug.options(requires=cors_support)
+def delete_event():
+    print('calling them options')
+    return 200
+
+
+@auth_hug.post(requires=cors_support)
+def delete_event(body):
+    event_id = body.get('eventId')
+
+    session = db.create_session()
+    orders_querystr = '''select taco.id 
+                        from Orders o 
+                        join Taco_Order taco on taco.order_id=o.id 
+                        join Taco_Ingredient ti on taco.id=ti.order_id 
+                        join Ingredients ing on ing.id=ti.ingredient_id 
+                        where o.event_id=:event_id group by taco.id'''
+    query_result = session.execute(orders_querystr, {"event_id": event_id})
+
+    orders = []
+    for result in query_result:
+        orders.append(result[0])
+
+    session.commit()
+    session.flush()
+    session.close()
+
+    # delete each taco order and its ingredients
+    for order in orders:
+        removeTaco({'taco_order_id': order})
+
+    # delete the event
+    session = db.create_session()
+    event = session.query(Event).filter(Event.id == event_id)
+    event.delete()
+    session.commit()
+    session.flush()
+    session.close()
+
+
+@auth_hug.options(requires=cors_support)
 def submit_order():
     print('calling them options')
     return 200
