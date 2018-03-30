@@ -4,13 +4,18 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Actions} from '../store';
 
+const initialState = {
+  username: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  createNewAcct: false
+};
+
 class LoginBody extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: '',
-      password: ''
-    };
+    this.state = initialState;
   }
 
   onChange = (evt, which) => {
@@ -46,61 +51,70 @@ class LoginBody extends Component {
   render = () => {
     return (
       <div>
-        <form onSubmit={this.onSubmit} ref={form => (this.form = form)}>
-          <TextField
-            name="username"
-            placeholder="Username"
-            type="text"
-            value={this.state.username}
-            onChange={e => this.onChange(e, 'username')}
-          />
-          <br />
-          <TextField
-            name="password"
-            placeholder="Password"
-            type="password"
-            value={this.state.password}
-            onChange={e => this.onChange(e, 'password')}
-          />
-          <br />
-          <RaisedButton label="Submit" type="submit" />
-        </form>
-        <h2>OR</h2>
-        <form onSubmit={this.onCreateUser} ref={form => (this.form = form)}>
-          <TextField
-            name="username"
-            placeholder="Username"
-            type="text"
-            value={this.state.username}
-            onChange={e => this.onChange(e, 'username')}
-          />
-          <br />
-          <TextField
-            name="firstname"
-            placeholder="First Name"
-            type="text"
-            value={this.state.firstName}
-            onChange={e => this.onChange(e, 'firstName')}
-          />
-          <br />
-          <TextField
-            name="lastname"
-            placeholder="lastName"
-            type="text"
-            value={this.state.lastName}
-            onChange={e => this.onChange(e, 'lastName')}
-          />
-          <br />
-          <TextField
-            name="password"
-            placeholder="Password"
-            type="password"
-            value={this.state.password}
-            onChange={e => this.onChange(e, 'password')}
-          />
-          <br />
-          <RaisedButton label="Submit" type="submit" />
-        </form>
+        {!this.state.createNewAcct ? (
+          <form onSubmit={this.onSubmit} ref={form => (this.form = form)}>
+            <TextField
+              name="username"
+              placeholder="Username"
+              type="text"
+              value={this.state.username}
+              onChange={e => this.onChange(e, 'username')}
+            />
+            <br />
+            <TextField
+              name="password"
+              placeholder="Password"
+              type="password"
+              value={this.state.password}
+              onChange={e => this.onChange(e, 'password')}
+            />
+            <br />
+            <RaisedButton label="Submit" type="submit" />
+            <div />
+            <RaisedButton
+              label="Create New User"
+              onClick={() => {
+                this.setState({createNewAcct: true});
+              }}
+            />
+          </form>
+        ) : (
+          <form onSubmit={this.onCreateUser} ref={form => (this.form = form)}>
+            <TextField
+              name="username"
+              floatingLabelText="Username"
+              type="text"
+              value={this.state.username}
+              onChange={e => this.onChange(e, 'username')}
+            />
+            <br />
+            <TextField
+              name="firstname"
+              floatingLabelText="First Name"
+              type="text"
+              value={this.state.firstName}
+              onChange={e => this.onChange(e, 'firstName')}
+            />
+            <br />
+            <TextField
+              name="lastname"
+              floatingLabelText="Last Name"
+              type="text"
+              value={this.state.lastName}
+              onChange={e => this.onChange(e, 'lastName')}
+            />
+            <br />
+            <TextField
+              name="password"
+              floatingLabelText="Password"
+              type="password"
+              value={this.state.password}
+              onChange={e => this.onChange(e, 'password')}
+            />
+            <br />
+            <RaisedButton label="Submit" type="submit" />
+          </form>
+        )}
       </div>
     );
   };

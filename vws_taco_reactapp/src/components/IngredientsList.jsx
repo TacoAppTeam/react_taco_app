@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
-import TextField from 'material-ui/TextField';
 
 class IngredientsList extends Component {
   constructor(props) {

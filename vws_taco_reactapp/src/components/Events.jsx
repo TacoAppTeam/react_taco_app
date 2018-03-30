@@ -4,7 +4,6 @@ import EventForm from './EventForm';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import Divider from 'material-ui/Divider';
 import {Actions} from '../store';
 import EventGrid from './EventGrid';
 import {dateFormat} from '../utils/format';
