@@ -43,6 +43,7 @@ class LoginBody extends Component {
         this.state.password
       )
     );
+    this.props.dispatch(Actions.user.signIn(this.state.username, this.state.password));
     if (this.props.onSubmit) {
       this.props.onSubmit();
     }
