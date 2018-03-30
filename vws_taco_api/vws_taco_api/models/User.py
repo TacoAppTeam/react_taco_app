@@ -9,7 +9,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'Users'
 
-    email = Column(TEXT, nullable=False, default=None, primary_key=True, autoincrement=True)
+    email = Column(TEXT, nullable=False, default=None, primary_key=True, autoincrement=False)
     first_name = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
     last_name = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
     password = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)

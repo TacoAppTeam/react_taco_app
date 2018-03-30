@@ -2,23 +2,23 @@
 insert into Users
     (first_name,last_name, password, email)
 values
-    ('Cody', 'Abney', 'password', 'cody.abney@viasat.com');
+    ('Cody', 'Abney', '$argon2i$v=19$m=512,t=2,p=2$hqbvJZgDJzbB1O9eHzZkgw$Gk8Ghgc+IdYSVTWIwM5cTw', 'cody.abney@viasat.com');
 insert into Users
     (first_name,last_name, password, email)
 values
-    ('Brandon', 'Ojeda', 'password', 'brandon.ojeda@viasat.com');
+    ('Brandon', 'Ojeda', '$argon2i$v=19$m=512,t=2,p=2$hqbvJZgDJzbB1O9eHzZkgw$Gk8Ghgc+IdYSVTWIwM5cTw', 'brandon.ojeda@viasat.com');
 insert into Users
     (first_name,last_name, password, email)
 values
-    ('Josh', 'Masterson', 'password', 'joshua.masterson@viasat.com');
+    ('Josh', 'Masterson', '$argon2i$v=19$m=512,t=2,p=2$hqbvJZgDJzbB1O9eHzZkgw$Gk8Ghgc+IdYSVTWIwM5cTw', 'joshua.masterson@viasat.com');
 insert into Users
     (first_name,last_name, password, email)
 values
-    ('Ross', 'Hudgins', 'password', 'michael.hudgins@viasat.com');
+    ('Ross', 'Hudgins', '$argon2i$v=19$m=512,t=2,p=2$hqbvJZgDJzbB1O9eHzZkgw$Gk8Ghgc+IdYSVTWIwM5cTw', 'michael.hudgins@viasat.com');
 insert into Users
     (first_name,last_name, password, email)
 values
-    ('Josh', 'Titus', 'password', 'josh.titus@viasat.com');
+    ('Josh', 'Titus', '$argon2i$v=19$m=512,t=2,p=2$hqbvJZgDJzbB1O9eHzZkgw$Gk8Ghgc+IdYSVTWIwM5cTw', 'josh.titus@viasat.com');
 -- Populate Taco Shell data
 insert into Taco_Shell
     (shell)
