@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {config} from '../../config';
 import {formatOrders} from '../../utils/format';
+import * as errorActions from '../errors/actions';
 
 export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';
 export const ADD_ORDER_PENDING = 'ADD_ORDER_PENDING';
@@ -22,6 +23,10 @@ export const addNewOrder = newOrder => {
       type: ADD_ORDER_PENDING
     });
     return addOrderToAPI(newOrder).then(res => {
+      if (!res.data.success) {
+        dispatch({type: errorActions.ADD_ERROR, error: res.data.message});
+        return false;
+      }
       fetchEventOrders(newOrder.eventId)(dispatch);
       dispatch({
         type: ADD_NEW_ORDER
@@ -33,12 +38,11 @@ export const addNewOrder = newOrder => {
 export const removeTaco = tacoId => {
   function removeTacoAPI(tacoId) {
     const remove_taco_url = config.api_hostname + ':' + config.api_port + '/removeTaco';
-    return axios
-      .post(
-        remove_taco_url,
-        {taco_order_id: tacoId},
-        {Authorization: localStorage.getItem('user'), 'Access-Control-Allow-Origin': '*'}
-      )
+    return axios.post(
+      remove_taco_url,
+      {taco_order_id: tacoId},
+      {Authorization: localStorage.getItem('user'), 'Access-Control-Allow-Origin': '*'}
+    );
   }
 
   return function(dispatch) {

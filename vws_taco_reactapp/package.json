@@ -6,6 +6,7 @@
         "axios": "^0.16.2",
         "jwt-decode": "^2.2.0",
         "material-ui": "^0.20.0",
+        "material-ui-notifications": "^0.1.4",
         "react": "16.x.x",
         "react-16-bootstrap-date-picker": "^5.1.2",
         "react-bootstrap": "^0.32.1",

@@ -37,10 +37,18 @@ def token_generation(username, password):
 
     user = query.as_dict()
     db_pass = user.get('password')
-    if (ph.verify(db_pass, password)):
-        token = jwt.encode({"email": username, "first_name": user.get("first_name"),
-                            "last_name": user.get("last_name")}, Auth.secret_key, algorithm='HS256')
-        return {"success": True, "token": token}
+    try:
+        if (ph.verify(db_pass, password)):
+            token = jwt.encode({"email": username, "first_name": user.get("first_name"),
+                                "last_name": user.get("last_name")}, Auth.secret_key, algorithm='HS256')
+            return {"success": True, "token": token}
+        else:
+            return {"success": False, "message": "FAIL"}
+    except Exception as Error:
+        return {"success": False, "message": "Failure to authenticate - try again or dont or whatever."}
+    finally:
+        pass
+
     return {"success": False, "message": "Should NOT tell you this, but your password is wrong. Don't taze me bro"}
 
 
@@ -59,6 +67,8 @@ def create_user(email, first_name, last_name, password):
     if query:
         return {"success": False, "message": "There already is a you."}
 
+    if not email or not first_name or not last_name or not password:
+        return {"success": False, "message": "You need more stuff"}
     new_hash = ph.hash(password)
     scripted_endpoints.user(
         {"email": email, "first_name": first_name,
@@ -218,6 +228,9 @@ def submit_order(body):
 
     respList = []
 
+    if not user_id or not event_id or not orderList or len(orderList) == 0:
+        return {"success": False, "message": "You are missing taco stuff of some sort"}
+
     try:
         session = db.create_session()
 
@@ -268,10 +281,10 @@ def submit_order(body):
                     "user_id": user_id
                 })
 
-        return respList
+        return {"success": True, "data": respList}
 
     except Exception as Error:
-        raise Error
+        return {"success": False, "message": "Server error trying to add the order"}
 
 
 @auth_hug.get(requires=cors_support)

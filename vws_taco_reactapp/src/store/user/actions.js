@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {config} from '../../config';
 import jwt_decode from 'jwt-decode';
+import * as errorActions from '../errors/actions';
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const CHECK_USER_LOGGED_IN = 'CHECK_USER_LOGGED_IN';
@@ -69,11 +70,7 @@ export const signIn = (username, password) => {
           const user = jwt_decode(res.data.token);
           return {token: res.data.token, user: user};
         }
-        return {token: null, user: null};
-      })
-      .catch(err => {
-        console.error(err);
-        return {};
+        return {token: null, user: null, errMessage: res.data.message};
       });
   }
 
@@ -82,16 +79,20 @@ export const signIn = (username, password) => {
       type: LOGIN_PENDING
     });
 
-    return callSignIn(username, password).then(result => {
-      if (result.token) {
-        dispatch({
-          type: SET_CURRENT_USER,
-          user: result.user,
-          token: result.token
-        });
-      }
-      // TODO add error handling better
-    });
+    return callSignIn(username, password)
+      .then(result => {
+        if (result.token) {
+          dispatch({
+            type: SET_CURRENT_USER,
+            user: result.user,
+            token: result.token
+          });
+        }
+        dispatch({type: errorActions.ADD_ERROR, error: result.errMessage});
+      })
+      .catch(err => {
+        dispatch({type: errorActions.ADD_ERROR, error: err});
+      });
   };
 };
 
@@ -106,7 +107,7 @@ export const createUser = (username, firstName, lastName, password) => {
         {'Access-Control-Allow-Origin': '*'}
       )
       .then(res => {
-        return res.data.success;
+        return res.data;
       })
       .catch(err => {
         console.error(err);
@@ -119,13 +120,14 @@ export const createUser = (username, firstName, lastName, password) => {
       type: CREATE_USER_PENDING
     });
 
-    return callCreateUser(username, firstName, lastName, password).then(success => {
-      if (success) {
+    return callCreateUser(username, firstName, lastName, password).then(data => {
+      if (data.success) {
         dispatch({
           type: USER_CREATED
         });
+      } else {
+        dispatch({type: errorActions.ADD_ERROR, error: data.message});
       }
-      // TODO add error handling better
     });
   };
 };

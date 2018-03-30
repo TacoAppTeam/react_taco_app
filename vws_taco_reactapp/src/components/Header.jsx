@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import FlatButton from 'material-ui/FlatButton';
+import {NotificationContainer} from 'material-ui-notifications';
 
 import {Actions} from '../store';
 import Title from './Title';
@@ -68,6 +69,7 @@ class Header extends Component {
         >
           <LoginBody onSubmit={this.closeModal} />
         </TacoModal>
+        <NotificationContainer />
         {this.props.children}
       </div>
     );

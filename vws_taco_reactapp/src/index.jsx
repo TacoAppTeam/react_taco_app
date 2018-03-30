@@ -31,7 +31,7 @@ const getTheme = () => {
   return getMuiTheme(lightBaseTheme, overwrites);
 };
 
-let theme = getTheme();
+export let theme = getTheme();
 export const styles = {
   palette: colorPalette,
   header: {
