@@ -82,11 +82,7 @@ class EventSummary extends Component {
   };
 
   showAllOrders = () => {
-    if (this.props.currentUser) {
-      return this.props.currentUser.email === this.getEventRunner();
-    }
-
-    return false;
+    return this.props.currentUser && this.props.currentUser.email === this.getEventRunner();
   };
 
   closeModal = () => {
@@ -122,7 +118,6 @@ class EventSummary extends Component {
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
           <h2>Date of Event: {this.getEventDate()}</h2>
-          {this.state.eventData}
           { this.showAllOrders() ?
             <div>
               <h3>All event orders</h3>
@@ -130,7 +125,7 @@ class EventSummary extends Component {
                 orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
               />
             </div>
-            : <div/>
+            : null
           }
           <div>
             <h3>User orders</h3>
