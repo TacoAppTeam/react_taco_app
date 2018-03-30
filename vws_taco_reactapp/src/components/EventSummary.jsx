@@ -61,6 +61,16 @@ class EventSummary extends Component {
     return '';
   };
 
+  getEventRunner = () => {
+    let eventData = this.getEventData();
+
+    if (Object.keys(eventData).length) {
+      return eventData.userId;
+    }
+
+    return '';
+  };
+
   getUserEvents = () => {
     let user = this.props.currentUser;
 
@@ -69,6 +79,14 @@ class EventSummary extends Component {
           return user && order.user === user.email;
         })
       : null;
+  };
+
+  showAllOrders = () => {
+    if (this.props.currentUser) {
+      return this.props.currentUser.email === this.getEventRunner();
+    }
+
+    return false;
   };
 
   closeModal = () => {
@@ -104,12 +122,20 @@ class EventSummary extends Component {
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
           <h2>Date of Event: {this.getEventDate()}</h2>
-          <h3>All event orders</h3>
-          <OrderContents
-            orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
-          />
-          <h3>User orders</h3>
-          <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
+          {this.state.eventData}
+          { this.showAllOrders() ?
+            <div>
+              <h3>All event orders</h3>
+              <OrderContents
+                orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
+              />
+            </div>
+            : <div/>
+          }
+          <div>
+            <h3>User orders</h3>
+            <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
+          </div>
           <RaisedButton onClick={this.openModal} label="Order Tacos" />
           <RaisedButton onClick={this.deleteEvent} label="Delete Event" />
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>

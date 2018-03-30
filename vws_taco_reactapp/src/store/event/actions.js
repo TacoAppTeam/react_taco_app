@@ -23,6 +23,7 @@ export const fetchEvents = () => {
         event.locationName = data.location.name;
         event.firstName = data.user.first_name;
         event.lastName = data.user.last_name;
+        event.userId = data.event.user_id;
         event.id = data.event.id;
         eventData.push(event);
       }
