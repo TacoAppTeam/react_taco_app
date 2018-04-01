@@ -103,30 +103,40 @@ class EventSummary extends Component {
   };
 
   deleteEvent = () => {
-    if (window.confirm('Whoah now, this is gonna delete this event aaaand all the orders.. Are you sure you want to kill these tacos?')) {
-      let eventData = {eventId: this.props.match.params.event}
+    if (
+      window.confirm(
+        'Whoah now, this is gonna delete this event aaaand all the orders.. Are you sure you want to kill these tacos?'
+      )
+    ) {
+      let eventData = {eventId: this.props.match.params.event};
       this.props.dispatch(Actions.event.deleteEvent(eventData));
-      this.setState({redirect: true})
+      this.setState({redirect: true});
     }
-  }
+  };
 
   render() {
     if (this.state.redirect) {
       return <Redirect push to={'/'} />;
     }
+    const currentRunner = this.getEventRunner();
     return (
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
           <h2>Date of Event: {this.getEventDate()}</h2>
-          { this.showAllOrders() ?
+          <h3>
+            Runner for event:{' '}
+            {currentRunner === this.props.currentUser.email
+              ? 'YOU are the runner, it is YOU!!! ... do not forget the green sauce.'
+              : currentRunner}
+          </h3>
+          {this.showAllOrders() ? (
             <div>
               <h3>All event orders</h3>
               <OrderContents
                 orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
               />
             </div>
-            : null
-          }
+          ) : null}
           <div>
             <h3>User orders</h3>
             <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
