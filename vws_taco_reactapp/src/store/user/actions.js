@@ -14,7 +14,7 @@ export const GET_USERS_DATA = 'GET_USERS_DATA';
 export const USERS_RETRIEVED = 'USERS_RETRIEVED';
 
 export const fetchUsers = () => {
-  const users_url = config.api_hostname + ':' + config.api_port + '/v1/users';
+  const users_url = `${config.api_hostname}:${config.api_port}/v1/users`;
 
   function getUsersFromAPI() {
     return axios
@@ -56,7 +56,7 @@ export const checkUserLoggedIn = () => {
 };
 
 export const signIn = (username, password) => {
-  const login_url = config.api_hostname + ':' + config.api_port + '/token_generation';
+  const login_url = `${config.api_hostname}:${config.api_port}/token_generation`;
 
   function callSignIn(username, password) {
     return axios
@@ -87,17 +87,20 @@ export const signIn = (username, password) => {
             user: result.user,
             token: result.token
           });
+          return result;
         }
         dispatch({type: errorActions.ADD_ERROR, error: result.errMessage});
+        return result;
       })
       .catch(err => {
         dispatch({type: errorActions.ADD_ERROR, error: err});
+        return err;
       });
   };
 };
 
 export const createUser = (username, firstName, lastName, password) => {
-  const addUserUrl = config.api_hostname + ':' + config.api_port + '/create_user';
+  const addUserUrl = `${config.api_hostname}:${config.api_port}/create_user`;
 
   function callCreateUser(username, firstName, lastName, password) {
     return axios

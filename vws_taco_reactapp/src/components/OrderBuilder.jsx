@@ -22,7 +22,7 @@ class OrderBuilder extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(Actions.ingredient.fetchIngredients());
+    this.props.dispatch(Actions.ingredient.fetchIngredients(this.props.eventId));
   }
 
   deleteTaco(taco) {

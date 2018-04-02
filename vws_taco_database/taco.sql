@@ -34,7 +34,9 @@ CREATE TABLE Ingredients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     description TEXT NULL,
-    price DECIMAL(5,2) NOT NULL
+    price DECIMAL(5,2) NOT NULL,
+    location_id INTEGER NOT NULL,    
+    FOREIGN KEY (location_id) REFERENCES Locations(id)
 );
 
 -- Create Taco_Order table
@@ -57,7 +59,8 @@ CREATE TABLE Locations (
     state TEXT NOT NULL,
     zip TEXT NOT NULL,
     phone_number INTEGER NOT NULL,
-    hours TEXT NOT NULL
+    hours TEXT NOT NULL,
+    base_taco_price DECIMAL(5,2) NULL
 );
 
 -- Create Orders table

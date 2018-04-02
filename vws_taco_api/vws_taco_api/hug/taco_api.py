@@ -45,7 +45,7 @@ def token_generation(username, password):
         else:
             return {"success": False, "message": "FAIL"}
     except Exception as Error:
-        return {"success": False, "message": "Failure to authenticate - try again or dont or whatever."}
+        return {"success": False, "message": "Failure to authenticate - try again or dont or whatever. \n Error: %s " % Error}
     finally:
         pass
 
@@ -118,22 +118,27 @@ def events(event_id: hug.types.number=0):
 
 
 @auth_hug.get(requires=cors_support)
-def ingredients():
+def ingredients(event_id=1):
     ingredients = []
 
     session = db.create_session()
-    query_result = session.query(Ingredient).all()
+    querystr = '''SELECT ing.* 
+        FROM ingredients ing 
+        JOIN locations loc ON loc.id = ing.location_id
+        JOIN events ev ON ev.location_id = loc.id 
+        WHERE ev.id = :event_id'''
+    query_result = session.execute(querystr, {"event_id": event_id})
 
     if not query_result:
-        return []
+        return ingredients
 
     for result in query_result:
-        d = {}
-        ingredient = result
-
-        d['ingredient'] = ingredient.as_dict()
-
-        ingredients.append(d)
+        ingredients.append({
+            "id": result[0],
+            "name": result[1],
+            "description": result[2],
+            "price": result[3]
+        })
 
     return ingredients
 
@@ -233,22 +238,31 @@ def submit_order(body):
 
     try:
         session = db.create_session()
+        order = session.query(Order).filter(
+            Order.user_id == user_id and Order.event_id == event_id).first()
+        if not order:
+            temp_order = Order()
+            order = session.merge(temp_order)
 
-        order = Order()
-        new_order = session.merge(order)
-        new_order.user_id = user_id
-        new_order.event_id = event_id
-        new_order.payment_amount = 0
-        new_order.order_amount = 0
+        order.user_id = user_id
+        order.event_id = event_id
+        order.payment_amount = order.payment_amount if order.payment_amount else 0
+        order.order_amount = order.order_amount if order.order_amount else 0
 
         session.commit()    # To prevent lock on the table
-        session.add(new_order)  # Add the new object to the session
+        session.add(order)  # Add the new object to the session
         session.flush()     # Commits and flushes
-        order_id = new_order.id
-        session.close()
+        order_id = order.id
+
+        taco_cost = order.order_amount
+        location_ingredients = ingredients(event_id)
+        event_data = session.query(Event).get(event_id).as_dict()
+        location_data = session.query(Location).get(
+            event_data["location_id"]).as_dict()
 
         for taco in orderList:
-            session = db.create_session()
+            taco_cost = float(taco_cost) + \
+                float(location_data["base_taco_price"])
 
             taco_order = Taco_Order()
             new_taco = session.merge(taco_order)
@@ -258,11 +272,11 @@ def submit_order(body):
             session.add(new_taco)
             session.flush()
             taco_order_id = new_taco.id
-            session.close()
 
             for ingredient in taco.get('ingredientIDs'):
-                session = db.create_session()
-
+                for ing in location_ingredients:
+                    if str(ing["id"]) == str(ingredient):
+                        taco_cost = float(taco_cost) + float(ing["price"])
                 taco_ing = Taco_Ingredient()
                 new_ing = session.merge(taco_ing)
                 new_ing.order_id = taco_order_id
@@ -270,10 +284,9 @@ def submit_order(body):
                 session.commit()
                 session.add(new_ing)
                 session.flush()
-                session.close()
 
                 respList.append({
-                    "event_id": new_order.event_id,
+                    "event_id": order.event_id,
                     "taco_order_id": taco_order_id,
                     "order_id": order_id,
                     "shell_id": new_taco.shell_id,
@@ -281,10 +294,18 @@ def submit_order(body):
                     "user_id": user_id
                 })
 
+        update_order = session.merge(order)
+        update_order.order_amount = taco_cost
+
+        session.add(update_order)  # Add the new object to the session
+        session.commit()
+        session.flush()     # Commits and flushes
+        session.close()
+
         return {"success": True, "data": respList}
 
     except Exception as Error:
-        return {"success": False, "message": "Server error trying to add the order"}
+        return {"success": False, "message": "Server error trying to add the order: %s" % Error}
 
 
 @auth_hug.get(requires=cors_support)

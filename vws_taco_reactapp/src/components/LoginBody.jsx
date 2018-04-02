@@ -52,13 +52,21 @@ class LoginBody extends Component {
   render = () => {
     return (
       <div>
+        <input
+          type="password"
+          name="fake-password"
+          autoComplete="new-password"
+          tabIndex="-1"
+          style={{opacity: 0, float: 'left', border: 'none', height: '0', width: '0'}}
+        />
         {!this.state.createNewAcct ? (
-          <form onSubmit={this.onSubmit} ref={form => (this.form = form)}>
+          <form name="login" onSubmit={this.onSubmit} ref={form => (this.form = form)}>
             <TextField
               name="username"
               placeholder="Username"
               type="text"
               value={this.state.username}
+              autoComplete="nope"
               onChange={e => this.onChange(e, 'username')}
             />
             <br />
@@ -68,6 +76,7 @@ class LoginBody extends Component {
               type="password"
               value={this.state.password}
               onChange={e => this.onChange(e, 'password')}
+              autoComplete="new-password"
             />
             <br />
             <RaisedButton label="Submit" type="submit" />
@@ -75,16 +84,17 @@ class LoginBody extends Component {
             <RaisedButton
               label="Create New User"
               onClick={() => {
-                this.setState({createNewAcct: true});
+                this.setState({...initialState, createNewAcct: true});
               }}
             />
           </form>
         ) : (
-          <form onSubmit={this.onCreateUser} ref={form => (this.form = form)}>
+          <form name="createUser" onSubmit={this.onCreateUser} ref={form => (this.form = form)}>
             <TextField
               name="username"
               floatingLabelText="Username"
               type="text"
+              autoComplete="nope"
               value={this.state.username}
               onChange={e => this.onChange(e, 'username')}
             />
@@ -93,6 +103,7 @@ class LoginBody extends Component {
               name="firstname"
               floatingLabelText="First Name"
               type="text"
+              autoComplete="nope"
               value={this.state.firstName}
               onChange={e => this.onChange(e, 'firstName')}
             />
@@ -101,6 +112,7 @@ class LoginBody extends Component {
               name="lastname"
               floatingLabelText="Last Name"
               type="text"
+              autoComplete="nope"
               value={this.state.lastName}
               onChange={e => this.onChange(e, 'lastName')}
             />
@@ -110,6 +122,7 @@ class LoginBody extends Component {
               floatingLabelText="Password"
               type="password"
               value={this.state.password}
+              autoComplete="new-password"
               onChange={e => this.onChange(e, 'password')}
             />
             <br />

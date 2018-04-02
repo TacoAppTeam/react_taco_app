@@ -75,6 +75,7 @@ def ingredient(body):
         ingredient.name = body.get('name', existing_ingredient.name)
         ingredient.description = body.get('description', existing_ingredient.description)
         ingredient.price = body.get('price', existing_ingredient.price)
+        ingredient.location_id = body.get('location_id', existing_ingredient.location_id)
 
         session.commit()    # To prevent lock on the table
         session.add(ingredient)  # Add the new object to the session
@@ -116,6 +117,7 @@ def location(body):
         location.zip = body.get('zip', existing_location.zip)
         location.phone_number = body.get('phone_number', existing_location.phone_number)
         location.hours = body.get('hours', existing_location.hours)
+        location.base_taco_price = body.get('base_taco_price', existing_location.base_taco_price)
 
         session.commit()    # To prevent lock on the table
         session.add(location)  # Add the new object to the session

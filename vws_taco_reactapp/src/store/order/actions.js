@@ -11,7 +11,7 @@ export const REMOVE_TACO = 'REMOVE_TACO';
 
 export const addNewOrder = newOrder => {
   function addOrderToAPI(data) {
-    const new_order_url = config.api_hostname + ':' + config.api_port + '/v1/submit_order';
+    const new_order_url = `${config.api_hostname}:${config.api_port}/v1/submit_order`;
     return axios.post(new_order_url, data, {
       'Access-Control-Allow-Origin': '*',
       Authorization: localStorage.getItem('user')
@@ -37,7 +37,7 @@ export const addNewOrder = newOrder => {
 
 export const removeTaco = tacoId => {
   function removeTacoAPI(tacoId) {
-    const remove_taco_url = config.api_hostname + ':' + config.api_port + '/removeTaco';
+    const remove_taco_url = `${config.api_hostname}:${config.api_port}/removeTaco`;
     return axios.post(
       remove_taco_url,
       {taco_order_id: tacoId},
@@ -60,8 +60,9 @@ export const removeTaco = tacoId => {
 
 export const fetchEventOrders = eventId => {
   function getEventOrders(eventId) {
-    const order_url =
-      config.api_hostname + ':' + config.api_port + '/v1/event_orders?event_id=' + eventId;
+    const order_url = `${config.api_hostname}:${
+      config.api_port
+    }/v1/event_orders?event_id=${eventId}`;
     return axios.get(order_url, null, {Authorization: localStorage.getItem('user')}).then(res => {
       return formatOrders(res.data);
     });

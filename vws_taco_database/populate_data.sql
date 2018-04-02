@@ -51,17 +51,33 @@ values
     ('2', '2');
 -- Populate Ingredients data
 insert into Ingredients
-    (name, description, price)
+    (name, description, price, location_id)
 values
-    ('bacon', 'Beautiful crispy meat', '1');
+    ('bacon', 'Beautiful crispy meat', 0.5, 1);
 insert into Ingredients
-    (name, description, price)
+    (name, description, price, location_id)
 values
-    ('egg', 'Golden yellow deliciousness', '1');
+    ('egg', 'Golden yellow deliciousness', 0, 1);
 insert into Ingredients
-    (name, description, price)
+    (name, description, price, location_id)
 values
-    ('cheese', 'The best ever', '1');
+    ('cheese', 'The best ever', 0, 1);
+    insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('bacon', 'Beautiful crispy meat', 0.5, 2);
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('egg', 'Golden yellow deliciousness', 0, 2);
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('cheese', 'The best ever', 0, 2);
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('brisket', 'Juicy, fatty meat', 1.5, 2);
 -- Populate Taco Order data
 insert into Taco_Order
     (order_id, shell_id)
@@ -73,22 +89,22 @@ values
     ('2', '2');
 -- Populate Locations
 insert into Locations
-    (name, street_address, city, state, zip, phone_number, hours)
+    (name, street_address, city, state, zip, phone_number, hours, base_taco_price)
 values
-    ('Casa Rodriguez', '111 Test Rd.', 'Bryan', 'Texas', '77807', '9999999999', '8a-10p');
+    ('Casa Rodriguez', '111 Test Rd.', 'Bryan', 'Texas', '77807', '9999999999', '8a-10p', 1.50);
 insert into Locations
-    (name, street_address, city, state, zip, phone_number, hours)
+    (name, street_address, city, state, zip, phone_number, hours, base_taco_price)
 values
-    ('Jesses Tacqueria', '123 Test Ave', 'Bryan', 'Texas', '77807', '5555555555', '8a-3p');
+    ('Jesses Tacqueria', '123 Test Ave', 'Bryan', 'Texas', '77807', '5555555555', '8a-3p', 2.00);
 -- Populate Orders
 insert into Orders
     (user_id, event_id, payment_amount, order_amount)
 values
-    ('cody.abney@viasat.com', '1', '3', '3');
+    ('cody.abney@viasat.com', '1', 3, 3);
 insert into Orders
     (user_id, event_id, payment_amount, order_amount)
 values
-    ('brandon.ojeda@viasat.com', '1', '2', '2');
+    ('brandon.ojeda@viasat.com', '1', 2, 2);
 -- Populate Events
 insert into Events
     (user_id, location_id, event_date)
