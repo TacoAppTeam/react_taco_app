@@ -2,13 +2,15 @@ import db
 import hug
 import json
 import jwt
-import scripted_endpoints
 import logging
+import scripted_endpoints
+
+from sqlalchemy import func
 
 from argon2 import PasswordHasher
+from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
 from vws_taco_api.vws_taco_api.utils import Auth
-from cors import cors_support
 
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -122,10 +124,10 @@ def ingredients(event_id):
     ingredients = []
 
     session = db.create_session()
-    querystr = '''SELECT ing.* 
-        FROM ingredients ing 
+    querystr = '''SELECT ing.*
+        FROM ingredients ing
         JOIN locations loc ON loc.id = ing.location_id
-        JOIN events ev ON ev.location_id = loc.id 
+        JOIN events ev ON ev.location_id = loc.id
         WHERE ev.id = :event_id'''
     query_result = session.execute(querystr, {"event_id": event_id})
 
@@ -189,11 +191,11 @@ def delete_event(body):
     event_id = body.get('eventId')
 
     session = db.create_session()
-    orders_querystr = '''select taco.id 
-                        from Orders o 
-                        join Taco_Order taco on taco.order_id=o.id 
-                        join Taco_Ingredient ti on taco.id=ti.order_id 
-                        join Ingredients ing on ing.id=ti.ingredient_id 
+    orders_querystr = '''select taco.id
+                        from Orders o
+                        join Taco_Order taco on taco.order_id=o.id
+                        join Taco_Ingredient ti on taco.id=ti.order_id
+                        join Ingredients ing on ing.id=ti.ingredient_id
                         where o.event_id=:event_id group by taco.id'''
     query_result = session.execute(orders_querystr, {"event_id": event_id})
 
@@ -343,11 +345,21 @@ def removeTaco(body):
     taco_order.delete()
     taco_ingredients.delete()
 
+    remaining_taco_orders = session.query(func.count(Taco_Order.id))\
+        .filter(Taco_Order.id != taco_id)\
+        .filter(Taco_Order.order_id == order_id)\
+        .scalar()
+
+    if remaining_taco_orders == 0:
+        order = session.query(Order.id).filter(Order.id == order_id)
+        order.delete()
+
     session.commit()
     session.flush()
     session.close()
 
-    calculate_order_cost(order_id)
+    if remaining_taco_orders > 0:
+        calculate_order_cost(order_id)
 
     return
 
