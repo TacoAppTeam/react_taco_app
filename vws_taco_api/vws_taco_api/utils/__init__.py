@@ -7,7 +7,6 @@ class Auth():
 
     def token_verify(token):
         try:
-            print('TRYING TO DECODE')
             return jwt.decode(token, 'tacotacotacotac0', algorithms='HS256')
         except jwt.DecodeError:
             return False

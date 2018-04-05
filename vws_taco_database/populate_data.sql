@@ -78,6 +78,37 @@ insert into Ingredients
     (name, description, price, location_id)
 values
     ('brisket', 'Juicy, fatty meat', 1.5, 2);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('bacon', 'Strips of pork fat', 0.75, 3);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('chorizo', 'Crumbled up spicy meat', 0.75, 3);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('potato', 'Irish taco staple', 0.50, 3);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('sausage', 'Crumbled up pork fat', 0.75, 3);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('steak', 'Fancy cow meat', 2.5, 3);
+
+insert into Ingredients
+    (name, description, price, location_id)
+values
+    ('carne guisada', 'Spicy meat stuff', 2.5, 3);
+
 -- Populate Taco Order data
 insert into Taco_Order
     (order_id, shell_id)
@@ -96,6 +127,10 @@ insert into Locations
     (name, street_address, city, state, zip, phone_number, hours, base_taco_price)
 values
     ('Jesses Tacqueria', '123 Test Ave', 'Bryan', 'Texas', '77807', '5555555555', '8a-3p', 2.00);
+insert into Locations
+    (name, street_address, city, state, zip, phone_number, hours, base_taco_price)
+values
+    ('Fuego', '108 Poplar St', 'College Station', 'Texas', '77840', '9797031804', '12a-12a', 1.50);
 -- Populate Orders
 insert into Orders
     (user_id, event_id, payment_amount, order_amount)
@@ -109,5 +144,4 @@ values
 insert into Events
     (user_id, location_id, event_date)
 values
-    ('joshua.masterson@viasat.com', '1', '06/09/2017'),
-    ('2', '1', '09/01/2017');
+    ('joshua.masterson@viasat.com', 1, '04/013/2018')

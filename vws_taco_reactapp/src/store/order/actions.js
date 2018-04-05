@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {config} from '../../config';
-import {formatOrders} from '../../utils/format';
 import * as errorActions from '../errors/actions';
 
 export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';
@@ -49,12 +48,12 @@ export const removeTaco = tacoId => {
     dispatch({
       type: REMOVE_TACO_PENDING
     });
-    return removeTacoAPI(tacoId).then(res =>
+    return removeTacoAPI(tacoId).then(res => {
       dispatch({
         type: REMOVE_TACO,
         tacoId
-      })
-    );
+      });
+    });
   };
 };
 
@@ -64,7 +63,7 @@ export const fetchEventOrders = eventId => {
       config.api_port
     }/v1/event_orders?event_id=${eventId}`;
     return axios.get(order_url, null, {Authorization: localStorage.getItem('user')}).then(res => {
-      return formatOrders(res.data);
+      return res.data;
     });
   }
 

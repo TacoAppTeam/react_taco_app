@@ -17,7 +17,12 @@ class OrderBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      orderList: []
+      id: null,
+      user_id: props.currentUser.email,
+      event_id: null,
+      payment_amount: 0,
+      order_amount: 0,
+      taco_orders: []
     };
   }
 
@@ -26,13 +31,8 @@ class OrderBuilder extends Component {
   }
 
   deleteTaco(taco) {
-    if (this.props.currentUser.email !== taco.user) {
-      alert('NO YOU CANT YOU JUST CANT');
-      return;
-    }
-
-    let orderList = this.state.orderList.filter(o => o.orderId !== taco.orderId);
-    this.setState({orderList});
+    let taco_orders = this.state.taco_orders.filter(o => o.orderId !== taco.orderId);
+    this.setState({taco_orders});
   }
 
   handleAddTaco = taco => {
@@ -41,17 +41,18 @@ class OrderBuilder extends Component {
       return;
     }
     // set state with appended new taco
-    let newState = this.state.orderList.slice();
+    let newState = this.state.taco_orders.slice();
     // TODO: increment count on duplicate
+
     newState.push({
       orderId: newState.length + 1,
-      desc: taco.desc,
+      ingredient_desc: taco.desc,
       ingredientIDs: taco.ids,
       count: 1,
       shell_id: taco.shell,
       user: this.props.currentUser.email
     });
-    this.setState({orderList: newState});
+    this.setState({taco_orders: newState});
   };
 
   handleSubmitOrder = () => {
@@ -59,23 +60,24 @@ class OrderBuilder extends Component {
       alert('Please log in before submitting an order!');
       return;
     }
-    if (!this.state.orderList.length) {
+    if (!this.state.taco_orders.length) {
       alert('Please put some tacos in the basket, I mean CMON!');
       return;
     }
     const newOrder = {
       user_id: this.props.currentUser,
       eventId: this.props.eventId,
-      orderList: this.state.orderList
+      orderList: this.state.taco_orders
     };
     this.props.dispatch(Actions.order.addNewOrder(newOrder));
-    this.setState({orderList: []});
+    this.setState({taco_orders: []});
     this.props.submitOrderFinished();
   };
 
   render() {
     //TODO replace this with correct data
     let shell = {id: 2, shell: 'soft'};
+    const orderList = [this.state];
 
     return (
       <div>
@@ -86,7 +88,7 @@ class OrderBuilder extends Component {
         />
         <Loader loaded={!this.props.pending}>
           <OrderContents
-            orderList={this.state.orderList}
+            orderList={orderList}
             handleSubmitOrder={this.handleSubmitOrder}
             handleDeleteTaco={this.deleteTaco.bind(this)}
           />

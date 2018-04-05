@@ -76,7 +76,7 @@ class EventSummary extends Component {
 
     return this.props.eventOrderList.length
       ? this.props.eventOrderList.filter(function(order) {
-          return user && order.user === user.email;
+          return user && order.user_id === user.email;
         })
       : null;
   };
@@ -90,12 +90,7 @@ class EventSummary extends Component {
   };
 
   deleteTaco = taco => {
-    if (this.props.currentUser.email !== taco.user) {
-      alert('NO YOU CANT YOU JUST CANT');
-      return;
-    }
-
-    this.props.dispatch(Actions.order.removeTaco(taco.data.taco_order_id));
+    this.props.dispatch(Actions.order.removeTaco(taco.taco_id));
   };
 
   openModal = () => {

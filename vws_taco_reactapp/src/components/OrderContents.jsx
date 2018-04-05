@@ -18,18 +18,34 @@ export default class OrderContents extends Component {
           <form onSubmit={this.submitOrder} ref={form => (this.form = form)}>
             <ul>
               {this.props.orderList.map((order, idx) => {
+                const user = order.user_id;
+                const orderAmount = order.order_amount;
+                const amountPaid = order.payment_amount;
+
                 return (
                   <li key={idx}>
-                    {order.desc} (from: {order.user})
-                    {this.props.handleDeleteTaco ? (
-                      <span
-                        onClick={() => {
-                          this.props.handleDeleteTaco(order);
-                        }}
-                      >
-                        X
-                      </span>
-                    ) : null}
+                    <div>Order by: {user}</div>
+                    <div>Cost: {orderAmount}</div>
+                    <div>Amt Paid: {amountPaid}</div>
+                    <ul>
+                      {order.taco_orders.map((taco, idx) => {
+                        taco.user = user;
+                        return (
+                          <li key={idx}>
+                            <span>{taco.ingredient_desc}</span>
+                            {this.props.handleDeleteTaco ? (
+                              <span
+                                onClick={() => {
+                                  this.props.handleDeleteTaco(taco);
+                                }}
+                              >
+                                X
+                              </span>
+                            ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </li>
                 );
               })}
