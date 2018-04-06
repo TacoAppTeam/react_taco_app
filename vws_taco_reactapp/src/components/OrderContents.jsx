@@ -2,7 +2,22 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Chip from 'material-ui/Chip';
+import Avatar from 'material-ui/Avatar';
 import {Actions} from '../store';
+
+const styles = {
+  chip: {
+    margin: 4
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  list: {
+    listStyle: 'none'
+  }
+};
 
 class OrderContents extends Component {
   constructor(props) {
@@ -42,7 +57,7 @@ class OrderContents extends Component {
         Taco Orders:
         {this.state.orders ? (
           <form onSubmit={this.submitOrder} ref={form => (this.form = form)}>
-            <ul>
+            <ul style={styles.list}>
               {this.state.orders.map((order, idx) => {
                 return (
                   <li key={idx}>
@@ -59,21 +74,27 @@ class OrderContents extends Component {
                     ) : (
                       <div>Amt Paid: {order.payment_amount}</div>
                     )}
-                    <ul>
+                    <ul style={styles.list}>
                       {order.taco_orders.map((taco, idx) => {
                         taco.user = order.user_id;
                         return (
                           <li key={idx}>
-                            <span>{taco.ingredient_desc}</span>
                             {this.props.handleDeleteTaco ? (
-                              <span
-                                onClick={() => {
+                              <Chip
+                                style={styles.chip}
+                                onRequestDelete={() => {
                                   this.props.handleDeleteTaco(taco);
                                 }}
                               >
-                                X
-                              </span>
-                            ) : null}
+                                <Avatar src="/taco.jpeg" />
+                                {taco.ingredient_desc}
+                              </Chip>
+                            ) : (
+                              <Chip style={styles.chip}>
+                                <Avatar src="/taco.jpeg" />
+                                {taco.ingredient_desc}
+                              </Chip>
+                            )}
                           </li>
                         );
                       })}

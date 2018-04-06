@@ -144,4 +144,4 @@ values
 insert into Events
     (user_id, location_id, event_date)
 values
-    ('joshua.masterson@viasat.com', 1, '04/013/2018')
+    ('joshua.masterson@viasat.com', 1, '04/13/2018');

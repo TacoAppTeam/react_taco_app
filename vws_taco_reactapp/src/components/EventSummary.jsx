@@ -71,12 +71,16 @@ class EventSummary extends Component {
     return '';
   };
 
-  getUserEvents = () => {
+  filterEvents = showOnlyUser => {
     let user = this.props.currentUser;
 
     return this.props.eventOrderList.length
       ? this.props.eventOrderList.filter(function(order) {
-          return user && order.user_id === user.email;
+          if (showOnlyUser) {
+            return user && order.user_id === user.email;
+          } else {
+            return order.user_id !== user.email;
+          }
         })
       : null;
   };
@@ -128,15 +132,12 @@ class EventSummary extends Component {
           {this.showAllOrders() ? (
             <div>
               <h3>All event orders</h3>
-              <OrderContents
-                isUserRunner
-                orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
-              />
+              <OrderContents isUserRunner orderList={this.filterEvents()} />
             </div>
           ) : null}
           <div>
             <h3>User orders</h3>
-            <OrderContents orderList={this.getUserEvents()} handleDeleteTaco={this.deleteTaco} />
+            <OrderContents orderList={this.filterEvents(true)} handleDeleteTaco={this.deleteTaco} />
           </div>
           <RaisedButton onClick={this.openModal} label="Order Tacos" />
           <RaisedButton onClick={this.deleteEvent} label="Delete Event" />
