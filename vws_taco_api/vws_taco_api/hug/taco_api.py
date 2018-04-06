@@ -45,7 +45,7 @@ def token_generation(username, password):
         else:
             return {"success": False, "message": "FAIL"}
     except Exception as Error:
-        return {"success": False, "message": "Failure to authenticate - try again or dont or whatever."}
+        return {"success": False, "message": "Failure to authenticate - try again or dont or whatever. \n Error: %s " % Error}
     finally:
         pass
 
@@ -118,66 +118,69 @@ def events(event_id: hug.types.number=0):
 
 
 @auth_hug.get(requires=cors_support)
-def ingredients():
+def ingredients(event_id):
     ingredients = []
 
     session = db.create_session()
-    query_result = session.query(Ingredient).all()
+    querystr = '''SELECT ing.* 
+        FROM ingredients ing 
+        JOIN locations loc ON loc.id = ing.location_id
+        JOIN events ev ON ev.location_id = loc.id 
+        WHERE ev.id = :event_id'''
+    query_result = session.execute(querystr, {"event_id": event_id})
 
     if not query_result:
-        return []
+        return ingredients
 
     for result in query_result:
-        d = {}
-        ingredient = result
-
-        d['ingredient'] = ingredient.as_dict()
-
-        ingredients.append(d)
+        ingredients.append({
+            "id": result[0],
+            "name": result[1],
+            "description": result[2],
+            "price": result[3]
+        })
 
     return ingredients
 
 
 @auth_hug.get(output=hug.output_format.json, requires=cors_support)
 def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
-    orders = []
+    orders_list = []
 
     session = db.create_session()
-    querystr = '''select
-                                o.event_id,
-                                o.id,
+
+    orders = session.query(Order).filter(Order.event_id == event_id)
+    if user_id:
+        orders.filter(Order.user_id == user_id)
+
+    for order in orders:
+        enriched_order = order.as_dict()
+
+        enriched_order["taco_orders"] = []
+
+        querystr = '''select
                                 taco.id,
-                                o.user_id,
                                 group_concat(ing.name, ', ')
-                    from Orders o
-                    join Taco_Order taco on taco.order_id=o.id
+                    from Taco_Order taco
                     join Taco_Ingredient ti on taco.id=ti.order_id
                     join Ingredients ing on ing.id=ti.ingredient_id
-                    where o.event_id=:event_id group by taco.id'''
-    query_result = session.execute(querystr, {"event_id": event_id})
+                    where taco.order_id=:taco_order_id group by taco.id'''
 
-    # if user_id:
-    #     query_result.filter(Order.user_id == user_id)
+        query_result = session.execute(
+            querystr, {"taco_order_id": enriched_order["id"]})
+        for result in query_result:
+            enriched_order["taco_orders"].append({
+                "taco_id": result[0],
+                "ingredient_desc": result[1]
+            })
 
-    if not query_result:
-        return []
+        orders_list.append(enriched_order)
 
-    for result in query_result:
-        orders.append({
-            "event_id": result[0],
-            "order_id": result[1],
-            "taco_order_id": result[2],
-            "user_id": result[3],
-            "ingredient": result[4],
-            "ing_price": 0
-        })
-
-    return orders
+    return orders_list
 
 
 @auth_hug.options(requires=cors_support)
 def delete_event():
-    print('calling them options')
     return 200
 
 
@@ -233,23 +236,23 @@ def submit_order(body):
 
     try:
         session = db.create_session()
+        order = session.query(Order).filter(
+            Order.user_id == user_id, Order.event_id == event_id).first()
+        if not order:
+            temp_order = Order()
+            order = session.merge(temp_order)
 
-        order = Order()
-        new_order = session.merge(order)
-        new_order.user_id = user_id
-        new_order.event_id = event_id
-        new_order.payment_amount = 0
-        new_order.order_amount = 0
+        order.user_id = user_id
+        order.event_id = event_id
+        order.payment_amount = order.payment_amount if order.payment_amount else 0
+        order.order_amount = order.order_amount if order.order_amount else 0
 
         session.commit()    # To prevent lock on the table
-        session.add(new_order)  # Add the new object to the session
+        session.add(order)  # Add the new object to the session
         session.flush()     # Commits and flushes
-        order_id = new_order.id
-        session.close()
+        order_id = order.id
 
         for taco in orderList:
-            session = db.create_session()
-
             taco_order = Taco_Order()
             new_taco = session.merge(taco_order)
             new_taco.order_id = order_id
@@ -258,11 +261,8 @@ def submit_order(body):
             session.add(new_taco)
             session.flush()
             taco_order_id = new_taco.id
-            session.close()
 
             for ingredient in taco.get('ingredientIDs'):
-                session = db.create_session()
-
                 taco_ing = Taco_Ingredient()
                 new_ing = session.merge(taco_ing)
                 new_ing.order_id = taco_order_id
@@ -270,10 +270,9 @@ def submit_order(body):
                 session.commit()
                 session.add(new_ing)
                 session.flush()
-                session.close()
 
                 respList.append({
-                    "event_id": new_order.event_id,
+                    "event_id": order.event_id,
                     "taco_order_id": taco_order_id,
                     "order_id": order_id,
                     "shell_id": new_taco.shell_id,
@@ -281,10 +280,18 @@ def submit_order(body):
                     "user_id": user_id
                 })
 
+        update_order = session.merge(order)
+        session.add(update_order)  # Add the new object to the session
+        session.commit()
+        session.flush()     # Commits and flushes
+        session.close()
+
+        calculate_order_cost(order_id)
+
         return {"success": True, "data": respList}
 
     except Exception as Error:
-        return {"success": False, "message": "Server error trying to add the order"}
+        return {"success": False, "message": "Server error trying to add the order: %s" % Error}
 
 
 @auth_hug.get(requires=cors_support)
@@ -327,9 +334,9 @@ def removeTaco():
 @auth_hug.post(requires=cors_support)
 def removeTaco(body):
     taco_id = body.get('taco_order_id')
-
     session = db.create_session()
     taco_order = session.query(Taco_Order).filter(Taco_Order.id == taco_id)
+    order_id = taco_order.first().as_dict()["order_id"]
     taco_ingredients = session.query(Taco_Ingredient).filter(
         Taco_Ingredient.order_id == taco_id)
 
@@ -338,5 +345,41 @@ def removeTaco(body):
 
     session.commit()
     session.flush()
+    session.close()
+
+    calculate_order_cost(order_id)
 
     return
+
+
+def calculate_order_cost(order_id):
+    session = db.create_session()
+
+    order = session.query(Order).get(order_id)
+    order_data = order.as_dict()
+
+    location_ingredients = ingredients(event_id=order_data["event_id"])
+    event_data = session.query(Event).get(order_data["event_id"]).as_dict()
+    location_data = session.query(Location).get(
+        event_data["location_id"]).as_dict()
+
+    order_cost = 0
+
+    taco_orders = session.query(Taco_Order).filter(
+        Taco_Order.order_id == order_id)
+    for taco_order in taco_orders:
+        order_cost = float(order_cost) + \
+            float(location_data["base_taco_price"])
+
+        taco_ings = session.query(Taco_Ingredient).filter(
+            Taco_Ingredient.order_id == order_id)
+        for taco_ing in taco_ings:
+            for ing in location_ingredients:
+                if taco_ing.ingredient_id == ing["id"]:
+                    order_cost = float(order_cost) + float(ing["price"])
+
+    order.order_amount = order_cost
+    session.add(order)
+    session.commit()
+    session.flush()
+    session.close()

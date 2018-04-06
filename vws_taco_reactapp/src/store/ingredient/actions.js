@@ -4,9 +4,9 @@ import {config} from '../../config';
 export const FETCH_INGREDIENTS_PENDING = 'FETCH_INGREDIENTS_PENDING';
 export const INGREDIENTS_RECEIVED = 'INGREDIENTS_RECEIVED';
 
-export const fetchIngredients = () => {
+export const fetchIngredients = eventId => {
   function getIngredients() {
-    const url = config.api_hostname + ':' + config.api_port + '/v1/ingredients';
+    const url = `${config.api_hostname}:${config.api_port}/v1/ingredients?event_id=${eventId}`;
     return axios.get(url, null, {Authorization: localStorage.getItem('user')}).then(res => {
       return res.data;
     });

@@ -23,9 +23,11 @@ const reducer = (state = initialState, action) => {
         pending: true
       };
     case actions.REMOVE_TACO:
-      const newTacoOrders = state.currentEventOrders.filter(
-        o => o.data.taco_order_id !== action.tacoId
-      );
+      const newTacoOrders = state.currentEventOrders.map(order => {
+        order.taco_orders = order.taco_orders.filter(o => o.taco_id !== action.tacoId);
+        return order;
+      });
+
       return {
         ...state,
         currentEventOrders: newTacoOrders,

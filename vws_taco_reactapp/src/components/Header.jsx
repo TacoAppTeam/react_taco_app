@@ -21,7 +21,8 @@ class Header extends Component {
     super(props);
     this.state = {
       loggedIn: false,
-      showLoginModal: false
+      showLoginModal: false,
+      redirect: false
     };
   }
 
@@ -51,11 +52,20 @@ class Header extends Component {
         <Title title="Taco App" />
         <Toolbar className="App">
           {this.props.currentUser ? (
-            <ToolbarGroup>
-              <FlatButton onClick={this.logout} primary={true} label="Log out" />
-
-              <FlatButton label="Home" containerElement={<Link to="/" />} />
-            </ToolbarGroup>
+            [
+              <ToolbarGroup>
+                <FlatButton onClick={this.logout} primary={true} label="Log out" />
+                <FlatButton label="Home" containerElement={<Link to="/" />} />
+              </ToolbarGroup>,
+              <ToolbarGroup lastChild={true}>
+                <FlatButton
+                  label={`Clicking this does nothing, ${this.props.currentUser.first_name}`}
+                  onClick={() => {
+                    this.setState({redirect: true});
+                  }}
+                />
+              </ToolbarGroup>
+            ]
           ) : (
             <ToolbarGroup>
               <FlatButton label="Login" onClick={this.login} />

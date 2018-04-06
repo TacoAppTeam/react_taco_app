@@ -17,11 +17,12 @@ class Location(Base):
     zip = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
     phone_number = Column(INTEGER, nullable=True, default=None, primary_key=False, autoincrement=False)
     hours = Column(TEXT, nullable=True, default=None, primary_key=False, autoincrement=False)
+    base_taco_price = Column(DECIMAL(5,2), nullable=False, default=None, primary_key=False, autoincrement=False)
 
 
     def __repr__(self):
-        return '<Location(id = %s,name = %s,street_address = %s,city = %s,state = %s,zip = %s,phone_number = %s,hours = %s,)>'\
-            % (self.id,self.name,self.street_address,self.city,self.state,self.zip,self.phone_number,self.hours,)
+        return '<Location(id = %s,name = %s,street_address = %s,city = %s,state = %s,zip = %s,phone_number = %s,hours = %s,base_taco_price = %s,)>'\
+            % (self.id,self.name,self.street_address,self.city,self.state,self.zip,self.phone_number,self.hours,self.base_taco_price,)
 
 
     def as_dict(self):

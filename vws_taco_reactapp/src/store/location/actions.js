@@ -5,7 +5,7 @@ export const GET_LOCATIONS_DATA = 'GET_LOCATIONS_DATA';
 export const LOCATIONS_RETRIEVED = 'LOCATIONS_RETRIEVED';
 
 export const fetchLocations = () => {
-  const locations_url = config.api_hostname + ':' + config.api_port + '/v1/locations';
+  const locations_url = `${config.api_hostname}:${config.api_port}/v1/locations`;
 
   function getLocationsFromAPI() {
     return axios

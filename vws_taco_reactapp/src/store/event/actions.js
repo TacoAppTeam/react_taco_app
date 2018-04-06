@@ -11,7 +11,7 @@ export const DELETE_EVENT = 'DELETE_EVENT';
 export const EVENT_DELETED = 'EVENT_DELETED';
 
 export const fetchEvents = () => {
-  const event_url = config.api_hostname + ':' + config.api_port + '/v1/events';
+  const event_url = `${config.api_hostname}:${config.api_port}/v1/events`;
 
   function getEventsFromAPI() {
     return axios.get(event_url, null, {Authorization: localStorage.getItem('user')}).then(res => {
@@ -47,7 +47,7 @@ export const fetchEvents = () => {
 };
 
 export const createEvent = formData => {
-  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/event';
+  const event_post_url = `${config.api_hostname}:${config.api_port}/v1/event`;
 
   function createEventPost() {
     return axios
@@ -72,7 +72,7 @@ export const createEvent = formData => {
 };
 
 export const deleteEvent = eventData => {
-  const event_post_url = config.api_hostname + ':' + config.api_port + '/v1/delete_event';
+  const event_post_url = `${config.api_hostname}:${config.api_port}/v1/delete_event`;
 
   function deleteEventPost() {
     return axios
