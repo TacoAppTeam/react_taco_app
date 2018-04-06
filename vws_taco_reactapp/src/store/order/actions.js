@@ -76,3 +76,31 @@ export const fetchEventOrders = eventId => {
     );
   };
 };
+
+export const updateOrders = orders => {
+  const order_url = `${config.api_hostname}:${config.api_port}/v1/order`;
+  function updateOrdersApi(order) {
+    return axios
+      .post(
+        order_url,
+        {
+          id: order.id,
+          payment_amount: order.payment_amount
+        },
+        {Authorization: localStorage.getItem('user')}
+      )
+      .then(res => {
+        return res.data;
+      });
+  }
+
+  return function(dispatch) {
+    let updateArray = [];
+    orders.map(order => {
+      updateArray.push(updateOrdersApi(order));
+    });
+    Promise.all(updateArray).then(res => {
+      console.log('update object result: ' + res);
+    });
+  };
+};

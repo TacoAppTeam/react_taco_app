@@ -1,7 +1,33 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import {Actions} from '../store';
 
-export default class OrderContents extends Component {
+class OrderContents extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      orders: this.props.orderList
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({orders: nextProps.orderList});
+  }
+
+  handleChange = (idx, val) => {
+    const orders = this.state.orders;
+    orders[idx].payment_amount = val;
+    orders[idx].dirty = true;
+    this.setState({orders});
+  };
+
+  updateOrders = _ => {
+    const ordersToUpdate = this.state.orders.filter(order => order.dirty);
+    this.props.dispatch(Actions.order.updateOrders(ordersToUpdate));
+  };
+
   submitOrder = event => {
     event.preventDefault();
 
@@ -14,22 +40,28 @@ export default class OrderContents extends Component {
     return (
       <div>
         Taco Orders:
-        {this.props.orderList ? (
+        {this.state.orders ? (
           <form onSubmit={this.submitOrder} ref={form => (this.form = form)}>
             <ul>
-              {this.props.orderList.map((order, idx) => {
-                const user = order.user_id;
-                const orderAmount = order.order_amount;
-                const amountPaid = order.payment_amount;
-
+              {this.state.orders.map((order, idx) => {
                 return (
                   <li key={idx}>
-                    <div>Order by: {user}</div>
-                    <div>Cost: {orderAmount}</div>
-                    <div>Amt Paid: {amountPaid}</div>
+                    <div>Order by: {order.user_id}</div>
+                    <div>Cost: {order.order_amount}</div>
+                    {this.props.isUserRunner ? (
+                      <TextField
+                        value={order.payment_amount}
+                        onChange={(e, val) => {
+                          console.log('test');
+                          this.handleChange(idx, val);
+                        }}
+                      />
+                    ) : (
+                      <div>Amt Paid: {order.payment_amount}</div>
+                    )}
                     <ul>
                       {order.taco_orders.map((taco, idx) => {
-                        taco.user = user;
+                        taco.user = order.user_id;
                         return (
                           <li key={idx}>
                             <span>{taco.ingredient_desc}</span>
@@ -53,6 +85,9 @@ export default class OrderContents extends Component {
             {this.props.handleSubmitOrder ? (
               <RaisedButton primary type="submit" label="Sounds Tasty! ®" />
             ) : null}
+            {this.props.isUserRunner ? (
+              <RaisedButton onClick={this.updateOrders} label="Save changes" />
+            ) : null}
           </form>
         ) : (
           <div>NO ORDERS YET!!!</div>
@@ -62,4 +97,4 @@ export default class OrderContents extends Component {
   }
 }
 
-OrderContents.propTypes = {};
+export default connect()(OrderContents);

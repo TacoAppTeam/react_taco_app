@@ -114,13 +114,14 @@ class EventSummary extends Component {
       return <Redirect push to={'/'} />;
     }
     const currentRunner = this.getEventRunner();
+    const isUserRunner = currentRunner === this.props.currentUser.email;
     return (
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
           <h2>Date of Event: {this.getEventDate()}</h2>
           <h3>
             Runner for event:{' '}
-            {currentRunner === this.props.currentUser.email
+            {isUserRunner
               ? 'YOU are the runner, it is YOU!!! ... do not forget the green sauce.'
               : currentRunner}
           </h3>
@@ -128,6 +129,7 @@ class EventSummary extends Component {
             <div>
               <h3>All event orders</h3>
               <OrderContents
+                isUserRunner
                 orderList={this.props.eventOrderList.length ? this.props.eventOrderList : null}
               />
             </div>

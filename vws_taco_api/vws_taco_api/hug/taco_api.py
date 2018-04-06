@@ -375,7 +375,7 @@ def calculate_order_cost(order_id):
             Taco_Ingredient.order_id == order_id)
         for taco_ing in taco_ings:
             for ing in location_ingredients:
-                if taco_ing.id == ing["id"]:
+                if taco_ing.ingredient_id == ing["id"]:
                     order_cost = float(order_cost) + float(ing["price"])
 
     order.order_amount = order_cost
