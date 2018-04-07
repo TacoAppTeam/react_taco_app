@@ -8,6 +8,7 @@ import TacoModal from './TacoModal';
 import OrderBuilder from './OrderBuilder';
 import {dateFormat} from '../utils/format';
 import {Redirect} from 'react-router';
+import {styles} from '../index';
 
 function mapStateToProps(state) {
   return {
@@ -129,18 +130,24 @@ class EventSummary extends Component {
               ? 'YOU are the runner, it is YOU!!! ... do not forget the green sauce.'
               : currentRunner}
           </h3>
+
+          <RaisedButton
+            style={styles.button}
+            primary
+            onClick={this.openModal}
+            label="Order Tacos"
+          />
+          <RaisedButton style={styles.button} onClick={this.deleteEvent} label="Delete Event" />
+          <div>
+            <h3>User orders</h3>
+            <OrderContents orderList={this.filterEvents(true)} handleDeleteTaco={this.deleteTaco} />
+          </div>
           {this.showAllOrders() ? (
             <div>
               <h3>All event orders</h3>
               <OrderContents isUserRunner orderList={this.filterEvents()} />
             </div>
           ) : null}
-          <div>
-            <h3>User orders</h3>
-            <OrderContents orderList={this.filterEvents(true)} handleDeleteTaco={this.deleteTaco} />
-          </div>
-          <RaisedButton onClick={this.openModal} label="Order Tacos" />
-          <RaisedButton onClick={this.deleteEvent} label="Delete Event" />
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
               eventId={this.props.match.params.event}
