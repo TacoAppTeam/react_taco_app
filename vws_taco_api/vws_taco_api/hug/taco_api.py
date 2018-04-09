@@ -162,6 +162,7 @@ def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
 
         querystr = '''select
                                 taco.id,
+                                taco.order_id,
                                 group_concat(ing.name, ', ')
                     from Taco_Order taco
                     join Taco_Ingredient ti on taco.id=ti.order_id
@@ -173,7 +174,8 @@ def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
         for result in query_result:
             enriched_order["taco_orders"].append({
                 "taco_id": result[0],
-                "ingredient_desc": result[1]
+                "order_id": result[1],
+                "ingredient_desc": result[2]
             })
 
         orders_list.append(enriched_order)
