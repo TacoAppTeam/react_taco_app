@@ -30,6 +30,10 @@ class Header extends Component {
     this.props.dispatch(Actions.user.checkUserLoggedIn());
   }
 
+  componentWillReceiveProps(nextProps) {
+    nextProps.currentUser && this.setState({showLoginModal: false});
+  }
+
   closeModal = () => {
     this.setState({showLoginModal: false});
   };
@@ -77,7 +81,7 @@ class Header extends Component {
           showModal={this.state.showLoginModal}
           close={this.closeModal}
         >
-          <LoginBody onSubmit={this.closeModal} />
+          <LoginBody />
         </TacoModal>
         <NotificationContainer />
         {this.props.children}
