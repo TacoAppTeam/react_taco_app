@@ -53,6 +53,7 @@ export const removeTaco = tacoId => {
         type: REMOVE_TACO,
         tacoId
       });
+      fetchEventOrders();
     });
   };
 };

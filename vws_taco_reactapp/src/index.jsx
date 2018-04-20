@@ -36,6 +36,26 @@ export const styles = {
   palette: colorPalette,
   header: {
     color: theme.primary1Color
+  },
+  chip: {
+    margin: 4
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  paper: {
+    margin: 20,
+    padding: 20,
+    textAlign: 'left',
+    display: 'inline-block'
+  },
+  list: {
+    listStyle: 'none',
+    padding: 0
+  },
+  button: {
+    margin: 10
   }
 };
 
