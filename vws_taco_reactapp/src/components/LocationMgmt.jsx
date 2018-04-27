@@ -5,7 +5,7 @@ import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
-import EventGrid from './EventGrid';
+import LocationGrid from './LocationGrid';
 import {dateFormat} from '../utils/format';
 
 function mapStateToProps(state) {
@@ -84,7 +84,7 @@ class Events extends Component {
             !this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending
           }
         >
-          <EventGrid
+          <LocationGrid
             computedColumns={computedColumns}
             columns={columns}
             eventData={this.props.eventData}

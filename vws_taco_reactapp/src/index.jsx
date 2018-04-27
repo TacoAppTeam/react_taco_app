@@ -14,7 +14,7 @@ import LoginBody from './components/LoginBody';
 import EventSummary from './components/EventSummary';
 import PageNotFound from './components/PageNotFound';
 import ProtectedRoute from './ProtectedRoute';
-import LocationMgmt from './LocationMgmt';
+import LocationMgmt from './components/LocationMgmt';
 
 import store from './store';
 
