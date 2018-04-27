@@ -14,6 +14,7 @@ import LoginBody from './components/LoginBody';
 import EventSummary from './components/EventSummary';
 import PageNotFound from './components/PageNotFound';
 import ProtectedRoute from './ProtectedRoute';
+import LocationMgmt from './LocationMgmt';
 
 import store from './store';
 
@@ -69,6 +70,7 @@ const App = props => {
               <ProtectedRoute component={EventSummary} exact path="/event-summary/:event" />
               <ProtectedRoute component={Home} path="/" />
               <Route component={LoginBody} path="/login" />
+              <ProtectedRoute component={LocationMgmt} path="/locationmgmt" />
               <Route component={PageNotFound} />
             </Switch>
           </Header>

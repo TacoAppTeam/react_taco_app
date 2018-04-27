@@ -60,6 +60,7 @@ class Header extends Component {
               <ToolbarGroup>
                 <FlatButton onClick={this.logout} primary={true} label="Log out" />
                 <FlatButton label="Home" containerElement={<Link to="/" />} />
+                <FlatButton label="Location Mgmt" containerElement={<Link to="/locationmgmt" />} />
               </ToolbarGroup>,
               <ToolbarGroup lastChild={true}>
                 <FlatButton
