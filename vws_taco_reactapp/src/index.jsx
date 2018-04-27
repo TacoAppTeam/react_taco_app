@@ -68,9 +68,9 @@ const App = props => {
           <Header styles={styles.header}>
             <Switch>
               <ProtectedRoute component={EventSummary} exact path="/event-summary/:event" />
-              <ProtectedRoute component={Home} path="/" />
-              <Route component={LoginBody} path="/login" />
-              <ProtectedRoute component={LocationMgmt} path="/locationmgmt" />
+              <ProtectedRoute component={Home} exact path="/" />
+              <Route component={LoginBody} exact path="/login" />
+              <ProtectedRoute component={LocationMgmt} exact path="/locationmgmt" />
               <Route component={PageNotFound} />
             </Switch>
           </Header>

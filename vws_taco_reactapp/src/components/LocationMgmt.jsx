@@ -19,7 +19,7 @@ function mapStateToProps(state) {
   };
 }
 
-class Events extends Component {
+class LocationMgmt extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -78,7 +78,7 @@ class Events extends Component {
 
     return (
       <div className="events">
-        <h3>Upcoming Events</h3>
+        <h3>Locations</h3>
         <Loader
           loaded={
             !this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending
@@ -91,7 +91,7 @@ class Events extends Component {
           />
           <br />
 
-          <RaisedButton onClick={this.createEvent} label="Create Event" />
+          <RaisedButton onClick={this.createEvent} label="Create Location" />
 
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
             <EventForm
@@ -106,4 +106,4 @@ class Events extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Events);
+export default connect(mapStateToProps)(LocationMgmt);
