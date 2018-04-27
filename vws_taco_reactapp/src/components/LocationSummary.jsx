@@ -20,7 +20,7 @@ function mapStateToProps(state) {
   };
 }
 
-class EventSummary extends Component {
+class LocationSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,124 +30,73 @@ class EventSummary extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(Actions.event.fetchEvents());
-
-    this.props.dispatch(
-      Actions.order.fetchEventOrders(parseInt(this.props.match.params.event, 10))
-    );
+    this.props.dispatch(Actions.locations.fetchLocations());
   }
 
-  getEventData = () => {
-    let eventData = {};
-    let eventId = parseInt(this.props.match.params.event, 10);
+  getLocationData = () => {
+    let locationData = {};
+    let locationId = parseInt(this.props.match.params.event, 10);
 
-    eventData = this.props.eventData.find(function(event) {
-      return event.id === eventId;
+    locationData = this.props.locationData.find(function(location) {
+      return location.id === locationId;
     });
 
-    if (eventData) {
-      return eventData;
+    if (locationData) {
+      return locationData;
     }
 
     return {};
   };
 
-  getEventDate = () => {
-    let eventData = this.getEventData();
-
-    if (Object.keys(eventData).length) {
-      return dateFormat(eventData.date);
-    }
-
-    return '';
-  };
-
-  getEventRunner = () => {
-    let eventData = this.getEventData();
-
-    if (Object.keys(eventData).length) {
-      return eventData.userId;
-    }
-
-    return '';
-  };
-
-  filterEvents = showOnlyUser => {
-    let user = this.props.currentUser;
-
-    return this.props.eventOrderList.length
-      ? this.props.eventOrderList.filter(function(order) {
-          if (showOnlyUser) {
-            return user && order.user_id === user.email;
-          } else {
-            return order.user_id !== user.email;
-          }
-        })
-      : null;
-  };
-
-  showAllOrders = () => {
-    return this.props.currentUser && this.props.currentUser.email === this.getEventRunner();
-  };
+  getLocationName = () => {
+    return 'this restaurants';
+  }
 
   closeModal = () => {
     this.setState({showModal: false});
-  };
-
-  deleteTaco = taco => {
-    this.props.dispatch(Actions.order.removeTaco(taco.taco_id));
   };
 
   openModal = () => {
     this.setState({showModal: true});
   };
 
-  deleteEvent = () => {
+  deleteLocation = () => {
     if (
       window.confirm(
-        'Whoah now, this is gonna delete this event aaaand all the orders.. Are you sure you want to kill these tacos?'
+        'You can\'t delete this location if there are any orders pending. so I guess there aren\'t any orders pending.'
       )
     ) {
-      let eventData = {eventId: this.props.match.params.event};
-      this.props.dispatch(Actions.event.deleteEvent(eventData));
+      let locationData = {locationId: this.props.match.params.location};
+      this.props.dispatch(Actions.locations.deleteLocation(locationData));
       this.setState({redirect: true});
     }
   };
 
   render() {
     if (this.state.redirect) {
-      return <Redirect push to={'/'} />;
+      return <Redirect push to={'/locationmgmt'} />;
     }
-    const currentRunner = this.getEventRunner();
-    const isUserRunner = currentRunner === this.props.currentUser.email;
     return (
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
         <div className="eventSummary">
-          <h2>Date of Event: {this.getEventDate()}</h2>
-          <h3>
-            Runner for event:{' '}
-            {isUserRunner
-              ? 'YOU are the runner, it is YOU!!! ... do not forget the green sauce.'
-              : currentRunner}
-          </h3>
-
-          <RaisedButton
-            style={styles.button}
-            primary
-            onClick={this.openModal}
-            label="Order Tacos"
-          />
-          <RaisedButton style={styles.button} onClick={this.deleteEvent} label="Delete Event" />
+          <h2>{this.getLocationName()}</h2>
+          <RaisedButton style={styles.button} onClick={this.deleteLocation} label="Delete Location" />
           <div>
-            <h3>User orders</h3>
-            <OrderContents orderList={this.filterEvents(true)} handleDeleteTaco={this.deleteTaco} />
+            <h3>Address</h3>
+
           </div>
-          {this.showAllOrders() ? (
-            <div>
-              <h3>All event orders</h3>
-              <OrderContents isUserRunner orderList={this.filterEvents()} />
-            </div>
-          ) : null}
+          <div>
+            <h3>Phone</h3>
+
+          </div>
+          <div>
+            <h3>Hours</h3>
+
+          </div>
+          <div>
+            <h3>Ingredients</h3>
+
+          </div>
           <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
               eventId={this.props.match.params.event}
@@ -160,4 +109,4 @@ class EventSummary extends Component {
   }
 }
 
-export default connect(mapStateToProps)(EventSummary);
+export default connect(mapStateToProps)(LocationSummary);
