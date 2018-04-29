@@ -66,7 +66,7 @@ class LocationMgmt extends Component {
     ];
 
     return (
-      <div className="events">
+      <div className="locations">
         <h3>Locations</h3>
         <Loader
           loaded={
