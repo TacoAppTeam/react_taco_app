@@ -11,6 +11,12 @@ To set up the repo:
 * cd vws_taco_reactapp
 * npm install
 
+# To run the API + UI in docker
+
+`make build`
+`docker-compose up`
+
+
 # To run the hug API
 
 cd /path/to/DevWorkshopTacoReact
