@@ -61,7 +61,7 @@ class LoginBody extends Component {
   };
 
   render = () => {
-    if (this.state.currentUser) {
+    if (this.props.currentUser) {
       return <Redirect push to={'/'} />;
     }
     return (
