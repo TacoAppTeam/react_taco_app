@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TacoModal from './TacoModal';
-import EventForm from './EventForm';
+import LocationForm from './LocationForm';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -83,7 +83,7 @@ class LocationMgmt extends Component {
           <RaisedButton onClick={this.createEvent} label="Create Location" />
 
           <TacoModal showModal={this.state.showModal} close={this.closeModal}>
-            <EventForm
+            <LocationForm
               users={this.props.users}
               submit={this.submit}
               locations={this.props.locations}
