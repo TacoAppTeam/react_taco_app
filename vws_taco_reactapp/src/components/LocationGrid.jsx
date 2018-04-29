@@ -24,11 +24,6 @@ class LocationGrid extends Component {
 
   rowGetter(i) {
     let newLocationData = this.props.locationData[i];
-    if (newLocationData && this.props.computedColumns) {
-      this.props.computedColumns.map(
-        computeInfo => (newLocationData[computeInfo.columnKey] = computeInfo.compute(newLocationData))
-      );
-    }
     return newLocationData;
   }
 

@@ -60,22 +60,10 @@ class LocationMgmt extends Component {
 
   render() {
     const columns = [
-      {
-        key: 'date',
-        name: 'Date',
-        formatter: dateFormat
-      },
-      {key: 'locationName', name: 'Location'},
-      {key: 'name', name: 'Runner'}
-    ];
-
-    const computedColumns = [
-      {
-        columnKey: 'name',
-        compute: row => {
-          return `${row.firstName} ${row.lastName}`;
-        }
-      }
+      {key: 'name', name: 'Name'},
+      {key: 'street_address', name: 'Address'},
+      {key: 'phone_number', name: 'Phone Number'},
+      {key: 'hours', name: 'Hours'},
     ];
 
     return (
@@ -87,9 +75,8 @@ class LocationMgmt extends Component {
           }
         >
           <LocationGrid
-            computedColumns={computedColumns}
             columns={columns}
-            eventData={this.props.eventData}
+            locationData={this.props.locations}
           />
           <br />
 
