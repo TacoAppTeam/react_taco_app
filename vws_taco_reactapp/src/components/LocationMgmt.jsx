@@ -22,7 +22,6 @@ function mapStateToProps(state) {
 
 class LocationMgmt extends Component {
   constructor(props) {
-    console.log('trying')
     super(props);
     this.state = {
       showModal: false,
@@ -54,7 +53,7 @@ class LocationMgmt extends Component {
 
   submit = formData => {
     console.log(formData);
-    this.props.dispatch(Actions.event.createEvent(formData));
+    this.props.dispatch(Actions.location.createLocation(formData));
     this.closeModal();
   };
 
