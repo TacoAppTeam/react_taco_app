@@ -25,8 +25,7 @@ export default class LocationForm extends Component {
     var val = evt.currentTarget.value;
     let newState = {};
     newState[which] = val;
-    newState[which + 'ErrorText'] = '';
-    this.setState(newState);
+    this.setState(newState, this.validateForm);
   };
 
   validateInt = (value, length) => {
@@ -34,8 +33,6 @@ export default class LocationForm extends Component {
       if (isNaN(value)) {
         return false;
       }
-
-      let intValue = parseInt(value, 10);
 
       if (length && value.length !== length) {
         return false;
