@@ -6,8 +6,6 @@ import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
 import LocationGrid from './LocationGrid';
-import {dateFormat} from '../utils/format';
-import {Link, withRouter} from 'react-router-dom';
 
 function mapStateToProps(state) {
   return {

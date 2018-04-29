@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import OrderContents from './OrderContents';
 import {Actions} from '../store';
 import Loader from 'react-loader';
-import TacoModal from './TacoModal';
-import OrderBuilder from './OrderBuilder';
-import {dateFormat} from '../utils/format';
 import {Redirect} from 'react-router';
 import {styles} from '../index';
 
