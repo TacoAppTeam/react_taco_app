@@ -9,11 +9,15 @@ export default class LocationForm extends Component {
       name: '',
       streetAddress: '',
       city: '',
-      state: '',
+      state: 'Texas',
       zip: '',
       phoneNumber: '',
       hours: '',
       baseTacoPrice: 0,
+      nameErrorText: '',
+      zipErrorText: '',
+      phoneNumberErrorText: '',
+      baseTacoPriceErrorText: '',
     };
   }
 
@@ -21,23 +25,66 @@ export default class LocationForm extends Component {
     var val = evt.currentTarget.value;
     let newState = {};
     newState[which] = val;
+    newState[which + 'ErrorText'] = '';
     this.setState(newState);
   };
+
+  validateInt = (value, length) => {
+    if (value) {
+      if (isNaN(value)) {
+        return false;
+      }
+
+      let intValue = parseInt(value, 10);
+
+      if (length && value.length !== length) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  validateForm = () => {
+    let newState = {};
+
+    newState.nameErrorText = this.state.name ? '' : 'Name is a required field';
+    newState.zipErrorText = this.validateInt(this.state.zip, 5) ? '' : 'Zip code must be an integer of length 5';
+    newState.phoneNumberErrorText = this.validateInt(this.state.phoneNumber, 10) ? '' : 'Phone number must be an integer of length 10';
+
+    if (this.state.baseTacoPrice !== '') {
+      newState.baseTacoPriceErrorText = this.validateInt(this.state.baseTacoPrice) ? '' : 'Base taco price must be an integer';
+    } else {
+      newState.baseTacoPriceErrorText = 'Base taco price is required';
+    }
+
+    this.setState(newState);
+
+    if (!newState.nameErrorText && !newState.zipErrorText
+        && !newState.phoneNumberErrorText && !newState.baseTacoPriceErrorText) {
+
+      return true;
+    }
+
+    return false;
+  }
 
   submit = (evt) => {
     evt.preventDefault();
 
-    let formData = {};
+    if (this.validateForm()) {
+      let formData = {};
 
-    formData.name = this.state.name;
-    formData.street_address = this.state.streetAddress;
-    formData.city = this.state.city;
-    formData.state = this.state.state;
-    formData.zip = this.state.zip;
-    formData.phone_number = this.state.phoneNumber;
-    formData.hours = this.state.hours;
-    formData.base_taco_price = this.state.baseTacoPrice;
-    this.props.submit(formData);
+      formData.name = this.state.name;
+      formData.street_address = this.state.streetAddress;
+      formData.city = this.state.city;
+      formData.state = this.state.state;
+      formData.zip = this.state.zip;
+      formData.phone_number = this.state.phoneNumber;
+      formData.hours = this.state.hours;
+      formData.base_taco_price = this.state.baseTacoPrice;
+      this.props.submit(formData);
+    }
   };
 
   render() {
@@ -47,13 +94,14 @@ export default class LocationForm extends Component {
           name="name"
           placeholder="Name"
           type="text"
+          errorText={this.state.nameErrorText}
           value={this.state.name}
           onChange={e => this.onChange(e, 'name')}
         />
         <br />
         <TextField
           name="streetAddress"
-          placeholder="Street Address"
+          placeholder="Street Address (123 Pine)"
           type="text"
           value={this.state.streetAddress}
           onChange={e => this.onChange(e, 'streetAddress')}
@@ -69,7 +117,7 @@ export default class LocationForm extends Component {
         <br />
         <TextField
           name="state"
-          placeholder="State"
+          placeholder="State (TX)"
           type="text"
           value={this.state.state}
           onChange={e => this.onChange(e, 'state')}
@@ -77,23 +125,25 @@ export default class LocationForm extends Component {
         <br />
         <TextField
           name="zip"
-          placeholder="Zip Code"
+          placeholder="Zip Code (12345)"
           type="text"
+          errorText={this.state.zipErrorText}
           value={this.state.zip}
           onChange={e => this.onChange(e, 'zip')}
         />
         <br />
         <TextField
           name="phoneNumber"
-          placeholder="Phone Number"
+          placeholder="Phone Number (0123456789)"
           type="text"
+          errorText={this.state.phoneNumberErrorText}
           value={this.state.phoneNumber}
           onChange={e => this.onChange(e, 'phoneNumber')}
         />
         <br />
         <TextField
           name="hours"
-          placeholder="Hours"
+          placeholder="Hours (7a-11a)"
           type="text"
           value={this.state.hours}
           onChange={e => this.onChange(e, 'hours')}
@@ -103,6 +153,7 @@ export default class LocationForm extends Component {
           name="baseTacoPrice"
           placeholder="Base Taco Price"
           type="text"
+          errorText={this.state.baseTacoPriceErrorText}
           value={this.state.baseTacoPrice}
           onChange={e => this.onChange(e, 'baseTacoPrice')}
         />
