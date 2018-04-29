@@ -82,7 +82,7 @@ class LocationMgmt extends Component {
 
           <RaisedButton onClick={this.createEvent} label="Create Location" />
 
-          <TacoModal showModal={this.state.showModal} close={this.closeModal}>
+          <TacoModal showModal={this.state.showModal} close={this.closeModal} title='Create Location'>
             <LocationForm
               users={this.props.users}
               submit={this.submit}

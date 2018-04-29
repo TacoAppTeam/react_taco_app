@@ -93,7 +93,7 @@ class Events extends Component {
 
           <RaisedButton onClick={this.createEvent} label="Create Event" />
 
-          <TacoModal showModal={this.state.showModal} close={this.closeModal}>
+          <TacoModal showModal={this.state.showModal} close={this.closeModal} title='Create Event'>
             <EventForm
               users={this.props.users}
               submit={this.submit}
