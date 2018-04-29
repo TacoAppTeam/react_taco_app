@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
 import LocationGrid from './LocationGrid';
 import {dateFormat} from '../utils/format';
+import {Link, withRouter} from 'react-router-dom';
 
 function mapStateToProps(state) {
   return {
@@ -21,6 +22,7 @@ function mapStateToProps(state) {
 
 class LocationMgmt extends Component {
   constructor(props) {
+    console.log('trying')
     super(props);
     this.state = {
       showModal: false,

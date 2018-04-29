@@ -3,6 +3,8 @@ import {config} from '../../config';
 
 export const GET_LOCATIONS_DATA = 'GET_LOCATIONS_DATA';
 export const LOCATIONS_RETRIEVED = 'LOCATIONS_RETRIEVED';
+export const DELETE_LOCATION = 'DELETE_LOCATION';
+export const LOCATION_DELETED = 'LOCATION_DELETED';
 
 export const fetchLocations = () => {
   const locations_url = `${config.api_hostname}:${config.api_port}/v1/locations`;
@@ -28,3 +30,7 @@ export const fetchLocations = () => {
     );
   };
 };
+
+export const deleteLocation = locationData => {
+
+}
