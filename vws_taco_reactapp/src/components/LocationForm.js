@@ -7,13 +7,13 @@ export default class LocationForm extends Component {
     super(props);
     this.state = {
       name: '',
-      baseTacoPrice: '',
       streetAddress: '',
       city: '',
       state: '',
       zip: '',
       phoneNumber: '',
       hours: '',
+      baseTacoPrice: 0,
     };
   }
 
@@ -24,7 +24,9 @@ export default class LocationForm extends Component {
     this.setState(newState);
   };
 
-  submit = () => {
+  submit = (evt) => {
+    evt.preventDefault();
+
     let formData = {};
 
     formData.name = this.state.name;
