@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import Close from 'material-ui/svg-icons/navigation/close';
 
 export default class LocationForm extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ export default class LocationForm extends Component {
       zipErrorText: '',
       phoneNumberErrorText: '',
       baseTacoPriceErrorText: '',
+      ingredientList: [],
     };
   }
 
@@ -40,7 +43,7 @@ export default class LocationForm extends Component {
     }
 
     return true;
-  }
+  };
 
   validateForm = () => {
     let newState = {};
@@ -64,7 +67,7 @@ export default class LocationForm extends Component {
     }
 
     return false;
-  }
+  };
 
   submit = (evt) => {
     evt.preventDefault();
@@ -83,6 +86,19 @@ export default class LocationForm extends Component {
       this.props.submit(formData);
     }
   };
+
+  addIngredient = () => {
+    let newIngredientList = this.state.ingredientList;
+    newIngredientList.push({name: '', price: 0});
+    this.setState({ingredientList: newIngredientList});
+  };
+
+  removeIngredient = (index) => {
+    console.log(index);
+    let newIngredientList = this.state.ingredientList;
+    newIngredientList.splice(index, 1);
+    this.setState({ingredientList: newIngredientList});
+  }
 
   render() {
     return (
@@ -155,7 +171,27 @@ export default class LocationForm extends Component {
           onChange={e => this.onChange(e, 'baseTacoPrice')}
         />
         <br />
-
+        <h4 style={this.state.ingredientList.length ? null : {'display': 'none'}}>Ingredients</h4>
+        {this.state.ingredientList.map((ingredient, index) =>
+          <div>
+            <TextField
+              name={`ingredientName${index}`}
+              placeholder="Ingredient Name"
+              type="text"
+              value={ingredient.name}
+            />
+            <TextField
+              name={`ingredientPrice${index}`}
+              placeholder="Ingredient Price"
+              type="text"
+              value={ingredient.price}
+            />
+            <IconButton onClick={this.removeIngredient.bind(this, index)}><Close/></IconButton>
+            <br />
+          </div>
+        )}
+        <RaisedButton label="Add Ingredient" primary onClick={this.addIngredient}/>
+        <div style={{'padding-bottom': '5px'}}/>
         <RaisedButton label="Submit" type="submit" primary />
       </form>
     );
