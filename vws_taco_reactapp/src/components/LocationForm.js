@@ -15,7 +15,7 @@ export default class LocationForm extends Component {
       zip: '',
       phoneNumber: '',
       hours: '',
-      baseTacoPrice: 0,
+      baseTacoPrice: '',
       nameErrorText: '',
       zipErrorText: '',
       phoneNumberErrorText: '',
@@ -25,35 +25,57 @@ export default class LocationForm extends Component {
   }
 
   onChange = (evt, which) => {
-    var val = evt.currentTarget.value;
     let newState = {};
-    newState[which] = val;
+    newState[which] = evt.currentTarget.value;
     this.setState(newState, this.validateForm);
   };
 
-  validateInt = (value, length) => {
-    if (value) {
-      if (isNaN(value)) {
-        return false;
-      }
+  onChangeIngredient = (evt, which, index) => {
+    let ingredientList = this.state.ingredientList;
+    ingredientList[index][which] = evt.currentTarget.value;;
+    this.setState({ingredientList: ingredientList}, this.validateForm);
+  };
 
-      if (length && value.length !== length) {
-        return false;
-      }
+  validateInt = (value, length) => {
+    let valueAsInt = Number(value);
+
+    if (length && value.length !== length) {
+      return false;
+    }
+
+    if (isNaN(valueAsInt)) {
+      return false;
+    }
+
+    if (!Number.isInteger(valueAsInt)) {
+      return false;
     }
 
     return true;
+  };
+
+  validateNumber = (value) => {
+    return isNaN(Number(value)) ? false : true
   };
 
   validateForm = () => {
     let newState = {};
 
     newState.nameErrorText = this.state.name ? '' : 'Name is a required field';
-    newState.zipErrorText = this.validateInt(this.state.zip, 5) ? '' : 'Zip code must be an integer of length 5';
-    newState.phoneNumberErrorText = this.validateInt(this.state.phoneNumber, 10) ? '' : 'Phone number must be an integer of length 10';
 
+    // Validate zip
+    if (this.state.zip !== '') {
+      newState.zipErrorText = this.validateInt(this.state.zip, 5) ? '' : 'Zip code must be an integer of length 5';
+    }
+
+    // Validate phoneNumber
+    if (this.state.phoneNumber !== '') {
+      newState.phoneNumberErrorText = this.validateInt(this.state.phoneNumber, 10) ? '' : 'Phone number must be an integer of length 10';
+    }
+
+    // Validate baseTacoPrice
     if (this.state.baseTacoPrice !== '') {
-      newState.baseTacoPriceErrorText = this.validateInt(this.state.baseTacoPrice) ? '' : 'Base taco price must be an integer';
+      newState.baseTacoPriceErrorText = this.validateNumber(this.state.baseTacoPrice) ? '' : 'Base taco price must be a number';
     } else {
       newState.baseTacoPriceErrorText = 'Base taco price is required';
     }
@@ -75,6 +97,8 @@ export default class LocationForm extends Component {
     if (this.validateForm()) {
       let formData = {};
 
+      console.log(this.state.ingredientList);
+
       formData.name = this.state.name;
       formData.street_address = this.state.streetAddress;
       formData.city = this.state.city;
@@ -94,7 +118,6 @@ export default class LocationForm extends Component {
   };
 
   removeIngredient = (index) => {
-    console.log(index);
     let newIngredientList = this.state.ingredientList;
     newIngredientList.splice(index, 1);
     this.setState({ingredientList: newIngredientList});
@@ -179,12 +202,13 @@ export default class LocationForm extends Component {
               placeholder="Ingredient Name"
               type="text"
               value={ingredient.name}
+              onChange={e => this.onChangeIngredient(e, 'name', index)}
             />
             <TextField
               name={`ingredientPrice${index}`}
               placeholder="Ingredient Price"
               type="text"
-              value={ingredient.price}
+              onChange={e => this.onChangeIngredient(e, 'price', index)}
             />
             <IconButton onClick={this.removeIngredient.bind(this, index)}><Close/></IconButton>
             <br />
