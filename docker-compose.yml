@@ -1,0 +1,11 @@
+taco_api:
+  image: vws_taco_api
+  ports:
+  - "8000:8000"
+
+taco_ui:
+  image: vws_taco_ui
+  ports:
+  - "8081:3000"
+  links:
+  - taco_api
