@@ -72,7 +72,7 @@ const App = props => {
               <ProtectedRoute component={Home} exact path="/" />
               <Route component={LoginBody} exact path="/login" />
               <ProtectedRoute component={LocationMgmt} exact path="/locationmgmt" />
-              <ProtectedRoute component={LocationSummary} exact path="/location-sumary/:location" />
+              <ProtectedRoute component={LocationSummary} path="/location-summary/:location" />
               <Route component={PageNotFound} />
             </Switch>
           </Header>

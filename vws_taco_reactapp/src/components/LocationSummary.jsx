@@ -13,10 +13,7 @@ import {styles} from '../index';
 function mapStateToProps(state) {
   return {
     currentUser: state.user.currentUser,
-    eventOrderList: state.order.currentEventOrders,
-    eventOrderListPending: state.order.pending,
-    eventData: state.event.eventData,
-    eventsPending: state.event.eventsPending
+    locations: state.location.locations,
   };
 }
 
@@ -25,19 +22,25 @@ class LocationSummary extends Component {
     super(props);
     this.state = {
       showModal: false,
-      redirect: false
+      redirect: false,
+      location: {},
     };
   }
 
   componentDidMount() {
-    this.props.dispatch(Actions.locations.fetchLocations());
+    this.props.dispatch(Actions.location.fetchLocations());
+    let thisLocation = this.getLocationData();
+    this.setState({
+      location: thisLocation,
+    })
+    console.log(thisLocation);
   }
 
   getLocationData = () => {
     let locationData = {};
-    let locationId = parseInt(this.props.match.params.event, 10);
+    let locationId = parseInt(this.props.match.params.location, 10);
 
-    locationData = this.props.locationData.find(function(location) {
+    locationData = this.props.locations.find(function(location) {
       return location.id === locationId;
     });
 
@@ -49,7 +52,7 @@ class LocationSummary extends Component {
   };
 
   getLocationName = () => {
-    return 'this restaurants';
+    return this.state.location.name;
   }
 
   closeModal = () => {
@@ -63,11 +66,11 @@ class LocationSummary extends Component {
   deleteLocation = () => {
     if (
       window.confirm(
-        'You can\'t delete this location if there are any orders pending. so I guess there aren\'t any orders pending.'
+        "Did they close or something? That's too bad.."
       )
     ) {
       let locationData = {locationId: this.props.match.params.location};
-      this.props.dispatch(Actions.locations.deleteLocation(locationData));
+      this.props.dispatch(Actions.location.deleteLocation(locationData));
       this.setState({redirect: true});
     }
   };
@@ -78,31 +81,35 @@ class LocationSummary extends Component {
     }
     return (
       <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
-        <div className="eventSummary">
-          <h2>{this.getLocationName()}</h2>
-          <RaisedButton style={styles.button} onClick={this.deleteLocation} label="Delete Location" />
+        <div className="locationSummary">
+          <h2>{this.state.location.name}</h2>
           <div>
             <h3>Address</h3>
-
+            <h4>{this.state.location.street_address}</h4>
+            <h4>{this.state.location.city}</h4>
+            <h4>{this.state.location.state}</h4>
+            <h4>{this.state.location.zip}</h4>
           </div>
           <div>
             <h3>Phone</h3>
-
+            <h4>{this.state.location.phone_number}</h4>
           </div>
           <div>
             <h3>Hours</h3>
-
+            <h4>{this.state.location.hours}</h4>
           </div>
           <div>
             <h3>Ingredients</h3>
 
           </div>
-          <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
+
+          <RaisedButton style={styles.button} onClick={this.deleteLocation} label="Delete Location" />
+          {/* <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
             <OrderBuilder
               eventId={this.props.match.params.event}
               submitOrderFinished={this.closeModal}
             />
-          </TacoModal>
+          </TacoModal> */}
         </div>
       </Loader>
     );

@@ -32,5 +32,26 @@ export const fetchLocations = () => {
 };
 
 export const deleteLocation = locationData => {
+  const location_post_url = `${config.api_hostname}:${config.api_port}/v1/delete_location`;
 
+  function deleteLocationPost() {
+    return axios
+      .post(location_post_url, locationData, {
+        Authorization: localStorage.getItem('user')
+      })
+      .then(res => {
+        return res;
+      });
+  }
+
+  return function(dispatch) {
+    dispatch({
+      type: DELETE_LOCATION
+    });
+
+    return deleteLocationPost().then(res => {
+      dispatch({type: LOCATION_DELETED});
+      fetchLocations()(dispatch);
+    });
+  };
 }
