@@ -13,7 +13,9 @@ To set up the repo:
 
 # To run the API + UI in docker
 
+Run
 `make build`
+Then run
 `docker-compose up`
 
 
