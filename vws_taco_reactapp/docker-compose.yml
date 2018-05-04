@@ -1,6 +1,0 @@
-tacoapp:
-  build: .
-  command: echo 'ready'
-  volumes:
-    - .:/home/app/tacoapp
-    - /home/app/tacoapp/node_modules
