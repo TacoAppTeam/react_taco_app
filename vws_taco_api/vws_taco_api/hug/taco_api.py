@@ -355,6 +355,9 @@ def create_location(body):
         ingredients = body.get('ingredient_list') or []
         add_location_ingredients(session, location.id, ingredients)
 
+        update_location = session.merge(location)
+        session.add(update_location)  # Add the new object to the session
+        session.commit()
         session.flush()     # Commits and flushes
         session.close()
         return {"success": True, "message": "Location created"}
