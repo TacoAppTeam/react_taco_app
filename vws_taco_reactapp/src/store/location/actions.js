@@ -65,7 +65,7 @@ export const deleteLocation = locationData => {
 };
 
 export const createLocation = locationData => {
-  const location_post_url = `${config.api_hostname}:${config.api_port}/v1/location`;
+  const location_post_url = `${config.api_hostname}:${config.api_port}/v1/create_location`;
 
   function createLocationPost() {
     return axios
