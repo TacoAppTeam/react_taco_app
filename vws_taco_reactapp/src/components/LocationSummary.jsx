@@ -5,7 +5,6 @@ import {Actions} from '../store';
 import Loader from 'react-loader';
 import {Redirect} from 'react-router';
 import {styles} from '../index';
-import Paper from 'material-ui/Paper';
 
 function mapStateToProps(state) {
   return {
