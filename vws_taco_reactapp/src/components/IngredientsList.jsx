@@ -34,13 +34,13 @@ class IngredientsList extends Component {
     return (
       <div>
         <form onSubmit={this.addTaco} ref={form => (this.form = form)}>
-          {this.props.ingredients.map(ingredient => {
+          {this.props.ingredients.map((ingredient, i) => {
             let label = `${ingredient.name} - ${ingredient.description}`;
             if (ingredient.price) {
               label += ` (add $${ingredient.price})`;
             }
             return (
-              <div>
+              <div key={ i }>
                 <Checkbox
                   type="checkbox"
                   name="taco"
@@ -52,7 +52,7 @@ class IngredientsList extends Component {
               </div>
             );
           })}
-          <RaisedButton bsStyle="primary" type="submit" label="🌮 Add yo'taco! 🌮" />
+          <RaisedButton type="submit" label="🌮 Add yo'taco! 🌮" />
         </form>
       </div>
     );

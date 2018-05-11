@@ -63,6 +63,7 @@ class OrderContents extends Component {
                       $
                       {this.props.isUserRunner ? (
                         <TextField
+                          name="payment_amount"
                           type="number"
                           style={{
                             width: 45,
