@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {config} from '../../config';
+import * as errorActions from '../errors/actions';
 
 export const GET_LOCATIONS_DATA = 'GET_LOCATIONS_DATA';
 export const LOCATIONS_RETRIEVED = 'LOCATIONS_RETRIEVED';
@@ -42,7 +43,7 @@ export const deleteLocation = locationData => {
         Authorization: localStorage.getItem('user')
       })
       .then(res => {
-        return res;
+        return res.data;
       });
   }
 
@@ -51,9 +52,14 @@ export const deleteLocation = locationData => {
       type: DELETE_LOCATION
     });
 
-    return deleteLocationPost().then(res => {
-      dispatch({type: LOCATION_DELETED});
-      fetchLocations()(dispatch);
+    return deleteLocationPost().then(data => {
+      if (data.success) {
+        dispatch({
+          type: LOCATION_DELETED
+        });
+      } else {
+        dispatch({type: errorActions.ADD_ERROR, error: data.message});
+      }
     });
   };
 };
