@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import TacoModal from './TacoModal';
-import EventForm from './EventForm';
+import LocationForm from './LocationForm';
 import Loader from 'react-loader';
 import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Actions} from '../store';
-import EventGrid from './EventGrid';
-import {dateFormat} from '../utils/format';
+import LocationGrid from './LocationGrid';
 
 function mapStateToProps(state) {
   return {
@@ -19,7 +18,7 @@ function mapStateToProps(state) {
   };
 }
 
-class Events extends Component {
+class LocationMgmt extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,49 +51,36 @@ class Events extends Component {
 
   submit = formData => {
     console.log(formData);
-    this.props.dispatch(Actions.event.createEvent(formData));
+    this.props.dispatch(Actions.location.createLocation(formData));
     this.closeModal();
   };
 
   render() {
     const columns = [
-      {
-        key: 'date',
-        name: 'Date',
-        formatter: dateFormat
-      },
-      {key: 'locationName', name: 'Location'},
-      {key: 'name', name: 'Runner'}
-    ];
-
-    const computedColumns = [
-      {
-        columnKey: 'name',
-        compute: row => {
-          return `${row.firstName} ${row.lastName}`;
-        }
-      }
+      {key: 'name', name: 'Name'},
+      {key: 'street_address', name: 'Address'},
+      {key: 'phone_number', name: 'Phone Number'},
+      {key: 'hours', name: 'Hours'},
     ];
 
     return (
-      <div className="events">
-        <h3>Upcoming Events</h3>
+      <div className="locations">
+        <h3>Locations</h3>
         <Loader
           loaded={
             !this.props.eventsPending && !this.props.locationsPending && !this.props.usersPending
           }
         >
-          <EventGrid
-            computedColumns={computedColumns}
+          <LocationGrid
             columns={columns}
-            eventData={this.props.eventData}
+            locationData={this.props.locations}
           />
           <br />
 
-          <RaisedButton onClick={this.createEvent} label="Create Event" />
+          <RaisedButton onClick={this.createEvent} label="Create Location" />
 
-          <TacoModal showModal={this.state.showModal} close={this.closeModal} title='Create Event'>
-            <EventForm
+          <TacoModal showModal={this.state.showModal} close={this.closeModal} title='Create Location'>
+            <LocationForm
               users={this.props.users}
               submit={this.submit}
               locations={this.props.locations}
@@ -106,4 +92,4 @@ class Events extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Events);
+export default connect(mapStateToProps)(LocationMgmt);

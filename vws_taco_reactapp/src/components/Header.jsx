@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
@@ -56,11 +56,12 @@ class Header extends Component {
         <Title title="Taco App" />
         <Toolbar className="App">
           {this.props.currentUser ? (
-            [
+            <Fragment>
               <ToolbarGroup>
                 <FlatButton onClick={this.logout} primary={true} label="Log out" />
                 <FlatButton label="Home" containerElement={<Link to="/" />} />
-              </ToolbarGroup>,
+                <FlatButton label="Location Mgmt" containerElement={<Link to="/locationmgmt" />} />
+              </ToolbarGroup>
               <ToolbarGroup lastChild={true}>
                 <FlatButton
                   label={`Clicking this does nothing, ${this.props.currentUser.first_name}`}
@@ -69,7 +70,7 @@ class Header extends Component {
                   }}
                 />
               </ToolbarGroup>
-            ]
+            </Fragment>
           ) : (
             <ToolbarGroup>
               <FlatButton label="Login" onClick={this.login} />

@@ -16,6 +16,14 @@ const reducer = (state = initialState, action) => {
         locations: action.locations,
         locationsPending: false
       };
+    case locationActions.DELETE_LOCATION:
+      return {};
+    case locationActions.LOCATION_DELETED:
+      return {};
+    case locationActions.CREATE_LOCATION:
+      return {};
+    case locationActions.LOCATION_CREATED:
+      return {};
     default:
       return state;
   }

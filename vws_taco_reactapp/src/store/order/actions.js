@@ -97,7 +97,7 @@ export const updateOrders = orders => {
 
   return function(dispatch) {
     let updateArray = [];
-    orders.map(order => {
+    orders.forEach(order => {
       updateArray.push(updateOrdersApi(order));
     });
     Promise.all(updateArray).then(res => {

@@ -14,6 +14,8 @@ import LoginBody from './components/LoginBody';
 import EventSummary from './components/EventSummary';
 import PageNotFound from './components/PageNotFound';
 import ProtectedRoute from './ProtectedRoute';
+import LocationMgmt from './components/LocationMgmt';
+import LocationSummary from './components/LocationSummary';
 
 import store from './store';
 
@@ -67,8 +69,10 @@ const App = props => {
           <Header styles={styles.header}>
             <Switch>
               <ProtectedRoute component={EventSummary} exact path="/event-summary/:event" />
-              <ProtectedRoute component={Home} path="/" />
-              <Route component={LoginBody} path="/login" />
+              <ProtectedRoute component={Home} exact path="/" />
+              <Route component={LoginBody} exact path="/login" />
+              <ProtectedRoute component={LocationMgmt} exact path="/locationmgmt" />
+              <ProtectedRoute component={LocationSummary} exact path="/location-summary/:location" />
               <Route component={PageNotFound} />
             </Switch>
           </Header>
