@@ -26,9 +26,10 @@ const reducer = (state = initialState, action) => {
       const newTacoOrders = state.currentEventOrders.filter(order => {
         order.taco_orders = order.taco_orders.filter(o => o.taco_id !== action.tacoId);
 
-        if (order.taco_orders.length > 0) {
-          return true;
-        }
+        return (order.taco_orders.length > 0);
+        // if (order.taco_orders.length > 0) {
+        //   return true;
+        // }
       });
 
       return {

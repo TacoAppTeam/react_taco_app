@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {Actions} from '../store';
+import {Redirect} from 'react-router';
 
 const initialState = {
   username: '',
@@ -12,10 +13,20 @@ const initialState = {
   createNewAcct: false
 };
 
+function mapStateToProps(state) {
+  return {
+    currentUser: state.user.currentUser
+  };
+}
+
 class LoginBody extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
+  }
+
+  componentDidMount() {
+    this.props.dispatch(Actions.user.checkUserLoggedIn());
   }
 
   onChange = (evt, which) => {
@@ -50,6 +61,9 @@ class LoginBody extends Component {
   };
 
   render = () => {
+    if (this.props.currentUser) {
+      return <Redirect push to={'/'} />;
+    }
     return (
       <div>
         <input
@@ -134,4 +148,4 @@ class LoginBody extends Component {
   };
 }
 
-export default connect()(LoginBody);
+export default connect(mapStateToProps)(LoginBody);

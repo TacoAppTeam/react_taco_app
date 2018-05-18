@@ -36,7 +36,9 @@ select \* from orders as o join taco_order as taco on taco.order_id = o.id join 
 Run `make` from top level directory. This should build both the vws_taco_api and vws_taco_ui docker images.
 
 * Until we get a specific docker repo up and running, here is how you get docker images up to the ec2 instance.
-* Run `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar vws_ taco_api` and `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_ui.tar vws_ taco_ui`
-  \*\* This creates tarballs of the docker images
-* Get the files to the ec2 instance
-  \*\* One way is to run `scp -i ~/path/to/<EC2_private_key>.pem ~/path/to/DevWorkshopTacoReact/vws_ta co_api.tar <user>@<ip_of_machine>:~/docker-images/vws_taco_api.tar` and the same for the ui
+* Run `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar vws_taco_api` and `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_ui.tar vws_ taco_ui`
+  * This creates tarballs of the docker images
+* Get the files to the host (eg., ec2 instance)
+  * One way is to run `scp -i ~/path/to/<EC2_private_key>.pem ~/path/to/DevWorkshopTacoReact/vws_ta co_api.tar <user>@<ip_of_machine>:~/docker-images/vws_taco_api.tar` and the same for the ui
+* Docker load each tarball
+* Make sure the latest docker-compose is on the host

@@ -397,3 +397,32 @@ def calculate_order_cost(order_id):
     session.commit()
     session.flush()
     session.close()
+
+
+@auth_hug.options(requires=cors_support)
+def delete_location():
+    return 200
+
+
+@auth_hug.post(requires=cors_support)
+def delete_location(body):
+    location_id = body.get('locationId')
+
+    # make sure there are no events tied to the location
+    session = db.create_session()
+    query = session.query(Event, User, Location)\
+        .join(Location, Event.location_id == location_id)
+
+    query_result = query.all()
+
+    if query_result:
+        return {"success": False, "message": "Cannot delete a location with an event tied to it"}
+
+    # delete the location
+    location = session.query(Location).filter(Location.id == location_id)
+    location.delete()
+    session.commit()
+    session.flush()
+    session.close()
+
+    return {"success": True, "message": "Location deleted"}
