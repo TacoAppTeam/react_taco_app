@@ -95,3 +95,4 @@ lib64
 pip-selfcheck.json
 *.db
 *.pyc
+*.tar

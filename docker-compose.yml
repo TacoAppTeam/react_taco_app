@@ -6,6 +6,4 @@ taco_api:
 taco_ui:
   image: vws_taco_ui
   ports:
-  - "8081:3000"
-  links:
-  - taco_api
+  - "80:3000"
