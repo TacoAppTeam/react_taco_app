@@ -5,6 +5,7 @@ import {Actions} from '../store';
 import Loader from 'react-loader';
 import {Redirect} from 'react-router';
 import {styles} from '../index';
+import Paper from 'material-ui/Paper';
 
 function mapStateToProps(state) {
   return {
@@ -73,32 +74,41 @@ class LocationSummary extends Component {
   };
 
   render() {
-    if (this.state.redirect) {
+    const {
+      eventOrderListPending,
+      eventsPending,
+    } = this.props
+
+    const {
+      redirect,
+      location,
+    } = this.state
+
+    if (redirect) {
       return <Redirect push to={'/locationmgmt'} />;
     }
     return (
-      <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
+      <Loader loaded={!eventOrderListPending && !eventsPending}>
         <div className="locationSummary">
           <h2>{this.state.location.name}</h2>
           <div>
             <h3>Address</h3>
-            <h4>{this.state.location.street_address}</h4>
-            <h4>{this.state.location.city}</h4>
-            <h4>{this.state.location.state}</h4>
-            <h4>{this.state.location.zip}</h4>
+            <span>{location.street_address}</span>
+            <br/>
+            <span>{location.city + ", " + location.state + " " + location.zip}</span>
           </div>
           <div>
             <h3>Phone</h3>
-            <h4>{this.state.location.phone_number}</h4>
+            <span>{location.phone_number}</span>
           </div>
           <div>
             <h3>Hours</h3>
-            <h4>{this.state.location.hours}</h4>
+            <span>{location.hours}</span>
           </div>
           <div>
             <h3>Ingredients</h3>
-            {this.state.location.ingredients &&
-                  this.state.location.ingredients.map((ing, key) => (
+            {location.ingredients &&
+                  location.ingredients.map((ing, key) => (
                     <li key={key}>{ing.name}</li>
                     ))}
           </div>
