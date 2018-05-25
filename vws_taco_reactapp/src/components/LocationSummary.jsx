@@ -26,10 +26,11 @@ class LocationSummary extends Component {
   componentDidMount() {
     this.props.dispatch(Actions.location.fetchLocations());
     let thisLocation = this.getLocationData();
+
     this.setState({
       location: thisLocation,
     })
-    console.log(thisLocation);
+    // console.log(thisLocation);
   }
 
   getLocationData = () => {
@@ -96,16 +97,13 @@ class LocationSummary extends Component {
           </div>
           <div>
             <h3>Ingredients</h3>
-
+            {this.state.location.ingredients &&
+                  this.state.location.ingredients.map((ing, key) => (
+                    <li key={key}>{ing.name}</li>
+                    ))}
           </div>
 
           <RaisedButton style={styles.button} onClick={this.deleteLocation} label="Delete Location" />
-          {/* <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
-            <OrderBuilder
-              eventId={this.props.match.params.event}
-              submitOrderFinished={this.closeModal}
-            />
-          </TacoModal> */}
         </div>
       </Loader>
     );

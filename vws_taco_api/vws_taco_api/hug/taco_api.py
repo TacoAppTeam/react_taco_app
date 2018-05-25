@@ -325,9 +325,36 @@ def locations():
         return []
 
     for result in query_result:
-        locations.append(result.as_dict())
+        location = result.as_dict()
+        ingredients = location_ingredients(location['id'])
+        location['ingredients'] = ingredients
+        locations.append(location)
 
     return locations
+
+
+def location_ingredients(location_id):
+    ingredients = []
+
+    session = db.create_session()
+    querystr = '''SELECT ing.*
+        FROM ingredients ing
+        WHERE ing.location_id = :location_id'''
+
+    query_result = session.execute(querystr, {"location_id": location_id})
+
+    if not query_result:
+        return ingredients
+
+    for result in query_result:
+        ingredients.append({
+            "id": result[0],
+            "name": result[1],
+            "description": result[2],
+            "price": result[3]
+        })
+
+    return ingredients
 
 
 @auth_hug.options(requires=cors_support)
