@@ -33,6 +33,7 @@ select \* from orders as o join taco_order as taco on taco.order_id = o.id join 
 
 # To deploy the app
 
+Make sure the api_hostname value in config.js is set to the hostname of the EC2 instance. (http://34.216.218.113)
 Run `make` from top level directory. This should build both the vws_taco_api and vws_taco_ui docker images.
 
 * Until we get a specific docker repo up and running, here is how you get docker images up to the ec2 instance.
