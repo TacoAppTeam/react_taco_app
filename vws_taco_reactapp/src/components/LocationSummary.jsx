@@ -26,10 +26,11 @@ class LocationSummary extends Component {
   componentDidMount() {
     this.props.dispatch(Actions.location.fetchLocations());
     let thisLocation = this.getLocationData();
+
     this.setState({
       location: thisLocation,
     })
-    console.log(thisLocation);
+    // console.log(thisLocation);
   }
 
   getLocationData = () => {
@@ -72,40 +73,46 @@ class LocationSummary extends Component {
   };
 
   render() {
-    if (this.state.redirect) {
+    const {
+      eventOrderListPending,
+      eventsPending,
+    } = this.props
+
+    const {
+      redirect,
+      location,
+    } = this.state
+
+    if (redirect) {
       return <Redirect push to={'/locationmgmt'} />;
     }
     return (
-      <Loader loaded={!this.props.eventOrderListPending && !this.props.eventsPending}>
+      <Loader loaded={!eventOrderListPending && !eventsPending}>
         <div className="locationSummary">
           <h2>{this.state.location.name}</h2>
           <div>
             <h3>Address</h3>
-            <h4>{this.state.location.street_address}</h4>
-            <h4>{this.state.location.city}</h4>
-            <h4>{this.state.location.state}</h4>
-            <h4>{this.state.location.zip}</h4>
+            <span>{location.street_address}</span>
+            <br/>
+            <span>{location.city + ", " + location.state + " " + location.zip}</span>
           </div>
           <div>
             <h3>Phone</h3>
-            <h4>{this.state.location.phone_number}</h4>
+            <span>{location.phone_number}</span>
           </div>
           <div>
             <h3>Hours</h3>
-            <h4>{this.state.location.hours}</h4>
+            <span>{location.hours}</span>
           </div>
           <div>
             <h3>Ingredients</h3>
-
+            {location.ingredients &&
+                  location.ingredients.map((ing, key) => (
+                    <li key={key}>{ing.name}</li>
+                    ))}
           </div>
 
           <RaisedButton style={styles.button} onClick={this.deleteLocation} label="Delete Location" />
-          {/* <TacoModal showModal={this.state.showModal} title="Order Builder" close={this.closeModal}>
-            <OrderBuilder
-              eventId={this.props.match.params.event}
-              submitOrderFinished={this.closeModal}
-            />
-          </TacoModal> */}
         </div>
       </Loader>
     );

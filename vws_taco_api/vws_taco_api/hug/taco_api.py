@@ -314,6 +314,59 @@ def users():
     return users
 
 
+def add_location_ingredients(session, location_id, ingredients):
+    print(ingredients)
+    print(location_id)
+    for ingredient in ingredients:
+        ingredient_model = Ingredient()
+        ingredient_model.name = ingredient.get('name') or ''
+        ingredient_model.price = ingredient.get('price') or 0
+        ingredient_model.location_id = location_id
+
+        session.commit()    # To prevent lock on the table
+        session.add(ingredient_model)
+        session.flush()     # Commits and flushes
+
+
+@auth_hug.options(requires=cors_support)
+def create_location():
+    return 200
+
+
+@auth_hug.post(requires=cors_support)
+def create_location(body):
+    try:
+        session = db.create_session()
+        location = Location()
+
+        location.name = body.get('name') or ''
+        location.street_address = body.get('street_address') or ''
+        location.city = body.get('city') or ''
+        location.state = body.get('state') or ''
+        location.zip = body.get('zip') or ''
+        location.phone_number = body.get('phone_number') or ''
+        location.hours = body.get('hours') or ''
+        location.base_taco_price = body.get('base_taco_price') or 0
+
+        session.commit()    # To prevent lock on the table
+        session.add(location)  # Add the new object to the session
+        session.flush()     # Commits and flushes
+
+        ingredients = body.get('ingredient_list') or []
+        add_location_ingredients(session, location.id, ingredients)
+
+        update_location = session.merge(location)
+        session.add(update_location)  # Add the new object to the session
+        session.commit()
+        session.flush()     # Commits and flushes
+        session.close()
+        return {"success": True, "message": "Location created"}
+
+    except Exception as Error:
+        print(Error)
+        raise Error
+
+
 @auth_hug.get(requires=cors_support)
 def locations():
     locations = []
@@ -325,9 +378,36 @@ def locations():
         return []
 
     for result in query_result:
-        locations.append(result.as_dict())
+        location = result.as_dict()
+        ingredients = location_ingredients(location['id'])
+        location['ingredients'] = ingredients
+        locations.append(location)
 
     return locations
+
+
+def location_ingredients(location_id):
+    ingredients = []
+
+    session = db.create_session()
+    querystr = '''SELECT ing.*
+        FROM ingredients ing
+        WHERE ing.location_id = :location_id'''
+
+    query_result = session.execute(querystr, {"location_id": location_id})
+
+    if not query_result:
+        return ingredients
+
+    for result in query_result:
+        ingredients.append({
+            "id": result[0],
+            "name": result[1],
+            "description": result[2],
+            "price": result[3]
+        })
+
+    return ingredients
 
 
 @auth_hug.options(requires=cors_support)

@@ -97,8 +97,6 @@ export default class LocationForm extends Component {
     if (this.validateForm()) {
       let formData = {};
 
-      console.log(this.state.ingredientList);
-
       formData.name = this.state.name;
       formData.street_address = this.state.streetAddress;
       formData.city = this.state.city;
@@ -107,6 +105,7 @@ export default class LocationForm extends Component {
       formData.phone_number = this.state.phoneNumber;
       formData.hours = this.state.hours;
       formData.base_taco_price = this.state.baseTacoPrice;
+      formData.ingredient_list = this.state.ingredientList;
       this.props.submit(formData);
     }
   };
