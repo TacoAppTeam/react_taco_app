@@ -39,6 +39,13 @@ Run `make` from top level directory. This should build both the vws_taco_api and
 * Run `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar vws_taco_api` and `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_ui.tar vws_ taco_ui`
   * This creates tarballs of the docker images
 * Get the files to the host (eg., ec2 instance)
-  * One way is to run `scp -i ~/path/to/<EC2_private_key>.pem ~/path/to/DevWorkshopTacoReact/vws_ta co_api.tar <user>@<ip_of_machine>:~/docker-images/vws_taco_api.tar` and the same for the ui
+  * One way is to run `scp -i ~/path/to/<EC2_private_key>.pem ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar <user>@<ip_of_machine>:~/docker-images/vws_taco_api.tar` and the same for the ui
 * Docker load each tarball
 * Make sure the latest docker-compose is on the host
+* View running docker containers
+  * sudo docker ps
+* Stop all old containers
+  * sudo docker stop \<CONTAINER ID\>
+* Run new containers based on latest docker image
+  * sudo docker run -d -p 80:3000 vws_taco_ui:latest
+  * sudo docker run -d -p 8000:8000 vws_taco_api:latest
