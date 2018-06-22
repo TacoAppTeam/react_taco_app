@@ -93,7 +93,7 @@ export const signIn = (username, password) => {
         return result;
       })
       .catch(err => {
-        dispatch({type: errorActions.ADD_ERROR, error: err});
+        dispatch({type: errorActions.ADD_ERROR, error: "Attempt to login failed."});
         return err;
       });
   };
