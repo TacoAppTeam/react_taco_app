@@ -1,9 +1,9 @@
 taco_api:
-  image: 084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api:latest
+  image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
   ports:
   - "8000:8000"
 
 taco_ui:
-  image: 084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui:latest
+  image: ${UI_IMAGE_NAME}:${UI_IMAGE_TAG}
   ports:
   - "80:3000"
