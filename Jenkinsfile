@@ -12,9 +12,6 @@ pipeline {
                 echo 'Testing, 123..'
             }
         }
-    }
-
-    stages{
         stage("Upload"){
             when { branch "master" } 
             steps {
