@@ -12,13 +12,15 @@ pipeline {
                 echo 'Testing, 123..'
             }
         }
-        if(env.BRANCH_NAME == 'master'){
-            stage("Upload"){
+        stage("Upload"){
+            if(env.BRANCH_NAME == 'master'){
                 steps {
                     echo 'Uploading....'
-                }
+                }                
             }
-            stage("Deploy"){
+        }
+        stage("Deploy"){
+            if(env.BRANCH_NAME == 'master'){
                 steps {
                     echo 'Deploying....'
                 }
