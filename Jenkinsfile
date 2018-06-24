@@ -12,19 +12,20 @@ pipeline {
                 echo 'Testing, 123..'
             }
         }
-        stage("Upload"){            
-            steps {
-                // if(env.BRANCH_NAME == 'master'){
+    }
+
+    if(env.BRANCH_NAME == 'master'){
+        stages{
+            stage("Upload"){            
+                steps {
                     echo 'Uploading....'
-                // }
+                }
             }
-        }
-        stage("Deploy"){
-            steps {
-                // if(env.BRANCH_NAME == 'master'){
+            stage("Deploy"){
+                steps {
                     echo 'Deploying....'
-                // }
-            }
+                }
+            } 
         }
     }
 }
