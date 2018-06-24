@@ -14,18 +14,19 @@ pipeline {
         }
     }
 
-    if(env.BRANCH_NAME == 'master'){
-        stages{
-            stage("Upload"){            
-                steps {
-                    echo 'Uploading....'
-                }
+    stages{
+        stage("Upload"){
+            when { branch "master" } 
+            steps {
+                echo 'Uploading....'
             }
-            stage("Deploy"){
-                steps {
-                    echo 'Deploying....'
-                }
-            } 
         }
+        stage("Deploy"){
+            when { branch "master" }
+            steps {
+                echo 'Deploying....'
+            }
+        } 
     }
+    
 }
