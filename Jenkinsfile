@@ -14,16 +14,16 @@ pipeline {
         }
         stage("Upload"){            
             steps {
-                if(env.BRANCH_NAME == 'master'){
+                // if(env.BRANCH_NAME == 'master'){
                     echo 'Uploading....'
-                }
+                // }
             }
         }
         stage("Deploy"){
             steps {
-                if(env.BRANCH_NAME == 'master'){
+                // if(env.BRANCH_NAME == 'master'){
                     echo 'Deploying....'
-                }
+                // }
             }
         }
     }
