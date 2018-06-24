@@ -9,12 +9,19 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Testing, 123..'
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+        if(env.BRANCH_NAME == 'master'){
+            stage("Upload"){
+                steps {
+                    echo 'Uploading....'
+                }
+            }
+            stage("Deploy"){
+                steps {
+                    echo 'Deploying....'
+                }
             }
         }
     }
