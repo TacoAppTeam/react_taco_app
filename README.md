@@ -2,12 +2,10 @@
 
 The second pass at the Taco App, using React.
 
-Use this repo to use vagrant to set up a vm: https://git.viasat.com/VWS-Dev/VagrantSetup
-
 To set up the repo:
 
-* git clone git@git.viasat.com:VWS-DEV/DevWorkshopTacoReact
-* cd DevWorkshopTacoReact
+* git clone git@github.com:TacoAppTeam/react_taco_app
+* cd react_taco_app
 * sudo pip3.6 install -r vws_taco_api/requirements.txt
 * cd vws_taco_reactapp
 * npm install
@@ -33,19 +31,4 @@ select \* from orders as o join taco_order as taco on taco.order_id = o.id join 
 
 # To deploy the app
 
-Make sure the api_hostname value in config.js is set to the hostname of the EC2 instance. (http://34.216.218.113). Run `make` from top level directory. This should build both the vws_taco_api and vws_taco_ui docker images.
-
-* Until we get a specific docker repo up and running, here is how you get docker images up to the ec2 instance.
-* Run `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar vws_taco_api` and `docker save -o ~/path/to/DevWorkshopTacoReact/vws_taco_ui.tar vws_ taco_ui`
-  * This creates tarballs of the docker images
-* Get the files to the host (eg., ec2 instance)
-  * One way is to run `scp -i ~/path/to/<EC2_private_key>.pem ~/path/to/DevWorkshopTacoReact/vws_taco_api.tar <user>@<ip_of_machine>:~/docker-images/vws_taco_api.tar` and the same for the ui
-* Docker load each tarball
-* Make sure the latest docker-compose is on the host
-* View running docker containers
-  * sudo docker ps
-* Stop all old containers
-  * sudo docker stop \<CONTAINER ID\>
-* Run new containers based on latest docker image
-  * sudo docker run -d -p 80:3000 vws_taco_ui:latest
-  * sudo docker run -d -p 8000:8000 vws_taco_api:latest
+Push to master - should be hooked to Jenkins job. Deploys to http://34.216.218.113/
