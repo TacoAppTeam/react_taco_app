@@ -28,7 +28,7 @@ pipeline {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey", keyFileVariable: "keyfile")]) {
                     sh 'scp -i ${keyfile} docker-compose.yml centos@34.216.218.113:docker-compose.yml'
-                    sh 'ssh -i ${keyfile} centos@34.216.218.113 docker-compose down && UI_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui UI_IMAGE_TAG=latest API_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api API_IMAGE_TAG=latest docker-compose up -d'
+                    sh 'ssh -i ${keyfile} centos@34.216.218.113 UI_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui UI_IMAGE_TAG=latest API_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api API_IMAGE_TAG=latest docker-compose down && UI_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui UI_IMAGE_TAG=latest API_IMAGE_NAME=084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api API_IMAGE_TAG=latest docker-compose up -d'
                 }
             }
         }
