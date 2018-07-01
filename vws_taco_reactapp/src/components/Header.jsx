@@ -53,7 +53,7 @@ class Header extends Component {
   render() {
     return (
       <div className="container">
-        <Title title="Taco App" />
+        <Title title="Taco App - fully automated" />
         <Toolbar className="App">
           {this.props.currentUser ? (
             <Fragment>
