@@ -23,7 +23,7 @@ pipeline {
             }
         }
         stage("Deploy"){
-            when { branch "master" }
+            // when { branch "master" }
             steps {
                 sh 'ssh ec2-user@34.216.218.113 whoami'
             }
