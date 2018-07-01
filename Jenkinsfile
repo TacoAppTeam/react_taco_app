@@ -26,8 +26,8 @@ pipeline {
         // when { branch "master" }
         
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey")]) {
-                    sh 'ssh ec2-user@34.216.218.113 whoami'
+                withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey", keyFileVariable: "keyfile")]) {
+                    sh 'ssh -i ${keyfile} ec2-user@34.216.218.113 whoami'
                 }
             }
         }
