@@ -13,7 +13,7 @@ pipeline {
             }
         }
         stage("Upload"){
-            // when { branch "master" } 
+            when { branch "master" } 
             steps {
                 sh 'sh ecr-login.sh'
                 sh 'docker tag vws_taco_api:latest 084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api:latest'
@@ -23,8 +23,7 @@ pipeline {
             }
         }
         stage("Deploy"){
-        // when { branch "master" }
-        
+            when { branch "master" }
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey", keyFileVariable: "keyfile")]) {
                     sh 'scp -i ${keyfile} docker-compose.yml centos@34.216.218.113:docker-compose.yml'
