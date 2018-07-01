@@ -22,15 +22,15 @@ pipeline {
                 sh 'docker push 084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui:latest'
             }
         }
-        withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey")]) {
-            stage("Deploy"){
-            // when { branch "master" }
-            
-                steps {
+        stage("Deploy"){
+        // when { branch "master" }
+        
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: "tacoSharedKey")]) {
                     sh 'ssh ec2-user@34.216.218.113 whoami'
                 }
             }
-        } 
+        }
     }
     
 }
