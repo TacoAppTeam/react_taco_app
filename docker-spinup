@@ -10,4 +10,4 @@ echo $API_HOSTNAME
 docker system prune -f
 docker-compose pull
 docker-compose down
-docker-compose up -d -e API_HOSTNAME=$API_HOSTNAME
+docker-compose up -d 
