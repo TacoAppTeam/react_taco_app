@@ -1,6 +1,6 @@
 taco_api:
   image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
-  network_mode: host
+  net: host
   ports:
   - "8000:8000"
   volumes:
