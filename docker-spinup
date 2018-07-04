@@ -3,7 +3,7 @@ export UI_IMAGE_TAG=${UI_IMAGE_TAG-latest}
 export API_IMAGE_NAME=${API_IMAGE_NAME-084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api}
 export API_IMAGE_TAG=${API_IMAGE_TAG-latest}
 
-API_HOSTNAME=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -d: -f2 | awk '{ print $2}')
+export API_HOSTNAME=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -d: -f2 | awk '{ print $2}')
 
 echo $API_HOSTNAME
 
