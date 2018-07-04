@@ -1,7 +1,7 @@
 taco_api:
   image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
   ports:
-  - "8000:8000"
+  - "127.0.0.1:8000:8000"
   volumes:
   - /var/lib/docker/volumes/dbvolume/_data:/db
 
