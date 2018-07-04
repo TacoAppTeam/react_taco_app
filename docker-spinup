@@ -8,4 +8,4 @@ API_HOSTNAME=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -d: -f2 | awk '{ print $
 docker system prune -f
 docker-compose pull
 docker-compose down
-docker-compose up -d -e API_HOSTNAME=$API_HOSTNAME
+UI_IMAGE_NAME=$UI_IMAGE_NAME UI_IMAGE_TAG=$UI_IMAGE_TAG API_IMAGE_NAME=$API_IMAGE_NAME API_IMAGE_TAG=$API_IMAGE_TAG docker-compose up -d -e API_HOSTNAME=$API_HOSTNAME
