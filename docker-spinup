@@ -1,0 +1,11 @@
+UI_IMAGE_NAME=${UI_IMAGE_NAME-084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_ui}
+UI_IMAGE_TAG=${UI_IMAGE_TAG-latest}
+API_IMAGE_NAME=${API_IMAGE_NAME-084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api}
+API_IMAGE_TAG=${API_IMAGE_TAG-latest}
+
+API_HOSTNAME=$(ifconfig eth0 | grep 'inet ' | cut -d: -f2 | awk '{ print $2}')
+
+docker system prune -f
+docker-compose pull
+docker-compose down
+docker-compose up -d -e API_HOSTNAME=$API_HOSTNAME
