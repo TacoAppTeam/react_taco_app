@@ -5,6 +5,8 @@ export API_IMAGE_TAG=${API_IMAGE_TAG-latest}
 
 API_HOSTNAME=$(/sbin/ifconfig eth0 | grep 'inet ' | cut -d: -f2 | awk '{ print $2}')
 
+echo $API_HOSTNAME
+
 docker system prune -f
 docker-compose pull
 docker-compose down
