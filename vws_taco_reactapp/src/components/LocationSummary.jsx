@@ -10,6 +10,7 @@ function mapStateToProps(state) {
   return {
     currentUser: state.user.currentUser,
     locations: state.location.locations,
+    locationDeletePending: state.location.locationDeletePending
   };
 }
 
@@ -76,6 +77,7 @@ class LocationSummary extends Component {
     const {
       eventOrderListPending,
       eventsPending,
+      locationDeletePending,
     } = this.props
 
     const {
@@ -83,7 +85,7 @@ class LocationSummary extends Component {
       location,
     } = this.state
 
-    if (redirect) {
+    if (redirect && !locationDeletePending) {
       return <Redirect push to={'/locationmgmt'} />;
     }
     return (
