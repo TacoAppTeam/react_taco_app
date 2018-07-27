@@ -10,7 +10,7 @@ from sqlalchemy import func
 from argon2 import PasswordHasher
 from cors import cors_support
 from vws_taco_api.vws_taco_api.models import *
-from vws_taco_api.vws_taco_api.utils import Auth
+from vws_taco_api.vws_taco_api.utils import auth_hug, secret_key
 
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
@@ -18,7 +18,6 @@ logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
 
-auth_hug = Auth.auth_hug
 ph = PasswordHasher()
 
 
@@ -42,7 +41,7 @@ def token_generation(username, password):
     try:
         if (ph.verify(db_pass, password)):
             token = jwt.encode({"email": username, "first_name": user.get("first_name"),
-                                "last_name": user.get("last_name")}, Auth.secret_key, algorithm='HS256')
+                                "last_name": user.get("last_name")}, secret_key, algorithm='HS256')
             return {"success": True, "token": token}
         else:
             return {"success": False, "message": "FAIL"}

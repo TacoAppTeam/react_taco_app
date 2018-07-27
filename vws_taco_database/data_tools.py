@@ -130,15 +130,12 @@ def create_hug_api(table_data):
     target.write("import db\n")
     target.write("import hug\n\n")
     target.write("from vws_taco_api.vws_taco_api.models import *\n")
-    target.write("from vws_taco_api.vws_taco_api.utils import Auth\n")
+    target.write("from vws_taco_api.vws_taco_api.utils import auth_hug\n")
     target.write("from cors import cors_support\n")
     target.write("\n")
     target.write("\n")
     target.write("\"\"\"Taco API Module.\"\"\"\n")
     target.write("\"\"\"To run, execute `hug -f taco_api.py`\"\"\"\n")
-    target.write("\n")
-    target.write("\n")
-    target.write("auth_hug = Auth.auth_hug")
 
     for table in table_data:
         table_info = table_data[table]
