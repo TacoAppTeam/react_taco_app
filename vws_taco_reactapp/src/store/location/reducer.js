@@ -1,6 +1,6 @@
 import * as locationActions from './actions';
 
-const initialState = {locationsPending: false};
+const initialState = {locationsPending: false, locationDeletePending: false};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -17,9 +17,15 @@ const reducer = (state = initialState, action) => {
         locationsPending: false
       };
     case locationActions.DELETE_LOCATION:
-      return {};
+      return {
+        ...state,
+        locationDeletePending: true
+      };
     case locationActions.LOCATION_DELETED:
-      return {};
+      return {
+        ...state,
+        locationDeletePending: false
+      };
     case locationActions.CREATE_LOCATION:
       return {};
     case locationActions.LOCATION_CREATED:
