@@ -3,15 +3,13 @@ import db
 import hug
 
 from vws_taco_api.vws_taco_api.models import *
-from vws_taco_api.vws_taco_api.utils import Auth
+from vws_taco_api.vws_taco_api.utils import auth_hug
 from cors import cors_support
 
 
 """Taco API Module."""
 """To run, execute `hug -f taco_api.py`"""
 
-
-auth_hug = Auth.auth_hug
 
 @auth_hug.get(requires=cors_support)
 def event(id: hug.types.number):

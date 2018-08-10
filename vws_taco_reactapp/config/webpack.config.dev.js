@@ -225,7 +225,7 @@ module.exports = {
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
     new webpack.DefinePlugin(env.stringified),
-    new webpack.EnvironmentPlugin(['API_HOSTNAME', 'API_PORT']),
+    new webpack.EnvironmentPlugin({API_HOSTNAME: '10.59.5.174', API_PORT: '8000'}),
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
     // Watcher doesn't work well if you mistype casing in a path so we use
