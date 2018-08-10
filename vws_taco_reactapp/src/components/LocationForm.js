@@ -105,7 +105,10 @@ export default class LocationForm extends Component {
       formData.phone_number = this.state.phoneNumber;
       formData.hours = this.state.hours;
       formData.base_taco_price = this.state.baseTacoPrice;
-      formData.ingredient_list = this.state.ingredientList;
+
+      // Remove null ingredients from list
+      formData.ingredient_list = this.state.ingredientList.filter(ingredient => ingredient.name !== "");
+
       this.props.submit(formData);
     }
   };
