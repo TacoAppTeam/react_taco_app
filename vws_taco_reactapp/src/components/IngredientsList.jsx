@@ -35,7 +35,7 @@ class IngredientsList extends Component {
       <div>
         <form onSubmit={this.addTaco} ref={form => (this.form = form)}>
           {this.props.ingredients.map((ingredient, i) => {
-            let label = `${ingredient.name} - ${ingredient.description}`;
+            let label = `${ingredient.name + (ingredient.description ? (" - " + ingredient.description) : "")}`;
             if (ingredient.price) {
               label += ` (add $${ingredient.price})`;
             }
