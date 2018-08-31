@@ -7,6 +7,8 @@ export API_HOSTNAME=$(curl ipinfo.io/ip)
 
 echo $API_HOSTNAME
 
+export TACO_HTTPS=true
+
 docker system prune -f
 docker-compose pull
 docker-compose down
