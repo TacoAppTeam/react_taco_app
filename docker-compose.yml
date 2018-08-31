@@ -10,6 +10,6 @@ taco_ui:
   image: ${UI_IMAGE_NAME}:${UI_IMAGE_TAG}
   environment:
     - API_HOSTNAME
-    - HTTPS=${TACO_HTTPS:-false}
+    - HTTPS=$${TACO_HTTPS:-false}
   ports:
   - "443:3000"
