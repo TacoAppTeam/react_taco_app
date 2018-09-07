@@ -107,10 +107,14 @@ class LocationSummary extends Component {
             <span>{location.hours}</span>
           </div>
           <div>
+            <h3>Base Price</h3>
+            <span>${location.base_taco_price}</span>
+          </div>
+          <div>
             <h3>Ingredients</h3>
             {location.ingredients &&
                   location.ingredients.map((ing, key) => (
-                    <li key={key}>{ing.name}</li>
+                    <li key={key}>{ing.name} - ${ing.price}</li>
                     ))}
           </div>
 
