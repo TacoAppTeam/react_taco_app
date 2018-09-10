@@ -465,7 +465,7 @@ def calculate_order_cost(order_id):
             float(location_data["base_taco_price"])
 
         taco_ings = session.query(Taco_Ingredient).filter(
-            Taco_Ingredient.order_id == order_id)
+            Taco_Ingredient.order_id == taco_order.id)
         for taco_ing in taco_ings:
             for ing in location_ingredients:
                 if taco_ing.ingredient_id == ing["id"]:
