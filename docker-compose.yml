@@ -2,9 +2,10 @@ taco_api:
   image: ${API_IMAGE_NAME}:${API_IMAGE_TAG}
   net: host
   ports:
-  - "8000:8000"
+    - "8000:8000"
   volumes:
-  - /var/lib/docker/volumes/dbvolume/_data:/db
+    # - ./db:/db
+    - ${DB_DATA_PATH}
 
 taco_ui:
   image: ${UI_IMAGE_NAME}:${UI_IMAGE_TAG}
@@ -12,4 +13,4 @@ taco_ui:
     - API_HOSTNAME
     - HTTPS=false
   ports:
-  - "80:3000"
+    - "80:3000"

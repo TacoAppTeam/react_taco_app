@@ -94,3 +94,4 @@ pip-selfcheck.json
 *.db
 *.pyc
 *.tar
+db/

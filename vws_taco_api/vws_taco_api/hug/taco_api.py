@@ -87,7 +87,7 @@ def with_other_apis():
 
 
 @auth_hug.get(requires=cors_support)
-def events(event_id: hug.types.number=0):
+def events(event_id: hug.types.number = 0):
     events = []
 
     session = db.create_session()
@@ -145,7 +145,7 @@ def ingredients(event_id):
 
 
 @auth_hug.get(output=hug.output_format.json, requires=cors_support)
-def event_orders(event_id: hug.types.number, user_id: hug.types.text=''):
+def event_orders(event_id: hug.types.number, user_id: hug.types.text = ''):
     orders_list = []
 
     session = db.create_session()
@@ -358,6 +358,65 @@ def create_location(body):
         session.add(update_location)  # Add the new object to the session
         session.commit()
         session.flush()     # Commits and flushes
+        session.close()
+        return {"success": True, "message": "Location created"}
+
+    except Exception as Error:
+        print(Error)
+        raise Error
+
+
+@auth_hug.options(requires=cors_support)
+def update_location():
+    return 200
+
+
+@auth_hug.post(requires=cors_support)
+def update_location(body):
+    try:
+        location_id = body.get('id')
+        session = db.create_session()
+        existing_location = session.query(Location).get(
+            location_id) if location_id else Location()
+        location = session.merge(existing_location)
+        location.id = body.get('id', existing_location.id)
+        location.name = body.get('name', existing_location.name)
+        location.street_address = body.get(
+            'street_address', existing_location.street_address)
+        location.city = body.get('city', existing_location.city)
+        location.state = body.get('state', existing_location.state)
+        location.zip = body.get('zip', existing_location.zip)
+        location.phone_number = body.get(
+            'phone_number', existing_location.phone_number)
+        location.hours = body.get('hours', existing_location.hours)
+        location.base_taco_price = body.get(
+            'base_taco_price', existing_location.base_taco_price)
+        session.commit()    # To prevent lock on the table
+        session.add(location)  # Add the new object to the session
+        session.flush()     # Commits and flushes
+        ingredients = body.get('ingredients') or []
+
+        for ingredientItem in ingredients:
+            ingId = ingredientItem.get('id')
+
+            existing_ingredient = session.query(Ingredient).get(
+                ingId) if ingId else Ingredient()
+
+            # Merge any existing object with the passed in object
+            ingredient = session.merge(existing_ingredient)
+            ingredient.id = ingredientItem.get('id', existing_ingredient.id)
+            ingredient.name = ingredientItem.get(
+                'name', existing_ingredient.name)
+            ingredient.description = ingredientItem.get(
+                'description', existing_ingredient.description)
+            ingredient.price = ingredientItem.get(
+                'price', existing_ingredient.price)
+            ingredient.location_id = ingredientItem.get(
+                'location_id', existing_ingredient.location_id)
+            session.commit()
+            session.add(ingredient)
+
+        session.flush()
         session.close()
         return {"success": True, "message": "Location created"}
 

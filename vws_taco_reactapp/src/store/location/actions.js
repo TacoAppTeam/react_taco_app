@@ -88,3 +88,19 @@ export const createLocation = locationData => {
     });
   };
 };
+
+export const updateLocation = location => {
+  const location_url = `${config.api_hostname}:${config.api_port}/v1/update_location`;
+  function updateLocationAPI() {
+    return axios
+      .post(location_url, location, {Authorization: localStorage.getItem('user')})
+      .then(res => {
+        return res.data;
+      });
+  }
+  return function(dispatch) {
+    return updateLocationAPI().then(res => {
+      console.log('Saved location');
+    });
+  };
+};

@@ -64,7 +64,7 @@ class Header extends Component {
               </ToolbarGroup>
               <ToolbarGroup lastChild={true}>
                 <FlatButton
-                  label={`Clicking this does nothing, ${this.props.currentUser.first_name}`}
+                  label={`Welcome, ${this.props.currentUser.first_name}`}
                   onClick={() => {
                     this.setState({redirect: true});
                   }}
