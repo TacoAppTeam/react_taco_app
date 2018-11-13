@@ -2,6 +2,7 @@ export UI_IMAGE_NAME=${UI_IMAGE_NAME-084735579641.dkr.ecr.us-west-2.amazonaws.co
 export UI_IMAGE_TAG=${UI_IMAGE_TAG-latest}
 export API_IMAGE_NAME=${API_IMAGE_NAME-084735579641.dkr.ecr.us-west-2.amazonaws.com/vws_taco_api}
 export API_IMAGE_TAG=${API_IMAGE_TAG-latest}
+export DB_DATA_PATH=/var/lib/docker/volumes/dbvolume/_data:/db
 
 export API_HOSTNAME=$(curl ipinfo.io/ip)
 
